@@ -1,8 +1,7 @@
-// app/layout.tsx (または他のファイル)
 import type { Metadata } from 'next'
 import localFont from 'next/font/local'
 import './globals.css'
-import SessionWrapper from './SessionWrapper'
+import SessionWrapper from './ClientSessionProvider'
 
 const geistSans = localFont({
   src: './fonts/GeistVF.woff',
