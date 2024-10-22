@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import './globals.css'
 import SessionWrapper from './ClientSessionProvider'
+import * as styles from './layout.css'
 
 export const metadata: Metadata = {
   title: 'あけおめリンク',
@@ -13,8 +14,12 @@ const Layout = ({
 }>) => {
   return (
     <html lang="ja">
-      <body>
-        <SessionWrapper>{children}</SessionWrapper>
+      <body className={styles.container}>
+        <div className={styles.display}>
+          <div className={styles.inner}>
+            <SessionWrapper>{children}</SessionWrapper>
+          </div>
+        </div>
       </body>
     </html>
   )
