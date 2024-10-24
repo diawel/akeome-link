@@ -34,7 +34,6 @@ type CardProps = {
 
 const Card = ({ layout, setLayout }: CardProps) => {
   const [cardScale, setCardScale] = useState(0)
-  const containerRef = useRef<HTMLDivElement>(null)
   const sizerRef = useRef<HTMLDivElement>(null)
   const cardRef = useRef<HTMLDivElement>(null)
 
