@@ -45,3 +45,32 @@ export type CardResponse = {
   data: Card[];
   meta: Meta;
 };
+
+export type cardLayout = {
+  container: {
+    x: number
+    y: number
+    scale: number
+  }
+  content:
+    | {
+        type: 'text'
+        text: string
+      }
+    | {
+        type: 'userImage'
+        uid: string
+      }
+    | {
+        type: 'sticker'
+        stickerId: number
+      }
+}[]
+
+export type AddCardParams = {
+  title: string
+  creatorName: string
+  userImages: { blob: Blob; uid: string }[]
+  layout: cardLayout
+  creator: { id: string }
+}
