@@ -18,7 +18,7 @@ export type Creator = {
 export type Attributes = {
   title: string;
   creatorName: string;
-  layout: object[];
+  layout: cardLayout;
   createdAt: string;
   updatedAt: string;
   publishedAt: string;
@@ -51,6 +51,7 @@ export type cardLayout = {
     x: number
     y: number
     scale: number
+    rotate: number
   }
   content:
     | {
