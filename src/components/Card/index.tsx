@@ -7,6 +7,8 @@ import rotateIcon from './icon-rotate.svg'
 import removeIcon from './icon-remove.svg'
 import Image from 'next/image'
 
+const formats = ['large', 'medium', 'small', 'thumbnail', 'original'] as const
+
 type CardProps = {
   layout: {
     container: {
@@ -19,20 +21,44 @@ type CardProps = {
       | {
           type: 'text'
           text: string
+          color: string
+          align: 'left' | 'center' | 'right'
         }
       | {
           type: 'userImage'
-          src: string
+          id: number
         }
       | {
           type: 'sticker'
           stickerId: number
         }
   }[]
-  setLayout?: (layout: CardProps['layout']) => void
+  userImages: {
+    id: number
+    attributes: {
+      formats?: {
+        thumbnail?: { url: string }
+        small?: { url: string }
+        medium?: { url: string }
+        large?: { url: string }
+      }
+      url: string
+    }
+  }[]
+  maxFormat?: (typeof formats)[number]
+  edit?: {
+    setLayout: (layout: CardProps['layout']) => void
+    isAnyFocused: boolean
+    setIsAnyFocused: (isAnyFocused: boolean) => void
+  }
 }
 
-const Card = ({ layout, setLayout }: CardProps) => {
+const Card = ({
+  layout,
+  userImages,
+  maxFormat = 'original',
+  edit,
+}: CardProps) => {
   const [cardScale, setCardScale] = useState(0)
   const sizerRef = useRef<HTMLDivElement>(null)
   const cardRef = useRef<HTMLDivElement>(null)
@@ -53,7 +79,6 @@ const Card = ({ layout, setLayout }: CardProps) => {
     }
   }, [])
 
-  const [isAnyFocused, setIsFocued] = useState<boolean>(false)
   const [dragState, setDragState] = useState<{
     startPosition: {
       x: number
@@ -68,7 +93,7 @@ const Card = ({ layout, setLayout }: CardProps) => {
   } | null>(null)
 
   useEffect(() => {
-    if (!setLayout) return
+    if (!edit) return
     if (!dragState) return
     const hundleMove = (x: number, y: number) => {
       if (!cardRef.current) return
@@ -81,7 +106,7 @@ const Card = ({ layout, setLayout }: CardProps) => {
       }
       switch (type) {
         case 'move':
-          setLayout(
+          edit.setLayout(
             layout.slice(0, layout.length - 1).concat({
               ...layout[layout.length - 1],
               container: {
@@ -101,7 +126,7 @@ const Card = ({ layout, setLayout }: CardProps) => {
               180) /
               Math.PI +
             -45
-          setLayout(
+          edit.setLayout(
             layout.slice(0, layout.length - 1).concat({
               ...layout[layout.length - 1],
               container: {
@@ -120,7 +145,7 @@ const Card = ({ layout, setLayout }: CardProps) => {
             startPosition.x - initialPosition.x,
             startPosition.y - initialPosition.y
           )
-          setLayout(
+          edit.setLayout(
             layout.slice(0, layout.length - 1).concat({
               ...layout[layout.length - 1],
               container: {
@@ -164,15 +189,16 @@ const Card = ({ layout, setLayout }: CardProps) => {
       window.removeEventListener('touchcancel', handleLeave)
       window.removeEventListener('touchleave', handleLeave)
     }
-  }, [dragState, setLayout, layout])
+  }, [cardScale, dragState, edit, layout])
 
   const focus = (index: number) => {
-    setLayout?.([
+    if (!edit) return
+    edit.setLayout([
       ...layout.slice(0, index),
       ...layout.slice(index + 1),
       layout[index],
     ])
-    setIsFocued(true)
+    edit.setIsAnyFocused(true)
   }
 
   return (
@@ -184,13 +210,13 @@ const Card = ({ layout, setLayout }: CardProps) => {
             style={{
               transform: `scale(${cardScale})`,
             }}
-            onMouseDown={() => setIsFocued(false)}
-            onTouchStart={() => setIsFocued(false)}
+            onMouseDown={() => edit?.setIsAnyFocused(false)}
+            onTouchStart={() => edit?.setIsAnyFocused(false)}
             ref={cardRef}
           >
             {layout.map((target, index) => {
               const isFocused =
-                setLayout && isAnyFocused && index === layout.length - 1
+                edit && edit.isAnyFocused && index === layout.length - 1
               const content = (() => {
                 switch (target.content.type) {
                   case 'text':
@@ -198,13 +224,32 @@ const Card = ({ layout, setLayout }: CardProps) => {
                       <div className={styles.text}>{target.content.text}</div>
                     )
                   case 'userImage':
+                    const id = target.content.id
+                    const userImage = userImages.find(
+                      (userImage) => userImage.id === id
+                    )
+                    if (!userImage) return null
+                    const maxFormatOfImage = userImage.attributes.formats?.large
+                      ? 'large'
+                      : userImage.attributes.formats?.medium
+                      ? 'medium'
+                      : userImage.attributes.formats?.small
+                      ? 'small'
+                      : userImage.attributes.formats?.thumbnail
+                      ? 'thumbnail'
+                      : 'original'
+                    const formatIndex = Math.max(
+                      formats.indexOf(maxFormat),
+                      formats.indexOf(maxFormatOfImage)
+                    )
+                    const url =
+                      formats[formatIndex] === 'original'
+                        ? userImage.attributes.url
+                        : userImage.attributes.formats?.[formats[formatIndex]]
+                            ?.url ?? userImage.attributes.url
                     return (
                       <div className={styles.userImageContainer}>
-                        <img
-                          className={styles.userImage}
-                          src={target.content.src}
-                          alt=""
-                        />
+                        <img className={styles.userImage} src={url} alt="" />
                       </div>
                     )
                   case 'sticker':
@@ -280,7 +325,7 @@ const Card = ({ layout, setLayout }: CardProps) => {
                     className={styles.control.remove}
                     onClick={(event) => {
                       event.stopPropagation()
-                      setLayout?.(layout.slice(0, index))
+                      edit?.setLayout(layout.slice(0, index))
                     }}
                     style={{
                       transform: `scale(${
