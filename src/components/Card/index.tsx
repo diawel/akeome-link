@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { Fragment, useEffect, useRef, useState } from 'react'
 import * as styles from './index.css'
 import zoomIcon from './icon-zoom.svg'
 import rotateIcon from './icon-rotate.svg'
@@ -228,7 +228,12 @@ const Card = ({
                           textAlign: target.content.align,
                         }}
                       >
-                        {target.content.text}
+                        {target.content.text.split('\n').map((line, index) => (
+                          <Fragment key={index}>
+                            {line}
+                            <br />
+                          </Fragment>
+                        ))}
                       </div>
                     )
                   case 'userImage':
