@@ -221,7 +221,15 @@ const Card = ({
                 switch (target.content.type) {
                   case 'text':
                     return (
-                      <div className={styles.text}>{target.content.text}</div>
+                      <div
+                        className={styles.text}
+                        style={{
+                          color: target.content.color,
+                          textAlign: target.content.align,
+                        }}
+                      >
+                        {target.content.text}
+                      </div>
                     )
                   case 'userImage':
                     const id = target.content.id
