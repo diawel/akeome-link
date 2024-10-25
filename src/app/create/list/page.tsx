@@ -15,17 +15,35 @@ const List: NextPage = () => {
     <div>
       <CardsHeader />
       <div className={styles.container}>
-        {dummyData.createdCard.length < 0 ? (
+        {dummyData.createdCard.length > 0 ? (
           <div className={styles.cardContainer}>
+            <div>
+              <div className={styles.newCardButtonSizeInner}>
+                <div className={styles.newCardButtonContent}>
+                  <div>
+                    <FaPlus className={styles.newCardButtonIcon} />
+                  </div>
+                </div>
+              </div>
+              <div className={styles.newCardButtonTextContainer}>
+                <div className={styles.newCardButtonText}>新規作成</div>
+              </div>
+            </div>
+
             {dummyData.createdCard.map((card, index) => (
-              <Fragment key={index}>
-                <Card
-                  layout={card.layout}
-                  userImages={card.userImages}
-                  maxFormat="original"
-                  edit={undefined}
-                />
-              </Fragment>
+              <div className={styles.content}>
+                <div key={index}>
+                  <div className={styles.card}>
+                    <Card
+                      layout={card.layout}
+                      userImages={card.userImages}
+                      maxFormat="original"
+                      edit={undefined}
+                    />
+                  </div>
+                  <div className={styles.cardTitle}>{card.title}</div>
+                </div>
+              </div>
             ))}
           </div>
         ) : (

@@ -14,7 +14,7 @@ export type CreatedCardsProps = {
 export const dummyData: CreatedCardsProps = {
   createdCard: [
     {
-      title: 'Sample Card 1',
+      title: 'Sample CardCardCardCard',
       creatorName: 'John Doe',
       userImages: [
         {
