@@ -2,8 +2,9 @@ import { style, styleVariants } from '@vanilla-extract/css'
 import { color } from '../../utils/styleSchema'
 
 export const container = style({
-  maxWidth: '100%',
+  width: '100%',
   height: '100%',
+  aspectRatio: '100 / 148',
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
