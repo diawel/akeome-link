@@ -326,6 +326,7 @@ const Card = ({
                     onClick={(event) => {
                       event.stopPropagation()
                       edit?.setLayout(layout.slice(0, index))
+                      edit?.setIsAnyFocused(false)
                     }}
                     style={{
                       transform: `scale(${
