@@ -14,4 +14,5 @@ export const screen = style({
 
 export const cardWrapper = style({
   padding: 16,
+  overflow: 'hidden',
 })
