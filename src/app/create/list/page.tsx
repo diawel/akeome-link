@@ -6,6 +6,7 @@ import { dummyData } from './dummyData'
 import { Fragment } from 'react'
 import * as styles from './index.css'
 import CardsHeader from '../../../components/CardsHeader'
+import { FaPlus } from 'react-icons/fa6'
 
 const List: NextPage = () => {
   const { data: session } = useSession({ required: true })
@@ -13,22 +14,26 @@ const List: NextPage = () => {
   return (
     <div>
       <CardsHeader />
-
       <div className={styles.container}>
-        {dummyData.createdCard.map((card, index) => (
-          <Fragment key={index}>
-            <Card
-              layout={card.layout}
-              userImages={card.userImages}
-              maxFormat="original"
-              edit={undefined} // 編集機能が必要ない場合
-            />
-            {/* <div className={styles.cardWrapper}>
-            <h3 className={styles.title}>{card.title}</h3>
-            <p className={styles.creatorName}>Created by: {card.creatorName}</p>
-          </div> */}
-          </Fragment>
-        ))}
+        {dummyData.createdCard.length < 0 ? (
+          <div className={styles.cardContainer}>
+            {dummyData.createdCard.map((card, index) => (
+              <Fragment key={index}>
+                <Card
+                  layout={card.layout}
+                  userImages={card.userImages}
+                  maxFormat="original"
+                  edit={undefined}
+                />
+              </Fragment>
+            ))}
+          </div>
+        ) : (
+          <div className={styles.newCardContainer}>
+            <FaPlus className={styles.newCardIcon} />
+            <div className={styles.newCardText}>年賀状を新規作成</div>
+          </div>
+        )}
       </div>
     </div>
   )
