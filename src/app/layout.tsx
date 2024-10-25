@@ -1,10 +1,17 @@
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 import './globals.css'
-import SessionWrapper from './ClientSessionProvider'
 import * as styles from './layout.css'
 
 export const metadata: Metadata = {
   title: 'あけおめリンク',
+  appleWebApp: {
+    title: 'あけおめリンク',
+  },
+}
+
+export const viewport: Viewport = {
+  viewportFit: 'cover',
+  maximumScale: 1,
 }
 
 const Layout = ({
@@ -16,9 +23,7 @@ const Layout = ({
     <html lang="ja">
       <body className={styles.container}>
         <div className={styles.display}>
-          <div className={styles.inner}>
-            <SessionWrapper>{children}</SessionWrapper>
-          </div>
+          <div className={styles.inner}>{children}</div>
         </div>
       </body>
     </html>

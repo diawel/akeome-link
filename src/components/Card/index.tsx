@@ -107,7 +107,7 @@ const Card = ({
       switch (type) {
         case 'move':
           edit.setLayout(
-            layout.slice(0, layout.length - 1).concat({
+            layout.slice(0, -1).concat({
               ...layout[layout.length - 1],
               container: {
                 ...layout[layout.length - 1].container,
@@ -127,7 +127,7 @@ const Card = ({
               Math.PI +
             -45
           edit.setLayout(
-            layout.slice(0, layout.length - 1).concat({
+            layout.slice(0, -1).concat({
               ...layout[layout.length - 1],
               container: {
                 ...layout[layout.length - 1].container,
@@ -146,7 +146,7 @@ const Card = ({
             startPosition.y - initialPosition.y
           )
           edit.setLayout(
-            layout.slice(0, layout.length - 1).concat({
+            layout.slice(0, -1).concat({
               ...layout[layout.length - 1],
               container: {
                 ...layout[layout.length - 1].container,
