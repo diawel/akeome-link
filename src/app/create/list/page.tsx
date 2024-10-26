@@ -1,16 +1,12 @@
 'use client'
-import { signOut, useSession } from 'next-auth/react'
 import { NextPage } from 'next'
 import Card from '../../../components/Card'
 import { dummyData } from './dummyData'
-import { Fragment } from 'react'
 import * as styles from './index.css'
 import CardsHeader from '../../../components/CardsHeader'
 import { FaPlus } from 'react-icons/fa6'
 
 const List: NextPage = () => {
-  const { data: session } = useSession({ required: true })
-
   return (
     <div>
       <CardsHeader />
@@ -31,8 +27,8 @@ const List: NextPage = () => {
             </div>
 
             {dummyData.createdCard.map((card, index) => (
-              <div className={styles.content}>
-                <div key={index}>
+              <div className={styles.content} key={index}>
+                <div>
                   <div className={styles.card}>
                     <Card
                       layout={card.layout}
