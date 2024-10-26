@@ -1,4 +1,4 @@
-import { CardProps } from '../../../components/Card'
+import { CardProps } from '../../components/Card'
 
 export type CreatedCardProps = {
   title: string

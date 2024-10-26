@@ -1,5 +1,5 @@
 import { style } from '@vanilla-extract/css'
-import { color } from '../../../utils/styleSchema'
+import { color } from '../../utils/styleSchema'
 
 export const container = style({
   padding: '40px 16px 0 16px',

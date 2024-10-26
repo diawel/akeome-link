@@ -4,11 +4,11 @@ import akeomeLinkLogo from './akeome-link-logo.svg'
 import postIcon from './icon-post.svg'
 import Image from 'next/image'
 
-type CardsHeaderProps = {
+type HeaderProps = {
   activeTab: 'created' | 'received'
 }
 
-const CardsHeader: React.FC<CardsHeaderProps> = ({ activeTab }) => {
+const Header: React.FC<HeaderProps> = ({ activeTab }) => {
   return (
     <>
       <div className={styles.headerContainer}>
@@ -45,4 +45,4 @@ const CardsHeader: React.FC<CardsHeaderProps> = ({ activeTab }) => {
   )
 }
 
-export default CardsHeader
+export default Header
