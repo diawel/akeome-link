@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   appleWebApp: {
     title: 'あけおめリンク',
   },
-  metadataBase: new URL('http://localhost:3000'), // 本番環境で変更する
+  metadataBase: new URL(process.env.SITE_URL ?? ''),
 }
 
 export const viewport: Viewport = {
