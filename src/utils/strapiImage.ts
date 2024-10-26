@@ -1,3 +1,6 @@
+import { StrapiRecord } from './strapi'
+import { MediaAttributes } from './strapi/media'
+
 export type ImageUrlSet = {
   formats?: {
     large?: { url: string }
@@ -39,4 +42,15 @@ export const getImageUrl = (urlSet: ImageUrlSet, maxFormat?: ImageFormat) => {
   return url.startsWith('/')
     ? `${process.env.NEXT_PUBLIC_STRAPI_BACKEND_URL}${url}`
     : url
+}
+
+export const mediaRecordsToUrlSet = (
+  records: StrapiRecord<MediaAttributes>[] | null
+) => {
+  return (
+    records?.map((image) => ({
+      id: image.id,
+      urlSet: image.attributes,
+    })) ?? []
+  )
 }
