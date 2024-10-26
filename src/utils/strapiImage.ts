@@ -1,15 +1,20 @@
 import { StrapiRecord } from './strapi'
 import { MediaAttributes } from './strapi/media'
 
+type MinimumImage = {
+  url: string
+  width: number
+  height: number
+}
+
 export type ImageUrlSet = {
   formats?: {
-    large?: { url: string }
-    medium?: { url: string }
-    small?: { url: string }
-    thumbnail?: { url: string }
+    large?: MinimumImage
+    medium?: MinimumImage
+    small?: MinimumImage
+    thumbnail?: MinimumImage
   } | null
-  url: string
-}
+} & MinimumImage
 
 const imageFormats = [
   'large',

@@ -209,7 +209,7 @@ const Card = ({ layout, userImages, maxFormat, edit }: CardProps) => {
                 edit && edit.isAnyFocused && index === layout.length - 1
               const content = (() => {
                 switch (target.content.type) {
-                  case 'text':
+                  case 'text': {
                     return (
                       <div
                         className={styles.text}
@@ -226,31 +226,59 @@ const Card = ({ layout, userImages, maxFormat, edit }: CardProps) => {
                         ))}
                       </div>
                     )
-                  case 'userImage':
+                  }
+                  case 'userImage': {
                     const id = target.content.id
                     const userImage = userImages.find(
                       (userImage) => userImage.id === id
                     )
                     if (!userImage) return null
+                    const longEdge = Math.max(
+                      userImage.urlSet.width,
+                      userImage.urlSet.height
+                    )
                     return (
                       <div className={styles.userImageContainer}>
                         <img
-                          className={styles.userImage}
+                          style={{
+                            width: `${
+                              (userImage.urlSet.width / longEdge) * 100
+                            }%`,
+                            height: `${
+                              (userImage.urlSet.height / longEdge) * 100
+                            }%`,
+                          }}
                           src={getImageUrl(userImage.urlSet, maxFormat)}
                           alt=""
                         />
                       </div>
                     )
-                  case 'sticker':
+                  }
+                  case 'sticker': {
                     const stickerId = target.content.stickerId
                     const sticker = stickers.find(
                       (sticker) => sticker.id === stickerId
                     )
                     if (!sticker) return null
+                    const longEdge = Math.max(
+                      sticker.attributes.image.data.attributes.width,
+                      sticker.attributes.image.data.attributes.height
+                    )
                     return (
                       <div className={styles.stickerContainer}>
                         <img
-                          className={styles.sticker}
+                          style={{
+                            width: `${
+                              (sticker.attributes.image.data.attributes.width /
+                                longEdge) *
+                              100
+                            }%`,
+                            height: `${
+                              (sticker.attributes.image.data.attributes.height /
+                                longEdge) *
+                              100
+                            }%`,
+                          }}
                           src={getImageUrl(
                             sticker.attributes.image.data.attributes,
                             maxFormat
@@ -259,6 +287,7 @@ const Card = ({ layout, userImages, maxFormat, edit }: CardProps) => {
                         />
                       </div>
                     )
+                  }
                 }
               })()
 
