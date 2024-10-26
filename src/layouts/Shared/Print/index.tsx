@@ -8,7 +8,7 @@ type PrintProps = {
   onClose: () => void
 }
 
-const Print = ({ image }: PrintProps) => {
+const Print = ({ image, onClose }: PrintProps) => {
   const [isChecked, setIsChecked] = useState(false)
   const [isUploading, setIsUploading] = useState(false)
   const [response, setResponse] = useState<{
@@ -38,10 +38,7 @@ const Print = ({ image }: PrintProps) => {
               <dd>一度閉じると再表示できません</dd>
             </dl>
           </div>
-          <button
-            className={styles.seconradyButton.default}
-            onClick={() => window.print()}
-          >
+          <button className={styles.seconradyButton.default} onClick={onClose}>
             閉じる
           </button>
         </>
