@@ -1,6 +1,12 @@
 import { style, styleVariants } from '@vanilla-extract/css'
 import { color } from '../../utils/styleSchema'
 
+export const container = style({
+  width: '100%',
+  height: '100%',
+  position: 'relative',
+})
+
 export const screen = style({
   width: '100%',
   height: '100%',
@@ -15,7 +21,7 @@ export const content = style({
   flexDirection: 'column',
   alignItems: 'center',
   justifyContent: 'center',
-  padding: '36px 56px',
+  padding: 56,
   gap: 36,
 })
 
@@ -49,6 +55,7 @@ export const primaryButton = style({
   color: color.gray[100],
   borderRadius: 12,
   fontWeight: 'bold',
+  cursor: 'pointer',
 })
 
 const seconradyButtonBase = style({
@@ -64,6 +71,7 @@ const seconradyButtonBase = style({
   fontWeight: 'bold',
   border: 'none',
   fontSize: 16,
+  cursor: 'pointer',
 })
 
 export const seconradyButton = styleVariants({
@@ -75,4 +83,17 @@ export const seconradyButton = styleVariants({
       opacity: 0.5,
     },
   ],
+})
+
+export const overlayContainer = style({
+  position: 'absolute',
+  top: 0,
+  left: 0,
+  width: '100%',
+  height: '100%',
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  backdropFilter: 'brightness(0.5)',
+  padding: 16,
 })
