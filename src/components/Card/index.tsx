@@ -9,7 +9,7 @@ import Image from 'next/image'
 
 const formats = ['large', 'medium', 'small', 'thumbnail', 'original'] as const
 
-type CardProps = {
+export type CardProps = {
   layout: {
     container: {
       x: number

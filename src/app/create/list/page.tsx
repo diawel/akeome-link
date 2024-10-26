@@ -1,25 +1,17 @@
-'use client'
-import { signOut, useSession } from 'next-auth/react'
 import { NextPage } from 'next'
+import { getServerSession } from 'next-auth'
+import { authOptions } from '../../api/auth/[...nextauth]/authOptions'
+import { redirect } from 'next/navigation'
+import List from '../../../layouts/List'
 
-const List: NextPage = () => {
-  const { data: session } = useSession({ required: true })
+const Page: NextPage = () => {
+  const session = getServerSession(authOptions)
 
-  return (
-    <>
-      {session && (
-        <div>
-          <pre>{JSON.stringify(session, null, 2)}</pre>
-          <button onClick={() => signOut()}>Sign out</button>
-        </div>
-      )}
-      {!session && (
-        <div>
-          <p>You are not signed in.</p>
-        </div>
-      )}
-    </>
-  )
+  if (!session) {
+    redirect('/')
+  }
+
+  return <List />
 }
 
-export default List
+export default Page
