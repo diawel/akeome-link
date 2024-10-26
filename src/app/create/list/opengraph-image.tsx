@@ -9,9 +9,7 @@ export const size = {
 }
 export const contentType = 'image/png'
 
-export default async function Image() {
-  let creatorName = 'めっちゃ長い名前名前名前'
-
+const OgImage = async ({ creatorName }: { creatorName: string }) => {
   return new ImageResponse(
     (
       <div
@@ -403,3 +401,5 @@ export default async function Image() {
     }
   )
 }
+
+export default OgImage
