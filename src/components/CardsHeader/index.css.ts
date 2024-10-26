@@ -2,10 +2,6 @@ import { style } from '@vanilla-extract/css'
 import { color } from '../../utils/styleSchema'
 
 export const headerContainer = style({
-  display: 'flex',
-  justifyContent: 'space-between',
-  alignItems: 'center',
-  paddingTop: '44px',
   backgroundColor: '#fff',
   position: 'relative',
 })
@@ -57,7 +53,7 @@ export const activeTab = style({
 
 export const notificationIcon = style({
   position: 'absolute',
-  top: '66px',
+  top: '22px',
   right: '33px',
   display: 'flex',
   alignItems: 'center',
