@@ -1,9 +1,10 @@
 'use client'
 
-import { Card } from '../../../utils/strapi/card'
+import { StrapiApiListResponse } from '../../../utils/strapi'
+import { CardAttributes } from '../../../utils/strapi/card'
 
 type CreatedCardProps = {
-  createdCards: Card[]
+  createdCards: StrapiApiListResponse<CardAttributes>
 }
 
 export const CreatedCard = ({ createdCards }: CreatedCardProps) => {

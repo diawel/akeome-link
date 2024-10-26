@@ -1,12 +1,9 @@
-export type StrapiUser = {
-  id: number
+export type UserAttributes = {
   username: string
   email: string
+  provider: 'google' | 'local'
+  confirmed: boolean
   blocked: boolean
-  provider: 'google'
-}
-
-export type StrapiLoginResponse = {
-  jwt: string
-  user: StrapiUser
+  createdAt: string
+  updatedAt: string
 }

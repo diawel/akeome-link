@@ -1,17 +1,17 @@
-import { StrapiError } from '../../../utils/strapi'
+import { StrapiApiListResponse, StrapiError } from '../../../utils/strapi'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '../../api/auth/[...nextauth]/authOptions'
-import { Card } from '../../../utils/strapi/card'
-import { ApiResponse } from '../../../utils/strapi/sticker'
-import { AddCardParams } from '../../../utils/strapi/card'
+import { StickerAttributes } from '../../../utils/strapi/sticker'
+import { CardAttributes } from '../../../utils/strapi/card'
 
-export const getSticker = async () => {
+export const getStickers = async () => {
   try {
     const strapiResponse = await fetch(
       `${process.env.NEXT_PUBLIC_STRAPI_BACKEND_URL}/api/stickers?populate=image`
     )
 
-    const strapiData: ApiResponse = await strapiResponse.json()
+    const strapiData: StrapiApiListResponse<StickerAttributes> =
+      await strapiResponse.json()
 
     const result = strapiData.data.map((item) => ({
       id: item.id,
@@ -35,7 +35,7 @@ export const getCreatedCards = async () => {
 
   try {
     const strapiResponse = await fetch(
-      `${process.env.NEXT_PUBLIC_STRAPI_BACKEND_URL}/api/cards?populate=creator,userImages`,
+      `${process.env.NEXT_PUBLIC_STRAPI_BACKEND_URL}/api/cards?populate=creator,userImages&filters[creator][id][$eq]=${session.user.strapiUserId}`,
       { cache: 'no-cache' }
     )
 
@@ -44,13 +44,9 @@ export const getCreatedCards = async () => {
       throw new Error(strapiError.error.message)
     }
 
-    const cards = await strapiResponse.json()
-    const createdCards = cards.data.filter(
-      (card: Card) =>
-        card.attributes.creator.data.id === session.user.strapiUserId
-    )
-
-    return createdCards
+    const cards: StrapiApiListResponse<CardAttributes> =
+      await strapiResponse.json()
+    return cards
   } catch (error) {
     throw error
   }
@@ -61,7 +57,14 @@ export const addCard = async ({
   creatorName,
   userImages,
   layout,
-}: AddCardParams) => {
+}: {
+  title: string
+  creatorName: string
+  userImages: {
+    id: string
+  }[]
+  layout: string
+}) => {
   const session = await getServerSession(authOptions)
 
   if (!session) {
@@ -71,13 +74,11 @@ export const addCard = async ({
   const formData = new FormData()
   formData.append('title', title)
   formData.append('creatorName', creatorName)
-  userImages.forEach((image, index) => {
-    formData.append(`userImages[${index}][blob]`, image.blob, `${index}.png`)
-    formData.append(`userImages[${index}][uid]`, image.uid)
+  userImages.forEach((image) => {
+    formData.append('userImages', image.id)
   })
-
   formData.append('layout', JSON.stringify(layout))
-  formData.append('creator', JSON.stringify({ id: session.user.strapiUserId }))
+  formData.append('creator', String(session.user.strapiUserId))
 
   try {
     const strapiResponse = await fetch(
