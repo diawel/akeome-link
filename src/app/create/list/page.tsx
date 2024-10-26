@@ -1,4 +1,6 @@
 'use client'
+
+import React, { useState } from 'react'
 import { NextPage } from 'next'
 import Card from '../../../components/Card'
 import { dummyData } from './dummyData'
@@ -7,9 +9,11 @@ import CardsHeader from '../../../components/CardsHeader'
 import { FaPlus } from 'react-icons/fa6'
 
 const List: NextPage = () => {
+  const [activeTab, setActiveTab] = useState<'created' | 'received'>('created')
+
   return (
     <div>
-      <CardsHeader />
+      <CardsHeader activeTab={activeTab} onTabChange={setActiveTab} />
       <div className={styles.container}>
         {dummyData.createdCard.length > 0 ? (
           <div className={styles.cardContainer}>
