@@ -24,12 +24,6 @@ export type CardAttributes = {
 }
 
 export const getCard = async (id: number) => {
-  const session = await getServerSession(authOptions)
-
-  if (!session) {
-    return undefined
-  }
-
   try {
     const strapiResponse = await fetch(
       `${
