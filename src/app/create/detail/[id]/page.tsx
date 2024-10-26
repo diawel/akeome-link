@@ -17,7 +17,7 @@ const Page: NextPage<PageProps> = ({ params }: { params: { id: number } }) => {
     redirect('/')
   }
 
-  return <Detail id={params.id} />
+  return <Detail id={params.id} shareUrl='https://placehold.jp/1200x690.png' />
 }
 
 export default Page
