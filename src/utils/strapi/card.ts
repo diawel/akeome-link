@@ -1,8 +1,11 @@
+'use server'
+
 import { getServerSession } from 'next-auth'
 import { StrapiApiListResponse, StrapiError, StrapiRecord } from '.'
 import { MediaAttributes } from './media'
 import { authOptions } from '../../app/api/auth/[...nextauth]/authOptions'
 import { stringify } from 'qs'
+import { CardLayout } from '../../components/Card'
 
 export type CardAttributes = {
   title: string
@@ -66,7 +69,7 @@ export const addCard = async ({
   userImages: {
     id: number
   }[]
-  layout: string
+  layout: CardLayout
 }) => {
   const session = await getServerSession(authOptions)
 
@@ -74,23 +77,23 @@ export const addCard = async ({
     throw new Error('Unauthorized')
   }
 
-  const formData = new FormData()
-  formData.append('title', title)
-  formData.append('creatorName', creatorName)
-  userImages.forEach((image) => {
-    formData.append('userImages', String(image.id))
-  })
-  formData.append('layout', JSON.stringify(layout))
-  formData.append('creator', String(session.user.strapiUserId))
-
   const strapiResponse = await fetch(
-    `${process.env.NEXT_PUBLIC_STRAPI_BACKEND_URL}/cards`,
+    `${process.env.NEXT_PUBLIC_STRAPI_BACKEND_URL}/api/cards`,
     {
       method: 'POST',
       headers: {
-        Authorization: `Bearer ${session.strapiToken}`,
+        Authorization: `Bearer ${process.env.STRAPI_API_TOKEN}`,
+        'Content-Type': 'application/json',
       },
-      body: formData,
+      body: JSON.stringify({
+        data: {
+          title,
+          creatorName,
+          layout: layout,
+          creator: session.user.strapiUserId,
+          userImages: userImages.map((userImage) => userImage.id),
+        },
+      }),
     }
   )
 

@@ -1,3 +1,5 @@
+'use server'
+
 import { stringify } from 'qs'
 import { StrapiApiListResponse, StrapiRecord } from '.'
 import { MediaAttributes } from './media'

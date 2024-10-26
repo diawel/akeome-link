@@ -9,30 +9,32 @@ import Image from 'next/image'
 import { useStickers } from '../../app/StickerProvider'
 import { getImageUrl, ImageFormat, ImageUrlSet } from '../../utils/strapiImage'
 
+export type CardLayout = {
+  container: {
+    x: number
+    y: number
+    scale: number
+    rotate: number
+  }
+  content:
+    | {
+        type: 'text'
+        text: string
+        color: string
+        align: 'left' | 'center' | 'right'
+      }
+    | {
+        type: 'userImage'
+        id: number
+      }
+    | {
+        type: 'sticker'
+        stickerId: number
+      }
+}[]
+
 export type CardProps = {
-  layout: {
-    container: {
-      x: number
-      y: number
-      scale: number
-      rotate: number
-    }
-    content:
-      | {
-          type: 'text'
-          text: string
-          color: string
-          align: 'left' | 'center' | 'right'
-        }
-      | {
-          type: 'userImage'
-          id: number
-        }
-      | {
-          type: 'sticker'
-          stickerId: number
-        }
-  }[]
+  layout: CardLayout
   userImages: {
     id: number
     urlSet: ImageUrlSet

@@ -6,6 +6,7 @@ import * as styles from './index.css'
 import Meta from './Meta'
 import Edit from './Edit'
 import { ImageUrlSet } from '../../utils/strapiImage'
+import { addCard } from '../../utils/strapi/card'
 
 const EditCard = () => {
   const [cardLayout, setCardLayout] = useState<
@@ -50,9 +51,18 @@ const EditCard = () => {
   ])
   const [isAnyFocused, setIsAnyFocused] = useState(false)
 
+  const save = () => {
+    addCard({
+      title: 'テスト',
+      creatorName: 'テスト作者',
+      layout: cardLayout,
+      userImages: userImages,
+    })
+  }
+
   return (
     <div className={styles.screen}>
-      <Meta />
+      <Meta onSave={save} />
       <div className={styles.cardWrapper}>
         <Card
           layout={cardLayout}
