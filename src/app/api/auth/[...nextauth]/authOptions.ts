@@ -1,6 +1,7 @@
 import { NextAuthOptions } from 'next-auth'
 import GoogleProvider from 'next-auth/providers/google'
-import { StrapiError, StrapiLoginResponse } from '../../../../utils/strapi'
+import { StrapiError } from '../../../../utils/strapi'
+import { StrapiLoginResponse } from '../../../../utils/user'
 
 export const authOptions: NextAuthOptions = {
   providers: [
