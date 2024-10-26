@@ -25,8 +25,17 @@ export const getCreatedCards = async () => {
 
   try {
     const strapiResponse = await fetch(
-      `${process.env.NEXT_PUBLIC_STRAPI_BACKEND_URL}/api/cards?populate=creator,userImages&filters[creator][id][$eq]=${session.user.strapiUserId}`,
-      { cache: 'no-cache' }
+      `${
+        process.env.NEXT_PUBLIC_STRAPI_BACKEND_URL
+      }/api/cards?${encodeURIComponent(
+        `populate=creator,userImages&filters[creator][id][$eq]=${session.user.strapiUserId}`
+      )}`,
+      {
+        cache: 'no-cache',
+        headers: {
+          Authorization: `Bearer ${process.env.STRAPI_API_TOKEN}`,
+        },
+      }
     )
 
     if (!strapiResponse.ok) {
