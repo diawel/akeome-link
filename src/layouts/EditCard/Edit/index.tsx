@@ -40,7 +40,7 @@ const Edit = ({
   }, [cardLayout, focusedContent])
 
   return (
-    <div>
+    <>
       <div className={styles.controlContainer}>
         {activeTab == 'userImage' ? (
           <div className={styles.control}>
@@ -75,33 +75,38 @@ const Edit = ({
           </div>
         ) : activeTab == 'sticker' ? (
           <div className={styles.control}>
-            {stickers.map((sticker) => (
-              <button
-                key={sticker.id}
-                onClick={() => {
-                  setCardLayout([
-                    ...cardLayout,
-                    {
-                      container: { x: 200, y: 291, scale: 1, rotate: 0 },
-                      content: {
-                        type: 'sticker',
-                        stickerId: sticker.id,
+            {stickers
+              .concat(stickers)
+              .concat(stickers)
+              .concat(stickers)
+              .concat(stickers)
+              .map((sticker) => (
+                <button
+                  key={sticker.id}
+                  onClick={() => {
+                    setCardLayout([
+                      ...cardLayout,
+                      {
+                        container: { x: 200, y: 291, scale: 1, rotate: 0 },
+                        content: {
+                          type: 'sticker',
+                          stickerId: sticker.id,
+                        },
                       },
-                    },
-                  ])
-                  setIsAnyFocused(true)
-                }}
-              >
-                <img
-                  className={styles.sticker}
-                  src={getImageUrl(
-                    sticker.attributes.image.data.attributes,
-                    'thumbnail'
-                  )}
-                  alt=""
-                />
-              </button>
-            ))}
+                    ])
+                    setIsAnyFocused(true)
+                  }}
+                >
+                  <img
+                    className={styles.sticker}
+                    src={getImageUrl(
+                      sticker.attributes.image.data.attributes,
+                      'thumbnail'
+                    )}
+                    alt=""
+                  />
+                </button>
+              ))}
           </div>
         ) : (
           <div className={styles.control}>
@@ -236,7 +241,7 @@ const Edit = ({
           テキスト
         </button>
       </div>
-    </div>
+    </>
   )
 }
 
