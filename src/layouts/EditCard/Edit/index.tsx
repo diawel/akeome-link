@@ -3,6 +3,7 @@ import Card from '../../../components/Card'
 import * as styles from './index.css'
 import { FaImage, FaNoteSticky } from 'react-icons/fa6'
 import { useStickers } from '../../../app/StickerProvider'
+import { uploadMedia } from '../../../utils/strapi/media'
 
 type EditProps = {
   cardLayout: React.ComponentProps<typeof Card>['layout']
@@ -48,30 +49,26 @@ const Edit = ({
               onChange={(event) => {
                 const file = event.target.files?.[0]
                 if (!file) return
-                const reader = new FileReader()
-                reader.onload = (event) => {
-                  if (typeof event.target?.result !== 'string') return
-                  setUserImages([
-                    ...userImages,
-                    {
-                      id: userImages.length + 1,
-                      urlSet: {
-                        url: event.target.result,
-                      },
-                    },
-                  ])
+                const formData = new FormData()
+                formData.append('files', file)
+                uploadMedia(formData).then((media) => {
+                  setUserImages(
+                    userImages.concat({
+                      id: media[0].id,
+                      urlSet: media[0],
+                    })
+                  )
                   setCardLayout(
                     cardLayout.concat({
                       container: { x: 200, y: 291, scale: 1, rotate: 0 },
                       content: {
                         type: 'userImage',
-                        id: userImages.length + 1,
+                        id: media[0].id,
                       },
                     })
                   )
                   setIsAnyFocused(true)
-                }
-                reader.readAsDataURL(file)
+                })
               }}
             />
           </div>
