@@ -18,10 +18,6 @@ type DetailProps = {
 const Detail = async ({ id, shareUrl }: DetailProps) => {
   const card = await getCard(id)
 
-  const handleCopy = () => {
-    navigator.clipboard.writeText(shareUrl)
-  }
-
   if (!card) {
     redirect('/')
   }
@@ -49,7 +45,6 @@ const Detail = async ({ id, shareUrl }: DetailProps) => {
       <div className={styles.linkBoxContainer}>
         <div className={styles.linkBoxContent}>
           <input
-            // ref={inputRef}
             type="text"
             value={shareUrl}
             readOnly
