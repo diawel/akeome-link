@@ -1,14 +1,14 @@
 import { redirect } from 'next/navigation'
-import { getCreatedCards } from '../../../utils/strapi/card'
+import { getCard } from '../../../utils/strapi/card'
 import Shared from '../../../layouts/Shared'
 
-const Page = async ({ params }: { params: { id: string } }) => {
-  const temp = await getCreatedCards()
-  if (!temp) {
+const Page = async ({ params }: { params: { id: number } }) => {
+  const card = await getCard(params.id)
+  if (!card) {
     redirect('/')
   }
 
-  return <Shared cardRecord={temp.data[0]} />
+  return <Shared cardRecord={card.data} />
 }
 
 export default Page
