@@ -4,6 +4,7 @@ import { getServerSession } from 'next-auth'
 import { StrapiApiListResponse, StrapiError, StrapiRecord } from '.'
 import { MediaAttributes } from './media'
 import { authOptions } from '../../app/api/auth/[...nextauth]/authOptions'
+import { stringify } from 'qs'
 
 export type CardAttributes = {
   title: string
@@ -25,11 +26,16 @@ export const getCreatedCards = async () => {
 
   try {
     const strapiResponse = await fetch(
-      `${
-        process.env.NEXT_PUBLIC_STRAPI_BACKEND_URL
-      }/api/cards?${encodeURIComponent(
-        `populate=creator,userImages&filters[creator][id][$eq]=${session.user.strapiUserId}`
-      )}`,
+      `${process.env.NEXT_PUBLIC_STRAPI_BACKEND_URL}/api/cards?${stringify({
+        populate: ['creator', 'userImages'],
+        filters: {
+          creator: {
+            id: {
+              $eq: session.user.strapiUserId,
+            },
+          },
+        },
+      })}`,
       {
         cache: 'no-cache',
         headers: {

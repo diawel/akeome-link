@@ -1,5 +1,6 @@
 'use server'
 
+import { stringify } from 'qs'
 import { StrapiApiListResponse, StrapiRecord } from '.'
 import { MediaAttributes } from './media'
 
@@ -15,7 +16,9 @@ export type StickerAttributes = {
 export const getStickers = async () => {
   try {
     const strapiResponse = await fetch(
-      `${process.env.NEXT_PUBLIC_STRAPI_BACKEND_URL}/api/stickers?populate=image`,
+      `${process.env.NEXT_PUBLIC_STRAPI_BACKEND_URL}/api/stickers?${stringify({
+        populate: ['image'],
+      })}`,
       {
         cache: 'no-cache',
         headers: {
