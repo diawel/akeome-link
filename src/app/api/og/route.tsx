@@ -1,15 +1,20 @@
 import { ImageResponse } from 'next/og'
+import { NextResponse } from 'next/server'
+import { getCard } from '../../../utils/strapi/card'
 
-export const runtime = 'nodejs'
+export const GET = async (request: Request) => {
+  const { searchParams } = new URL(request.url)
+  const cardId = searchParams.get('cardId')
 
-export const alt = 'OGP画像'
-export const size = {
-  width: 1200,
-  height: 630,
-}
-export const contentType = 'image/png'
+  if (!cardId) {
+    return NextResponse.json(
+      { error: 'CardId parameter is required' },
+      { status: 400 }
+    )
+  }
 
-const OgImage = async ({ creatorName }: { creatorName: string }) => {
+  const card = await getCard(parseInt(cardId, 10))
+
   return new ImageResponse(
     (
       <div
@@ -391,15 +396,14 @@ const OgImage = async ({ creatorName }: { creatorName: string }) => {
               width: 'auto',
             }}
           >
-            {creatorName}
+            {card?.data.attributes.creatorName}
           </div>
         </div>
       </div>
     ),
     {
-      ...size,
+      width: 1200,
+      height: 630,
     }
   )
 }
-
-export default OgImage
