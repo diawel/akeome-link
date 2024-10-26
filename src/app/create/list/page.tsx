@@ -1,19 +1,23 @@
-'use client'
-
-import React, { useState } from 'react'
+import React from 'react'
 import { NextPage } from 'next'
 import Card from '../../../components/Card'
 import { dummyData } from './dummyData'
 import * as styles from './index.css'
 import CardsHeader from '../../../components/CardsHeader'
 import { FaPlus } from 'react-icons/fa6'
-
+import { getServerSession } from 'next-auth'
+import { authOptions } from '../../api/auth/[...nextauth]/authOptions'
+import { redirect } from 'next/navigation'
 const List: NextPage = () => {
-  const [activeTab, setActiveTab] = useState<'created' | 'received'>('created')
+  const session = getServerSession(authOptions)
+
+  if (!session) {
+    redirect('/')
+  }
 
   return (
     <div>
-      <CardsHeader activeTab={activeTab} onTabChange={setActiveTab} />
+      <CardsHeader activeTab="created" />
       <div className={styles.container}>
         {dummyData.createdCard.length > 0 ? (
           <div className={styles.cardContainer}>

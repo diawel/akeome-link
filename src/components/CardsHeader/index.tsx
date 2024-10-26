@@ -6,13 +6,9 @@ import Image from 'next/image'
 
 type CardsHeaderProps = {
   activeTab: 'created' | 'received'
-  onTabChange: (tab: 'created' | 'received') => void
 }
 
-const CardsHeader: React.FC<CardsHeaderProps> = ({
-  activeTab,
-  onTabChange,
-}) => {
+const CardsHeader: React.FC<CardsHeaderProps> = ({ activeTab }) => {
   return (
     <>
       <div className={styles.headerContainer}>
@@ -34,7 +30,6 @@ const CardsHeader: React.FC<CardsHeaderProps> = ({
           className={`${styles.tab} ${
             activeTab === 'created' ? styles.activeTab : ''
           }`}
-          onClick={() => onTabChange('created')}
         >
           つくった
         </div>
@@ -42,7 +37,6 @@ const CardsHeader: React.FC<CardsHeaderProps> = ({
           className={`${styles.tab} ${
             activeTab === 'received' ? styles.activeTab : ''
           }`}
-          onClick={() => onTabChange('received')}
         >
           もらった
         </div>
