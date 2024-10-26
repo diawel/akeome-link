@@ -4,7 +4,7 @@ type MetaProps = {
   onSave: () => void
   title: string
   setTitle: (title: string) => void
-  creatorName: string
+  creatorName: string | undefined
   setCreatorName: (creatorName: string) => void
 }
 
@@ -31,6 +31,7 @@ const Meta = ({
         value={creatorName}
         onChange={(event) => setCreatorName(event.target.value)}
         style={{ width: 80 }}
+        disabled={creatorName === undefined}
       />
       <button onClick={onSave}>Save</button>
     </div>

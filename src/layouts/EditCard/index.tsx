@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Card from '../../components/Card'
 import * as styles from './index.css'
 import Meta from './Meta'
@@ -16,57 +16,35 @@ const EditCard = () => {
   const { data: session } = useSession()
   const [cardLayout, setCardLayout] = useState<
     React.ComponentProps<typeof Card>['layout']
-  >([
-    {
-      container: { x: 100, y: 150, scale: 1, rotate: 0 },
-      content: {
-        type: 'userImage',
-        id: 1,
-      },
-    },
-    {
-      container: { x: 200, y: 150, scale: 1, rotate: 0 },
-      content: {
-        type: 'sticker',
-        stickerId: 1,
-      },
-    },
-    {
-      container: { x: 200, y: 291, scale: 1, rotate: 0 },
-      content: {
-        type: 'text',
-        text: 'Hello,\nworld!<script>alert(1)</script>',
-        color: '#000',
-        align: 'center',
-      },
-    },
-  ])
+  >([])
   const [userImages, setUserImages] = useState<
     {
       id: number
       urlSet: ImageUrlSet
     }[]
-  >([
-    {
-      id: 1,
-      urlSet: {
-        url: 'https://placehold.jp/150x150.png',
-      },
-    },
-  ])
-  console.log(session?.user?.name)
+  >([])
+
   const [isAnyFocused, setIsAnyFocused] = useState(false)
   const [title, setTitle] = useState('無題')
-  const [creatorName, setCreatorName] = useState(
-    localStorage.getItem(creatorNameLocalStorageKey) ??
-      session?.user?.name ??
-      'ゲスト'
-  )
+  const [creatorName, setCreatorName] = useState<string | undefined>(undefined)
   const [isSaving, setIsSaving] = useState(false)
   const router = useRouter()
 
+  useEffect(() => {
+    if (!session) return
+    setCreatorName(
+      localStorage.getItem(creatorNameLocalStorageKey) ??
+        session?.user?.name ??
+        'ゲスト'
+    )
+  }, [session])
+
   const save = () => {
+    if (creatorName === undefined) return
     if (isSaving) return
+
+    if (!title) alert('タイトルを入力してください')
+    if (!creatorName) alert('作者名を入力してください')
 
     setIsSaving(true)
     localStorage.setItem(creatorNameLocalStorageKey, creatorName)
