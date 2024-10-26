@@ -2,9 +2,13 @@ import { getCard } from '../../utils/strapi/card'
 import Card from '../../components/Card'
 import { redirect } from 'next/navigation'
 import postImage from './post.svg'
+import xIcon from './icon-x.svg'
+import lineIcon from './icon-line.svg'
+import downloadIcon from './icon-download.svg'
 import Image from 'next/image'
 import * as styles from './index.css'
 import copyIcon from './icon-copy.svg'
+import Link from 'next/link'
 
 type DetailProps = {
   id: number
@@ -55,6 +59,31 @@ const Detail = async ({ id, shareUrl }: DetailProps) => {
             <Image src={copyIcon} alt="copyIcon"></Image>
           </div>
         </div>
+      </div>
+      <div>
+        <div className={styles.iconButtonContainer}>
+          <div className={styles.xContainer}>
+            <Image src={xIcon} alt="xIcon"></Image>
+          </div>
+          <div className={styles.buttonSpace}>
+            <div className={styles.lineContainer}>
+              <Image src={lineIcon} alt="lineIcon"></Image>
+            </div>
+          </div>
+          <div className={styles.downloadContainer}>
+            <div className={styles.downloadContent}>
+              <Image src={downloadIcon} alt="downLoadIcon"></Image>
+              <div className={styles.downloadText}>画像として保存</div>
+            </div>
+          </div>
+        </div>
+        <Link href="/create/list" className={styles.cardLink}>
+          <div className={styles.buttonContainer}>
+            <div className={styles.buttonContent}>
+              <div className={styles.buttonText}>一覧に戻る</div>
+            </div>
+          </div>
+        </Link>
       </div>
     </div>
   )

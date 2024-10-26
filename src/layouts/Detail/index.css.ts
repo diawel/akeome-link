@@ -9,6 +9,7 @@ export const postContainer = style({
 
 export const post = style({
   width: '100%',
+  height: '288px',
 })
 
 export const card = style({
@@ -23,7 +24,10 @@ export const card = style({
 })
 
 export const linkBoxContainer = style({
-  paddingLeft: '16px',
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  paddingTop: '39px',
 })
 
 export const linkBoxContent = style({
@@ -73,4 +77,88 @@ export const linkInput = style({
   textOverflow: 'ellipsis',
   fontWeight: 'bold',
   cursor: 'default',
+  width: '320px',
+})
+
+export const xContainer = style({
+  width: '74px',
+  height: '56px',
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  backgroundColor: 'white',
+  borderRadius: '8px',
+  cursor: 'pointer',
+})
+
+export const lineContainer = style({
+  width: '74px',
+  height: '56px',
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  backgroundColor: 'white',
+  borderRadius: '8px',
+  cursor: 'pointer',
+})
+
+export const downloadContainer = style({
+  width: '145px',
+  height: '56px',
+  backgroundColor: 'white',
+  borderRadius: '8px',
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  cursor: 'pointer',
+})
+
+export const downloadContent = style({
+  display: 'flex',
+  alignItems: 'center',
+})
+
+export const downloadText = style({
+  fontSize: '13px',
+  fontWeight: 'bold',
+  paddingLeft: '4px',
+})
+
+export const iconButtonContainer = style({
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  paddingTop: '25px',
+})
+
+export const buttonSpace = style({
+  padding: '0 15px',
+})
+
+export const buttonContainer = style({
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  paddingTop: '32px',
+  cursor: 'pointer',
+})
+
+export const buttonContent = style({
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  backgroundColor: color.red[5],
+  width: '127px',
+  height: '42px',
+  borderRadius: '12px',
+})
+
+export const buttonText = style({
+  fontSize: '16px',
+  color: 'white',
+  fontWeight: 'bold',
+})
+
+export const cardLink = style({
+  textDecoration: 'none',
 })
