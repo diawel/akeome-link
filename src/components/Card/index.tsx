@@ -6,6 +6,7 @@ import zoomIcon from './icon-zoom.svg'
 import rotateIcon from './icon-rotate.svg'
 import removeIcon from './icon-remove.svg'
 import Image from 'next/image'
+import { useStickers } from '../../app/StickerProvider'
 
 const formats = ['large', 'medium', 'small', 'thumbnail', 'original'] as const
 
@@ -59,6 +60,7 @@ const Card = ({
   maxFormat = 'original',
   edit,
 }: CardProps) => {
+  const stickers = useStickers()
   const [cardScale, setCardScale] = useState(0)
   const sizerRef = useRef<HTMLDivElement>(null)
   const cardRef = useRef<HTMLDivElement>(null)
@@ -266,11 +268,16 @@ const Card = ({
                       </div>
                     )
                   case 'sticker':
+                    const stickerId = target.content.stickerId
                     return (
                       <div className={styles.stickerContainer}>
                         <img
                           className={styles.sticker}
-                          src={`https://placehold.jp/512x512.png?text=${target.content.stickerId}`}
+                          src={`${process.env.NEXT_PUBLIC_STRAPI_BACKEND_URL}${
+                            stickers?.find(
+                              (sticker) => sticker.id === stickerId
+                            )?.attributes.image.data.attributes.url
+                          }`}
                           alt=""
                         />
                       </div>

@@ -30,14 +30,7 @@ export const getStickers = async () => {
     const strapiData: StrapiApiListResponse<StickerAttributes> =
       await strapiResponse.json()
 
-    const result = strapiData.data.map((item) => ({
-      id: item.id,
-      image: item.attributes.image
-        ? item.attributes.image.data.attributes
-        : null,
-    }))
-
-    return result
+    return strapiData
   } catch (error) {
     throw error
   }

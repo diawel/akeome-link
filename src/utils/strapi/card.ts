@@ -56,3 +56,47 @@ export const getCreatedCards = async () => {
     throw error
   }
 }
+
+export const addCard = async ({
+  title,
+  creatorName,
+  userImages,
+  layout,
+}: {
+  title: string
+  creatorName: string
+  userImages: {
+    id: number
+  }[]
+  layout: string
+}) => {
+  const session = await getServerSession(authOptions)
+
+  if (!session) {
+    throw new Error('Unauthorized')
+  }
+
+  const formData = new FormData()
+  formData.append('title', title)
+  formData.append('creatorName', creatorName)
+  userImages.forEach((image) => {
+    formData.append('userImages', String(image.id))
+  })
+  formData.append('layout', JSON.stringify(layout))
+  formData.append('creator', String(session.user.strapiUserId))
+
+  const strapiResponse = await fetch(
+    `${process.env.NEXT_PUBLIC_STRAPI_BACKEND_URL}/cards`,
+    {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${session.strapiToken}`,
+      },
+      body: formData,
+    }
+  )
+
+  if (!strapiResponse.ok) {
+    throw new Error(`Failed to add card: ${strapiResponse.statusText}`)
+  }
+}

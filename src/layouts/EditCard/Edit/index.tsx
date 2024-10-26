@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import Card from '../../../components/Card'
 import * as styles from './index.css'
 import { FaImage, FaNoteSticky } from 'react-icons/fa6'
+import { useStickers } from '../../../app/StickerProvider'
 
 type EditProps = {
   cardLayout: React.ComponentProps<typeof Card>['layout']
@@ -16,17 +17,6 @@ type EditProps = {
   ) => void
 }
 
-const stickers = [
-  {
-    id: 1,
-    src: 'https://placehold.jp/512x512.png?text=1',
-  },
-  {
-    id: 2,
-    src: 'https://placehold.jp/512x512.png?text=2',
-  },
-]
-
 const Edit = ({
   cardLayout,
   setCardLayout,
@@ -35,6 +25,7 @@ const Edit = ({
   userImages,
   setUserImages,
 }: EditProps) => {
+  const stickers = useStickers()
   const [activeTab, setActiveTab] = useState<'userImage' | 'sticker' | 'text'>(
     'userImage'
   )
@@ -103,7 +94,11 @@ const Edit = ({
                   setIsAnyFocused(true)
                 }}
               >
-                <img className={styles.sticker} src={sticker.src} alt="" />
+                <img
+                  className={styles.sticker}
+                  src={`${process.env.NEXT_PUBLIC_STRAPI_BACKEND_URL}${sticker.attributes.image.data.attributes.url}`}
+                  alt=""
+                />
               </button>
             ))}
           </div>
