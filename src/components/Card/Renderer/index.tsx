@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import Card, { CardLayout } from '..'
 import { ImageUrlSet } from '../../../utils/strapiImage'
 import * as styles from './index.css'
@@ -19,7 +19,9 @@ type RendererProps = {
 const Renderer = ({ layout, userImages, onRender }: RendererProps) => {
   const containerRef = useRef<HTMLDivElement>(null)
   const animationFrameRef = useRef<number | null>(null)
+  const [isRendered, setIsRendered] = useState(false)
   useEffect(() => {
+    if (isRendered) return
     const checkLoadingProgress = () => {
       if (containerRef.current) {
         const images = containerRef.current?.querySelectorAll(
@@ -27,7 +29,8 @@ const Renderer = ({ layout, userImages, onRender }: RendererProps) => {
         )
         const allCompleted =
           !images ||
-          images?.entries().every(([, image]) => {
+          !images.length ||
+          images?.entries().every?.(([, image]) => {
             if (!(image instanceof HTMLImageElement)) return true
             return image.complete
           })
@@ -36,13 +39,15 @@ const Renderer = ({ layout, userImages, onRender }: RendererProps) => {
             `.${catdStyles.card}`
           )
           if (card?.getBoundingClientRect().width) {
-            html2canvas(containerRef.current).then(
+            // 画面内のnext/imageは全てloading=eagerにしないとハングする
+            html2canvas(containerRef.current, {}).then(
               (canvas: HTMLCanvasElement) => {
                 canvas.toBlob((blob) => {
                   if (blob) onRender(blob)
                 })
               }
             )
+            setIsRendered(true)
             return
           }
         }
@@ -50,11 +55,12 @@ const Renderer = ({ layout, userImages, onRender }: RendererProps) => {
       animationFrameRef.current = requestAnimationFrame(checkLoadingProgress)
     }
     checkLoadingProgress()
+
     return () => {
       if (animationFrameRef.current)
         cancelAnimationFrame(animationFrameRef.current)
     }
-  }, [onRender])
+  }, [isRendered, onRender])
   return (
     <>
       <div ref={containerRef} className={styles.container}>

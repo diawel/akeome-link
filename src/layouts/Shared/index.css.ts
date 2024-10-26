@@ -62,6 +62,8 @@ const seconradyButtonBase = style({
   color: color.gray[5],
   borderRadius: 12,
   fontWeight: 'bold',
+  border: 'none',
+  fontSize: 16,
 })
 
 export const seconradyButton = styleVariants({

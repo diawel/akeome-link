@@ -39,15 +39,25 @@ const Shared = ({ cardRecord }: SharedProps) => {
             <Link className={styles.primaryButton} href="/create/new">
               年賀状を作ってみる
             </Link>
-            <Link
+            <button
               className={
                 styles.seconradyButton[renderedImage ? 'default' : 'disabled']
               }
-              href={`/edit/${cardRecord.id}`}
+              onClick={() => {
+                if (!renderedImage) return
+                const url = URL.createObjectURL(renderedImage)
+                const a = document.createElement('a')
+                a.href = url
+                a.setAttribute('download', `new_year_card_${Date.now()}`)
+                document.body.appendChild(a)
+                a.click()
+                URL.revokeObjectURL(url)
+                a.remove()
+              }}
             >
               <FaDownload />
               保存
-            </Link>
+            </button>
             <Link
               className={
                 styles.seconradyButton[renderedImage ? 'default' : 'disabled']

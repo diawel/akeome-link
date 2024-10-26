@@ -363,7 +363,7 @@ const Card = ({ layout, userImages, maxFormat, edit, proxy }: CardProps) => {
                       }) rotate(${-target.container.rotate}deg)`,
                     }}
                   >
-                    <Image src={removeIcon} alt="消す" />
+                    <Image src={removeIcon} alt="消す" loading="eager" />
                   </button>
                   <Image
                     className={styles.control.rotate}
@@ -388,6 +388,7 @@ const Card = ({ layout, userImages, maxFormat, edit, proxy }: CardProps) => {
                         1 / target.container.scale / cardScale
                       }) rotate(${-target.container.rotate}deg)`,
                     }}
+                    loading="eager"
                   />
                   <Image
                     className={styles.control.zoom}
@@ -412,6 +413,7 @@ const Card = ({ layout, userImages, maxFormat, edit, proxy }: CardProps) => {
                         1 / target.container.scale / cardScale
                       }) rotate(${-target.container.rotate}deg)`,
                     }}
+                    loading="eager"
                   />
                 </div>
               )
