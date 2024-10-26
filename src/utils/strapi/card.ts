@@ -41,6 +41,9 @@ export const getCreatedCards = async () => {
             },
           },
         },
+        sort: {
+          0: 'updatedAt:desc',
+        },
       })}`,
       {
         cache: 'no-cache',
