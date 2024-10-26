@@ -31,7 +31,6 @@ const Shared = ({ cardRecord }: SharedProps) => {
               userImages={mediaRecordsToUrlSet(
                 cardRecord.attributes.userImages.data
               )}
-              maxFormat="original"
             />
           </div>
           <div className={styles.control}>
