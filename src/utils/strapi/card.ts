@@ -1,7 +1,12 @@
 'use server'
 
 import { getServerSession } from 'next-auth'
-import { StrapiApiListResponse, StrapiError, StrapiRecord } from '.'
+import {
+  StrapiApiListResponse,
+  StrapiApiResponse,
+  StrapiError,
+  StrapiRecord,
+} from '.'
 import { MediaAttributes } from './media'
 import { authOptions } from '../../app/api/auth/[...nextauth]/authOptions'
 import { stringify } from 'qs'
@@ -100,4 +105,8 @@ export const addCard = async ({
   if (!strapiResponse.ok) {
     throw new Error(`Failed to add card: ${strapiResponse.statusText}`)
   }
+
+  const card: StrapiApiResponse<CardAttributes> = await strapiResponse.json()
+
+  return card
 }

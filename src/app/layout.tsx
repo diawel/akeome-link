@@ -3,6 +3,7 @@ import './globals.css'
 import * as styles from './layout.css'
 import StickerProvider from './StickerProvider'
 import { getStickers } from '../utils/strapi/sticker'
+import ClientSessionProvider from './ClientSessionProvider'
 
 export const metadata: Metadata = {
   title: 'あけおめリンク',
@@ -27,7 +28,7 @@ const Layout = async ({
         <div className={styles.display}>
           <div className={styles.inner}>
             <StickerProvider stickers={(await getStickers()).data}>
-              {children}
+              <ClientSessionProvider>{children}</ClientSessionProvider>
             </StickerProvider>
           </div>
         </div>
