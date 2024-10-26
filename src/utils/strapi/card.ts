@@ -1,5 +1,3 @@
-'use server'
-
 import { getServerSession } from 'next-auth'
 import { StrapiApiListResponse, StrapiError, StrapiRecord } from '.'
 import { MediaAttributes } from './media'

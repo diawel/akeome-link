@@ -5,6 +5,7 @@ import Card from '../../components/Card'
 import * as styles from './index.css'
 import Meta from './Meta'
 import Edit from './Edit'
+import { ImageUrlSet } from '../../utils/strapiImage'
 
 const EditCard = () => {
   const [cardLayout, setCardLayout] = useState<
@@ -35,12 +36,15 @@ const EditCard = () => {
     },
   ])
   const [userImages, setUserImages] = useState<
-    React.ComponentProps<typeof Card>['userImages']
+    {
+      id: number
+      urlSet: ImageUrlSet
+    }[]
   >([
     {
       id: 1,
-      attributes: {
-        url: 'https://interactive-examples.mdn.mozilla.net/media/examples/firefox-logo.svg',
+      urlSet: {
+        url: 'https://placehold.jp/150x150.png',
       },
     },
   ])

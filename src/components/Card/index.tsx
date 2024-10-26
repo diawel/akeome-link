@@ -7,8 +7,7 @@ import rotateIcon from './icon-rotate.svg'
 import removeIcon from './icon-remove.svg'
 import Image from 'next/image'
 import { useStickers } from '../../app/StickerProvider'
-
-const formats = ['large', 'medium', 'small', 'thumbnail', 'original'] as const
+import { getImageUrl, ImageFormat, ImageUrlSet } from '../../utils/strapiImage'
 
 export type CardProps = {
   layout: {
@@ -36,17 +35,9 @@ export type CardProps = {
   }[]
   userImages: {
     id: number
-    attributes: {
-      formats?: {
-        thumbnail?: { url: string }
-        small?: { url: string }
-        medium?: { url: string }
-        large?: { url: string }
-      }
-      url: string
-    }
+    urlSet: ImageUrlSet
   }[]
-  maxFormat?: (typeof formats)[number]
+  maxFormat?: ImageFormat
   edit?: {
     setLayout: (layout: CardProps['layout']) => void
     isAnyFocused: boolean
@@ -54,12 +45,7 @@ export type CardProps = {
   }
 }
 
-const Card = ({
-  layout,
-  userImages,
-  maxFormat = 'original',
-  edit,
-}: CardProps) => {
+const Card = ({ layout, userImages, maxFormat, edit }: CardProps) => {
   const stickers = useStickers()
   const [cardScale, setCardScale] = useState(0)
   const sizerRef = useRef<HTMLDivElement>(null)
@@ -244,40 +230,29 @@ const Card = ({
                       (userImage) => userImage.id === id
                     )
                     if (!userImage) return null
-                    const maxFormatOfImage = userImage.attributes.formats?.large
-                      ? 'large'
-                      : userImage.attributes.formats?.medium
-                      ? 'medium'
-                      : userImage.attributes.formats?.small
-                      ? 'small'
-                      : userImage.attributes.formats?.thumbnail
-                      ? 'thumbnail'
-                      : 'original'
-                    const formatIndex = Math.max(
-                      formats.indexOf(maxFormat),
-                      formats.indexOf(maxFormatOfImage)
-                    )
-                    const url =
-                      formats[formatIndex] === 'original'
-                        ? userImage.attributes.url
-                        : userImage.attributes.formats?.[formats[formatIndex]]
-                            ?.url ?? userImage.attributes.url
                     return (
                       <div className={styles.userImageContainer}>
-                        <img className={styles.userImage} src={url} alt="" />
+                        <img
+                          className={styles.userImage}
+                          src={getImageUrl(userImage.urlSet, maxFormat)}
+                          alt=""
+                        />
                       </div>
                     )
                   case 'sticker':
                     const stickerId = target.content.stickerId
+                    const sticker = stickers.find(
+                      (sticker) => sticker.id === stickerId
+                    )
+                    if (!sticker) return null
                     return (
                       <div className={styles.stickerContainer}>
                         <img
                           className={styles.sticker}
-                          src={`${process.env.NEXT_PUBLIC_STRAPI_BACKEND_URL}${
-                            stickers?.find(
-                              (sticker) => sticker.id === stickerId
-                            )?.attributes.image.data.attributes.url
-                          }`}
+                          src={getImageUrl(
+                            sticker.attributes.image.data.attributes,
+                            maxFormat
+                          )}
                           alt=""
                         />
                       </div>

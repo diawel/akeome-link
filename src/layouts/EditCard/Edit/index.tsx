@@ -55,7 +55,7 @@ const Edit = ({
                     ...userImages,
                     {
                       id: userImages.length + 1,
-                      attributes: {
+                      urlSet: {
                         url: event.target.result,
                       },
                     },
