@@ -19,9 +19,9 @@ const List = async ({ tab }: ListProps) => {
     <div>
       <Header activeTab={tab} />
       <div className={styles.container}>
-        {[].length > 0 ? (
+        {cards.data.length > 0 ? (
           <div className={styles.cardContainer}>
-            <Link href="/create/new" className={styles.CardLink}>
+            <Link href="/create/new" className={styles.cardLink}>
               <div className={styles.newCardButtonSizeInner}>
                 <div className={styles.newCardButtonContent}>
                   <div>
@@ -36,7 +36,10 @@ const List = async ({ tab }: ListProps) => {
 
             {cards.data.map((card, index) => (
               <div className={styles.content} key={index}>
-                <div>
+                <Link
+                  href={`/create/detail/${card.id}`}
+                  className={styles.cardLink}
+                >
                   <div className={styles.card}>
                     <Card
                       layout={card.attributes.layout}
@@ -54,12 +57,12 @@ const List = async ({ tab }: ListProps) => {
                   <div className={styles.cardTitle}>
                     {card.attributes.title}
                   </div>
-                </div>
+                </Link>
               </div>
             ))}
           </div>
         ) : (
-          <Link href="/create/new" className={styles.CardLink}>
+          <Link href="/create/new" className={styles.cardLink}>
             <div className={styles.newCardContainer}>
               <FaPlus className={styles.newCardIcon} />
               <div className={styles.newCardText}>年賀状を新規作成</div>

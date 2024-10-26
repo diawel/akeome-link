@@ -123,6 +123,6 @@ export const newCardButtonText = style({
   color: `${color.red[50]}`,
 })
 
-export const CardLink = style({
+export const cardLink = style({
   textDecoration: 'none',
 })
