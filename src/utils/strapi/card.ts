@@ -49,7 +49,7 @@ export const getCard = async (id: number) => {
       throw new Error(strapiError.error.message)
     }
 
-    const card: CardAttributes = await strapiResponse.json()
+    const card: StrapiApiResponse<CardAttributes> = await strapiResponse.json()
     return card
   } catch (error) {
     throw error
