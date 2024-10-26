@@ -19,7 +19,7 @@ export const dummyData: CreatedCardsProps = {
       userImages: [
         {
           id: 1,
-          attributes: {
+          urlSet: {
             formats: {
               thumbnail: {
                 url: 'https://interactive-examples.mdn.mozilla.net/media/examples/firefox-logo.svg',
@@ -88,7 +88,7 @@ export const dummyData: CreatedCardsProps = {
       userImages: [
         {
           id: 2,
-          attributes: {
+          urlSet: {
             formats: {
               thumbnail: {
                 url: 'https://interactive-examples.mdn.mozilla.net/media/examples/firefox-logo.svg',
@@ -124,7 +124,7 @@ export const dummyData: CreatedCardsProps = {
       userImages: [
         {
           id: 3,
-          attributes: {
+          urlSet: {
             formats: {
               small: {
                 url: 'https://interactive-examples.mdn.mozilla.net/media/examples/firefox-logo.svg',
@@ -173,7 +173,7 @@ export const dummyData: CreatedCardsProps = {
       userImages: [
         {
           id: 4,
-          attributes: {
+          urlSet: {
             formats: {
               medium: {
                 url: 'https://interactive-examples.mdn.mozilla.net/media/examples/firefox-logo.svg',
