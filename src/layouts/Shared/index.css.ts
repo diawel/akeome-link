@@ -1,4 +1,4 @@
-import { style } from '@vanilla-extract/css'
+import { style, styleVariants } from '@vanilla-extract/css'
 import { color } from '../../utils/styleSchema'
 
 export const screen = style({
@@ -51,7 +51,7 @@ export const primaryButton = style({
   fontWeight: 'bold',
 })
 
-export const seconradyButton = style({
+const seconradyButtonBase = style({
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
@@ -62,4 +62,15 @@ export const seconradyButton = style({
   color: color.gray[5],
   borderRadius: 12,
   fontWeight: 'bold',
+})
+
+export const seconradyButton = styleVariants({
+  default: [seconradyButtonBase],
+  disabled: [
+    seconradyButtonBase,
+    {
+      pointerEvents: 'none',
+      opacity: 0.5,
+    },
+  ],
 })

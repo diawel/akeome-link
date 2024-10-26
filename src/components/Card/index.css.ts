@@ -42,7 +42,6 @@ export const card = style({
 export const text = style({
   position: 'relative',
   fontSize: 16,
-  color: '#000',
   fontWeight: 700,
   textWrap: 'nowrap',
 })

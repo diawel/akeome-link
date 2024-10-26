@@ -45,9 +45,10 @@ export type CardProps = {
     isAnyFocused: boolean
     setIsAnyFocused: (isAnyFocused: boolean) => void
   }
+  proxy?: boolean
 }
 
-const Card = ({ layout, userImages, maxFormat, edit }: CardProps) => {
+const Card = ({ layout, userImages, maxFormat, edit, proxy }: CardProps) => {
   const stickers = useStickers()
   const [cardScale, setCardScale] = useState(0)
   const sizerRef = useRef<HTMLDivElement>(null)
@@ -237,6 +238,7 @@ const Card = ({ layout, userImages, maxFormat, edit }: CardProps) => {
                       userImage.urlSet.width,
                       userImage.urlSet.height
                     )
+                    const imageUrl = getImageUrl(userImage.urlSet, maxFormat)
                     return (
                       <div className={styles.userImageContainer}>
                         <img
@@ -248,7 +250,7 @@ const Card = ({ layout, userImages, maxFormat, edit }: CardProps) => {
                               (userImage.urlSet.height / longEdge) * 100
                             }%`,
                           }}
-                          src={getImageUrl(userImage.urlSet, maxFormat)}
+                          src={proxy ? `/api/proxy?url=${imageUrl}` : imageUrl}
                           alt=""
                         />
                       </div>
@@ -263,6 +265,10 @@ const Card = ({ layout, userImages, maxFormat, edit }: CardProps) => {
                     const longEdge = Math.max(
                       sticker.attributes.image.data.attributes.width,
                       sticker.attributes.image.data.attributes.height
+                    )
+                    const imageUrl = getImageUrl(
+                      sticker.attributes.image.data.attributes,
+                      maxFormat
                     )
                     return (
                       <div className={styles.stickerContainer}>
@@ -279,10 +285,7 @@ const Card = ({ layout, userImages, maxFormat, edit }: CardProps) => {
                               100
                             }%`,
                           }}
-                          src={getImageUrl(
-                            sticker.attributes.image.data.attributes,
-                            maxFormat
-                          )}
+                          src={proxy ? `/api/proxy?url=${imageUrl}` : imageUrl}
                           alt=""
                         />
                       </div>
