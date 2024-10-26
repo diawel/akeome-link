@@ -32,7 +32,6 @@ const Shared = ({ cardRecord }: SharedProps) => {
                 cardRecord.attributes.userImages.data
               )}
               maxFormat="original"
-              edit={undefined}
             />
           </div>
           <div className={styles.control}>
