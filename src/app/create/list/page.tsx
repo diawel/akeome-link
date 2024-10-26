@@ -11,7 +11,7 @@ const Page: NextPage = () => {
     redirect('/')
   }
 
-  return <List />
+  return <List tab="created" />
 }
 
 export default Page

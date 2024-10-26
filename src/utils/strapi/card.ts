@@ -15,7 +15,7 @@ import { CardLayout } from '../../components/Card'
 export type CardAttributes = {
   title: string
   creatorName: string
-  layout: string
+  layout: CardLayout
   createdAt: string
   updatedAt: string
   publishedAt: string
@@ -40,6 +40,9 @@ export const getCreatedCards = async () => {
               $eq: session.user.strapiUserId,
             },
           },
+        },
+        sort: {
+          0: 'updatedAt:desc',
         },
       })}`,
       {

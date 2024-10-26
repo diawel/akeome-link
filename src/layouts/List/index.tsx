@@ -1,17 +1,27 @@
 import * as styles from './index.css'
-import { dummyData } from './dummyData'
 import Header from './Header'
 import { FaPlus } from 'react-icons/fa6'
 import Card from '../../components/Card'
+import { getCreatedCards } from '../../utils/strapi/card'
+import { redirect } from 'next/navigation'
+import Link from 'next/link'
 
-const List = () => {
+type ListProps = {
+  tab: 'created' | 'received'
+}
+
+const List = async ({ tab }: ListProps) => {
+  const cards = await getCreatedCards()
+  if (!cards) {
+    redirect('/')
+  }
   return (
     <div>
-      <Header activeTab="created" />
+      <Header activeTab={tab} />
       <div className={styles.container}>
-        {dummyData.createdCard.length > 0 ? (
+        {cards.data.length > 0 ? (
           <div className={styles.cardContainer}>
-            <div>
+            <Link href="/create/new" className={styles.cardLink}>
               <div className={styles.newCardButtonSizeInner}>
                 <div className={styles.newCardButtonContent}>
                   <div>
@@ -22,29 +32,42 @@ const List = () => {
               <div className={styles.newCardButtonTextContainer}>
                 <div className={styles.newCardButtonText}>新規作成</div>
               </div>
-            </div>
+            </Link>
 
-            {dummyData.createdCard.map((card, index) => (
+            {cards.data.map((card, index) => (
               <div className={styles.content} key={index}>
-                <div>
+                <Link
+                  href={`/create/detail/${card.id}`}
+                  className={styles.cardLink}
+                >
                   <div className={styles.card}>
                     <Card
-                      layout={card.layout}
-                      userImages={card.userImages}
-                      maxFormat="original"
-                      edit={undefined}
+                      layout={card.attributes.layout}
+                      userImages={
+                        card.attributes.userImages.data
+                          ? card.attributes.userImages.data.map((image) => ({
+                              id: image.id,
+                              urlSet: image.attributes,
+                            }))
+                          : []
+                      }
+                      maxFormat="thumbnail"
                     />
                   </div>
-                  <div className={styles.cardTitle}>{card.title}</div>
-                </div>
+                  <div className={styles.cardTitle}>
+                    {card.attributes.title}
+                  </div>
+                </Link>
               </div>
             ))}
           </div>
         ) : (
-          <div className={styles.newCardContainer}>
-            <FaPlus className={styles.newCardIcon} />
-            <div className={styles.newCardText}>年賀状を新規作成</div>
-          </div>
+          <Link href="/create/new" className={styles.cardLink}>
+            <div className={styles.newCardContainer}>
+              <FaPlus className={styles.newCardIcon} />
+              <div className={styles.newCardText}>年賀状を新規作成</div>
+            </div>
+          </Link>
         )}
       </div>
     </div>

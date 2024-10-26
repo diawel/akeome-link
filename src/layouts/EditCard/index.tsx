@@ -49,8 +49,8 @@ const EditCard = () => {
     setIsSaving(true)
     localStorage.setItem(creatorNameLocalStorageKey, creatorName)
     addCard({
-      title: 'テスト',
-      creatorName: 'テスト作者',
+      title,
+      creatorName,
       layout: cardLayout,
       userImages: userImages,
     }).then((response) => {
