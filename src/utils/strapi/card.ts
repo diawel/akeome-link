@@ -15,7 +15,7 @@ import { CardLayout } from '../../components/Card'
 export type CardAttributes = {
   title: string
   creatorName: string
-  layout: string
+  layout: CardLayout
   createdAt: string
   updatedAt: string
   publishedAt: string

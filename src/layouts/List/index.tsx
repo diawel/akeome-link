@@ -1,15 +1,24 @@
 import * as styles from './index.css'
-import { dummyData } from './dummyData'
 import Header from './Header'
 import { FaPlus } from 'react-icons/fa6'
 import Card from '../../components/Card'
+import { getCreatedCards } from '../../utils/strapi/card'
+import { redirect } from 'next/navigation'
 
-const List = () => {
+type ListProps = {
+  tab: 'created' | 'received'
+}
+
+const List = async ({ tab }: ListProps) => {
+  const cards = await getCreatedCards()
+  if (!cards) {
+    redirect('/')
+  }
   return (
     <div>
-      <Header activeTab="created" />
+      <Header activeTab={tab} />
       <div className={styles.container}>
-        {dummyData.createdCard.length > 0 ? (
+        {cards.data.length > 0 ? (
           <div className={styles.cardContainer}>
             <div>
               <div className={styles.newCardButtonSizeInner}>
@@ -24,18 +33,24 @@ const List = () => {
               </div>
             </div>
 
-            {dummyData.createdCard.map((card, index) => (
+            {cards.data.map((card, index) => (
               <div className={styles.content} key={index}>
                 <div>
                   <div className={styles.card}>
                     <Card
-                      layout={card.layout}
-                      userImages={card.userImages}
-                      maxFormat="original"
-                      edit={undefined}
+                      layout={card.attributes.layout}
+                      userImages={card.attributes.userImages.data.map(
+                        (image) => ({
+                          id: image.id,
+                          urlSet: image.attributes,
+                        })
+                      )}
+                      maxFormat="thumbnail"
                     />
                   </div>
-                  <div className={styles.cardTitle}>{card.title}</div>
+                  <div className={styles.cardTitle}>
+                    {card.attributes.title}
+                  </div>
                 </div>
               </div>
             ))}
