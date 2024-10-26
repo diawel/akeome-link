@@ -4,7 +4,7 @@ import akeomeLinkLogo from './akeome-link-logo.svg'
 import postIcon from './icon-post.svg'
 import Image from 'next/image'
 
-interface CardsHeaderProps {
+type CardsHeaderProps = {
   activeTab: 'created' | 'received'
   onTabChange: (tab: 'created' | 'received') => void
 }

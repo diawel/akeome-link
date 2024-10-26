@@ -3,7 +3,9 @@ import { color } from '../../utils/styleSchema'
 
 export const headerContainer = style({
   backgroundColor: '#fff',
-  position: 'relative',
+  position: 'sticky',
+  top: 0,
+  zIndex: 1000,
 })
 
 export const title = style({
