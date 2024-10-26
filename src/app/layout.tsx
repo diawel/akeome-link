@@ -1,13 +1,23 @@
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 import './globals.css'
-import SessionWrapper from './ClientSessionProvider'
 import * as styles from './layout.css'
+import StickerProvider from './StickerProvider'
+import { getStickers } from '../utils/strapi/sticker'
+import ClientSessionProvider from './ClientSessionProvider'
 
 export const metadata: Metadata = {
   title: 'あけおめリンク',
+  appleWebApp: {
+    title: 'あけおめリンク',
+  },
 }
 
-const Layout = ({
+export const viewport: Viewport = {
+  viewportFit: 'cover',
+  maximumScale: 1,
+}
+
+const Layout = async ({
   children,
 }: Readonly<{
   children: React.ReactNode
@@ -17,7 +27,9 @@ const Layout = ({
       <body className={styles.container}>
         <div className={styles.display}>
           <div className={styles.inner}>
-            <SessionWrapper>{children}</SessionWrapper>
+            <StickerProvider stickers={(await getStickers()).data}>
+              <ClientSessionProvider>{children}</ClientSessionProvider>
+            </StickerProvider>
           </div>
         </div>
       </body>

@@ -1,3 +1,5 @@
+'use server'
+
 export type MediaAttributes = {
   name: string
   alternativeText: string | null
@@ -33,4 +35,24 @@ type ImageFormat = {
   width: number
   height: number
   sizeInBytes: number
+}
+
+export const uploadMedia = async (recievedFormData: FormData) => {
+  const formData = new FormData()
+  formData.append('files', recievedFormData.get('files') as Blob)
+  const strapiResponse = await fetch(
+    `${process.env.NEXT_PUBLIC_STRAPI_BACKEND_URL}/api/upload`,
+    {
+      method: 'POST',
+      body: formData,
+      headers: {
+        Authorization: `Bearer ${process.env.STRAPI_API_TOKEN}`,
+      },
+    }
+  )
+
+  const strapiData: (MediaAttributes & { id: number })[] =
+    await strapiResponse.json()
+
+  return strapiData
 }

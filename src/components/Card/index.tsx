@@ -6,46 +6,40 @@ import zoomIcon from './icon-zoom.svg'
 import rotateIcon from './icon-rotate.svg'
 import removeIcon from './icon-remove.svg'
 import Image from 'next/image'
+import { useStickers } from '../../app/StickerProvider'
+import { getImageUrl, ImageFormat, ImageUrlSet } from '../../utils/strapiImage'
 
-const formats = ['large', 'medium', 'small', 'thumbnail', 'original'] as const
+export type CardLayout = {
+  container: {
+    x: number
+    y: number
+    scale: number
+    rotate: number
+  }
+  content:
+    | {
+        type: 'text'
+        text: string
+        color: string
+        align: 'left' | 'center' | 'right'
+      }
+    | {
+        type: 'userImage'
+        id: number
+      }
+    | {
+        type: 'sticker'
+        stickerId: number
+      }
+}[]
 
 export type CardProps = {
-  layout: {
-    container: {
-      x: number
-      y: number
-      scale: number
-      rotate: number
-    }
-    content:
-      | {
-          type: 'text'
-          text: string
-          color: string
-          align: 'left' | 'center' | 'right'
-        }
-      | {
-          type: 'userImage'
-          id: number
-        }
-      | {
-          type: 'sticker'
-          stickerId: number
-        }
-  }[]
+  layout: CardLayout
   userImages: {
     id: number
-    attributes: {
-      formats?: {
-        thumbnail?: { url: string }
-        small?: { url: string }
-        medium?: { url: string }
-        large?: { url: string }
-      }
-      url: string
-    }
+    urlSet: ImageUrlSet
   }[]
-  maxFormat?: (typeof formats)[number]
+  maxFormat?: ImageFormat
   edit?: {
     setLayout: (layout: CardProps['layout']) => void
     isAnyFocused: boolean
@@ -53,12 +47,8 @@ export type CardProps = {
   }
 }
 
-const Card = ({
-  layout,
-  userImages,
-  maxFormat = 'original',
-  edit,
-}: CardProps) => {
+const Card = ({ layout, userImages, maxFormat, edit }: CardProps) => {
+  const stickers = useStickers()
   const [cardScale, setCardScale] = useState(0)
   const sizerRef = useRef<HTMLDivElement>(null)
   const cardRef = useRef<HTMLDivElement>(null)
@@ -107,7 +97,7 @@ const Card = ({
       switch (type) {
         case 'move':
           edit.setLayout(
-            layout.slice(0, layout.length - 1).concat({
+            layout.slice(0, -1).concat({
               ...layout[layout.length - 1],
               container: {
                 ...layout[layout.length - 1].container,
@@ -127,7 +117,7 @@ const Card = ({
               Math.PI +
             -45
           edit.setLayout(
-            layout.slice(0, layout.length - 1).concat({
+            layout.slice(0, -1).concat({
               ...layout[layout.length - 1],
               container: {
                 ...layout[layout.length - 1].container,
@@ -146,7 +136,7 @@ const Card = ({
             startPosition.y - initialPosition.y
           )
           edit.setLayout(
-            layout.slice(0, layout.length - 1).concat({
+            layout.slice(0, -1).concat({
               ...layout[layout.length - 1],
               container: {
                 ...layout[layout.length - 1].container,
@@ -242,35 +232,29 @@ const Card = ({
                       (userImage) => userImage.id === id
                     )
                     if (!userImage) return null
-                    const maxFormatOfImage = userImage.attributes.formats?.large
-                      ? 'large'
-                      : userImage.attributes.formats?.medium
-                      ? 'medium'
-                      : userImage.attributes.formats?.small
-                      ? 'small'
-                      : userImage.attributes.formats?.thumbnail
-                      ? 'thumbnail'
-                      : 'original'
-                    const formatIndex = Math.max(
-                      formats.indexOf(maxFormat),
-                      formats.indexOf(maxFormatOfImage)
-                    )
-                    const url =
-                      formats[formatIndex] === 'original'
-                        ? userImage.attributes.url
-                        : userImage.attributes.formats?.[formats[formatIndex]]
-                            ?.url ?? userImage.attributes.url
                     return (
                       <div className={styles.userImageContainer}>
-                        <img className={styles.userImage} src={url} alt="" />
+                        <img
+                          className={styles.userImage}
+                          src={getImageUrl(userImage.urlSet, maxFormat)}
+                          alt=""
+                        />
                       </div>
                     )
                   case 'sticker':
+                    const stickerId = target.content.stickerId
+                    const sticker = stickers.find(
+                      (sticker) => sticker.id === stickerId
+                    )
+                    if (!sticker) return null
                     return (
                       <div className={styles.stickerContainer}>
                         <img
                           className={styles.sticker}
-                          src={`https://placehold.jp/512x512.png?text=${target.content.stickerId}`}
+                          src={getImageUrl(
+                            sticker.attributes.image.data.attributes,
+                            maxFormat
+                          )}
                           alt=""
                         />
                       </div>

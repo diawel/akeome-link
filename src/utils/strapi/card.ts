@@ -1,10 +1,16 @@
 'use server'
 
 import { getServerSession } from 'next-auth'
-import { StrapiApiListResponse, StrapiError, StrapiRecord } from '.'
+import {
+  StrapiApiListResponse,
+  StrapiApiResponse,
+  StrapiError,
+  StrapiRecord,
+} from '.'
 import { MediaAttributes } from './media'
 import { authOptions } from '../../app/api/auth/[...nextauth]/authOptions'
 import { stringify } from 'qs'
+import { CardLayout } from '../../components/Card'
 
 export type CardAttributes = {
   title: string
@@ -55,4 +61,52 @@ export const getCreatedCards = async () => {
   } catch (error) {
     throw error
   }
+}
+
+export const addCard = async ({
+  title,
+  creatorName,
+  userImages,
+  layout,
+}: {
+  title: string
+  creatorName: string
+  userImages: {
+    id: number
+  }[]
+  layout: CardLayout
+}) => {
+  const session = await getServerSession(authOptions)
+
+  if (!session) {
+    throw new Error('Unauthorized')
+  }
+
+  const strapiResponse = await fetch(
+    `${process.env.NEXT_PUBLIC_STRAPI_BACKEND_URL}/api/cards`,
+    {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${process.env.STRAPI_API_TOKEN}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        data: {
+          title,
+          creatorName,
+          layout: layout,
+          creator: session.user.strapiUserId,
+          userImages: userImages.map((userImage) => userImage.id),
+        },
+      }),
+    }
+  )
+
+  if (!strapiResponse.ok) {
+    throw new Error(`Failed to add card: ${strapiResponse.statusText}`)
+  }
+
+  const card: StrapiApiResponse<CardAttributes> = await strapiResponse.json()
+
+  return card
 }
