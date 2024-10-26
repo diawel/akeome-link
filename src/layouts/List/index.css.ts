@@ -122,3 +122,7 @@ export const newCardButtonText = style({
   marginBottom: '12px',
   color: `${color.red[50]}`,
 })
+
+export const CardLink = style({
+  textDecoration: 'none',
+})

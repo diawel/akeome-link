@@ -4,6 +4,7 @@ import { FaPlus } from 'react-icons/fa6'
 import Card from '../../components/Card'
 import { getCreatedCards } from '../../utils/strapi/card'
 import { redirect } from 'next/navigation'
+import Link from 'next/link'
 
 type ListProps = {
   tab: 'created' | 'received'
@@ -18,9 +19,9 @@ const List = async ({ tab }: ListProps) => {
     <div>
       <Header activeTab={tab} />
       <div className={styles.container}>
-        {cards.data.length > 0 ? (
+        {[].length > 0 ? (
           <div className={styles.cardContainer}>
-            <div>
+            <Link href="/create/new" className={styles.CardLink}>
               <div className={styles.newCardButtonSizeInner}>
                 <div className={styles.newCardButtonContent}>
                   <div>
@@ -31,7 +32,7 @@ const List = async ({ tab }: ListProps) => {
               <div className={styles.newCardButtonTextContainer}>
                 <div className={styles.newCardButtonText}>新規作成</div>
               </div>
-            </div>
+            </Link>
 
             {cards.data.map((card, index) => (
               <div className={styles.content} key={index}>
@@ -39,12 +40,14 @@ const List = async ({ tab }: ListProps) => {
                   <div className={styles.card}>
                     <Card
                       layout={card.attributes.layout}
-                      userImages={card.attributes.userImages.data.map(
-                        (image) => ({
-                          id: image.id,
-                          urlSet: image.attributes,
-                        })
-                      )}
+                      userImages={
+                        card.attributes.userImages.data
+                          ? card.attributes.userImages.data.map((image) => ({
+                              id: image.id,
+                              urlSet: image.attributes,
+                            }))
+                          : []
+                      }
                       maxFormat="thumbnail"
                     />
                   </div>
@@ -56,10 +59,12 @@ const List = async ({ tab }: ListProps) => {
             ))}
           </div>
         ) : (
-          <div className={styles.newCardContainer}>
-            <FaPlus className={styles.newCardIcon} />
-            <div className={styles.newCardText}>年賀状を新規作成</div>
-          </div>
+          <Link href="/create/new" className={styles.CardLink}>
+            <div className={styles.newCardContainer}>
+              <FaPlus className={styles.newCardIcon} />
+              <div className={styles.newCardText}>年賀状を新規作成</div>
+            </div>
+          </Link>
         )}
       </div>
     </div>
