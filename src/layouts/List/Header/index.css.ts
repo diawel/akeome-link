@@ -3,7 +3,7 @@ import { color } from '../../../utils/styleSchema'
 
 export const headerContainer = style({
   backgroundColor: '#fff',
-  position: 'sticky',
+  position: 'relative',
   top: 0,
   zIndex: 1000,
 })
@@ -27,6 +27,9 @@ export const tabContainer = style({
   color: `${color.gray[5]}`,
   borderBottom: '1px solid #ddd',
   backgroundColor: '#fff',
+  position: 'sticky',
+  top: 0,
+  zIndex: 999,
 })
 
 export const tab = style({
@@ -63,18 +66,18 @@ export const notificationIcon = style({
   alignItems: 'center',
 })
 
-export const notificationCount = style({
-  position: 'absolute',
-  top: '-5px',
-  right: '-10px',
-  backgroundColor: `${color.red[5]}`,
-  color: `${color.gray[100]}`,
-  borderRadius: '50%',
-  width: '20px',
-  height: '20px',
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-  fontSize: '12px',
-  boxShadow: `0 0 0 1px ${color.gray[100]}`,
-})
+// export const notificationCount = style({
+//   position: 'absolute',
+//   top: '-5px',
+//   right: '-10px',
+//   backgroundColor: `${color.red[5]}`,
+//   color: `${color.gray[100]}`,
+//   borderRadius: '50%',
+//   width: '20px',
+//   height: '20px',
+//   display: 'flex',
+//   justifyContent: 'center',
+//   alignItems: 'center',
+//   fontSize: '12px',
+//   boxShadow: `0 0 0 1px ${color.gray[100]}`,
+// })
