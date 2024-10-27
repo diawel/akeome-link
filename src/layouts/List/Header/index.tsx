@@ -22,7 +22,7 @@ const Header: React.FC<HeaderProps> = ({ activeTab }) => {
         </div>
         <div className={styles.notificationIcon}>
           <Image src={postIcon} alt="postIcon" />
-          <div className={styles.notificationCount}>5</div>
+          {/* <div className={styles.notificationCount}></div> */}
         </div>
       </div>
 
