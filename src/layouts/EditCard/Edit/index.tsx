@@ -17,6 +17,8 @@ type EditProps = {
   setUserImages: (
     userImages: React.ComponentProps<typeof Card>['userImages']
   ) => void
+  isLoading: boolean
+  setIsLoading: (isLoading: boolean) => void
 }
 
 const Edit = ({
@@ -26,6 +28,8 @@ const Edit = ({
   setIsAnyFocused,
   userImages,
   setUserImages,
+  isLoading,
+  setIsLoading,
 }: EditProps) => {
   const stickers = useStickers()
   const [activeTab, setActiveTab] = useState<'userImage' | 'sticker' | 'text'>(
@@ -48,6 +52,7 @@ const Edit = ({
               type="file"
               accept="image/*"
               onChange={(event) => {
+                setIsLoading(true)
                 const file = event.target.files?.[0]
                 if (!file) return
                 const formData = new FormData()
@@ -69,6 +74,7 @@ const Edit = ({
                     })
                   )
                   setIsAnyFocused(true)
+                  setIsLoading(false)
                 })
               }}
             />
