@@ -9,7 +9,7 @@ import * as styles from './index.css'
 import Link from 'next/link'
 import Renderer from '../../components/Card/Renderer'
 import { useState } from 'react'
-import Print from './Print'
+import Print from '../../components/Print'
 
 type SharedProps = {
   cardRecord: StrapiRecord<CardAttributes>

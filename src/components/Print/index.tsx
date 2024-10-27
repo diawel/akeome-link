@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import * as styles from './index.css'
 import Link from 'next/link'
-import { reservePrint } from '../../../utils/print'
+import { reservePrint } from '../../utils/print'
 
 type PrintProps = {
   image: Blob
@@ -79,6 +79,9 @@ const Print = ({ image, onClose }: PrintProps) => {
             }}
           >
             印刷予約をする
+          </button>
+          <button className={styles.seconradyButton.default} onClick={onClose}>
+            キャンセル
           </button>
         </>
       )}
