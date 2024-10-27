@@ -64,7 +64,7 @@ const Detail = ({ cardRecord }: DetailProps) => {
               className={styles.xContainer}
               href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(
                 shareUrl
-              )}&text=年賀状が届いています`}
+              )}&text=年賀状が届いています #あけおめリンク`}
             >
               <Image src={xIcon} alt="xIcon"></Image>
             </Link>
