@@ -1,5 +1,5 @@
 import { style, styleVariants } from '@vanilla-extract/css'
-import { color } from '../../../utils/styleSchema'
+import { color } from '../../utils/styleSchema'
 
 const containerBase = style({
   width: '100%',

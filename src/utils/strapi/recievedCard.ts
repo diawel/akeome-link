@@ -1,5 +1,10 @@
 import { getServerSession } from 'next-auth'
-import { StrapiApiListResponse, StrapiError, StrapiRecord } from '.'
+import {
+  StrapiApiListResponse,
+  StrapiApiResponse,
+  StrapiError,
+  StrapiRecord,
+} from '.'
 import { CardAttributes } from './card'
 import { UserAttributes } from './user'
 import { authOptions } from '../../app/api/auth/[...nextauth]/authOptions'
@@ -24,7 +29,7 @@ export const getRecievedCard = async (id: number) => {
     const strapiResponse = await fetch(
       `${
         process.env.NEXT_PUBLIC_STRAPI_BACKEND_URL
-      }/api/recieved-card/${id}?${stringify({
+      }/api/recieved-cards/${id}?${stringify({
         populate: ['card.userImages', 'reciever'],
       })}`,
       {
@@ -39,7 +44,7 @@ export const getRecievedCard = async (id: number) => {
       return undefined
     }
 
-    const card: StrapiRecord<RecievedCardAttributes> =
+    const card: StrapiApiResponse<RecievedCardAttributes> =
       await strapiResponse.json()
     return card
   } catch (error) {

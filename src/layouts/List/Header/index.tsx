@@ -36,7 +36,7 @@ const Header: React.FC<HeaderProps> = ({ activeTab }) => {
           つくった
         </Link>
         <Link
-          href="/recieved/list"
+          href="/recieve/list"
           className={`${styles.tab} ${
             activeTab === 'recieved' ? styles.activeTab : ''
           }`}

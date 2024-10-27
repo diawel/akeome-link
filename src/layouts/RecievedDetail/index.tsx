@@ -11,22 +11,23 @@ import Renderer from '../../components/Card/Renderer'
 import { useState } from 'react'
 import Print from '../../components/Print'
 
-type SharedProps = {
-  cardRecord: StrapiRecord<CardAttributes>
+type RecievedDetailProps = {
+  cardRecord: StrapiRecord<Omit<CardAttributes, 'creator'>>
 }
 
-const Shared = ({ cardRecord }: SharedProps) => {
+const RecievedDetail = ({ cardRecord }: RecievedDetailProps) => {
   const [renderedImage, setRenderedImage] = useState<Blob | null>(null)
   const [isPrintModalOpen, setIsPrintModalOpen] = useState(false)
   return (
     <>
       <div className={styles.container}>
         <div className={styles.screen}>
+          <div className={styles.metaContainer}>
+            <Link href="/recieve/list">戻る</Link>
+          </div>
           <div className={styles.content}>
             <div className={styles.title}>
-              {cardRecord.attributes.creatorName} さんから
-              <br />
-              年賀状を受け取りました
+              {cardRecord.attributes.creatorName}
             </div>
             <div className={styles.cardContainer}>
               <Card
@@ -37,12 +38,9 @@ const Shared = ({ cardRecord }: SharedProps) => {
               />
             </div>
             <div className={styles.control}>
-              <Link className={styles.primaryButton} href="/create/new">
-                年賀状を作ってみる
-              </Link>
               <button
                 className={
-                  styles.seconradyButton[renderedImage ? 'default' : 'disabled']
+                  styles.primaryButton[renderedImage ? 'default' : 'disabled']
                 }
                 onClick={() => {
                   if (!renderedImage) return
@@ -61,7 +59,7 @@ const Shared = ({ cardRecord }: SharedProps) => {
               </button>
               <button
                 className={
-                  styles.seconradyButton[renderedImage ? 'default' : 'disabled']
+                  styles.primaryButton[renderedImage ? 'default' : 'disabled']
                 }
                 onClick={() => {
                   setIsPrintModalOpen(true)
@@ -92,4 +90,4 @@ const Shared = ({ cardRecord }: SharedProps) => {
   )
 }
 
-export default Shared
+export default RecievedDetail
