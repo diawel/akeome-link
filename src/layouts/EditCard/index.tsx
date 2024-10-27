@@ -13,7 +13,7 @@ import { useRouter } from 'next/navigation'
 const creatorNameLocalStorageKey = 'creatorName'
 
 const EditCard = () => {
-  const { data: session } = useSession()
+  const { data: session } = useSession({ required: true })
   const [cardLayout, setCardLayout] = useState<
     React.ComponentProps<typeof Card>['layout']
   >([])
