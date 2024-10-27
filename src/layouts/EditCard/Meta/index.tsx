@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import * as styles from './index.css'
 
 type MetaProps = {
@@ -17,7 +18,7 @@ const Meta = ({
 }: MetaProps) => {
   return (
     <div className={styles.control}>
-      <button>Cancel</button>
+      <Link href="/create/list">戻る</Link>
       <input
         type="text"
         placeholder="タイトルを入力"
