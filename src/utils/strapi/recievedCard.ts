@@ -92,3 +92,49 @@ export const getRecievedCards = async () => {
     throw error
   }
 }
+
+export const addRecievedCard = async ({
+  card,
+  reciever,
+}: {
+  card: {
+    id: number
+  }
+  reciever: {
+    id: number
+  }
+}) => {
+  const session = await getServerSession(authOptions)
+
+  if (!session) {
+    return undefined
+  }
+
+  try {
+    const strapiResponse = await fetch(
+      `${process.env.NEXT_PUBLIC_STRAPI_BACKEND_URL}/api/recieved-card`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${process.env.STRAPI_API_TOKEN}`,
+        },
+        body: JSON.stringify({
+          card,
+          reciever,
+        }),
+      }
+    )
+
+    if (!strapiResponse.ok) {
+      const strapiError: StrapiError = await strapiResponse.json()
+      throw new Error(strapiError.error.message)
+    }
+
+    const recievedCard: StrapiRecord<RecievedCardAttributes> =
+      await strapiResponse.json()
+    return recievedCard
+  } catch (error) {
+    throw error
+  }
+}
