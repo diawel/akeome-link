@@ -10,7 +10,6 @@ export const metadata: Metadata = {
   appleWebApp: {
     title: 'あけおめリンク',
   },
-  metadataBase: new URL(`https://${process.env.VERCEL_URL}`),
 }
 
 export const viewport: Viewport = {
