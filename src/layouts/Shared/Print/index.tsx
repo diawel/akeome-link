@@ -71,7 +71,7 @@ const Print = ({ image, onClose }: PrintProps) => {
             onClick={() => {
               setIsUploading(true)
               const formData = new FormData()
-              formData.append('file', image)
+              formData.append('file', new File([image], 'image.png'))
               reservePrint(formData).then((response) => {
                 setResponse(response)
                 setIsUploading(false)

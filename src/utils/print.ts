@@ -17,16 +17,19 @@ export const reservePrint = async (recievedFormData: FormData) => {
       cache: 'no-cache',
     })
   ).json()
-  const uploadFormData = new FormData()
-  uploadFormData.append('file', recievedFormData.get('file') as Blob)
-  uploadFormData.append('authToken', loginResponse.authToken)
-  uploadFormData.append('registerName', `new_year_card_${Date.now()}.png`)
+  recievedFormData.append('authToken', loginResponse.authToken)
+  recievedFormData.append('registerName', 'image.png')
 
-  await fetch('https://networkprint.ne.jp/LiteServer/app/upload', {
+  const test = await fetch('https://networkprint.ne.jp/LiteServer/app/upload', {
     method: 'POST',
-    body: uploadFormData,
+    body: recievedFormData,
     cache: 'no-cache',
+    headers: {
+      contentType: 'multipart/form-data',
+    },
   })
+
+  console.log(loginResponse.authToken, await test.json())
 
   const qrcodeResponse = await (
     await fetch('https://networkprint.ne.jp/nwpsapi/v1/login/qrcode', {
