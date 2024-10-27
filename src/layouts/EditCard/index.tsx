@@ -99,7 +99,6 @@ const EditCard = () => {
           setIsAnyFocused,
           userImages,
           setUserImages,
-          isLoading,
           setIsLoading,
         }}
       />

@@ -17,7 +17,6 @@ type EditProps = {
   setUserImages: (
     userImages: React.ComponentProps<typeof Card>['userImages']
   ) => void
-  isLoading: boolean
   setIsLoading: (isLoading: boolean) => void
 }
 
@@ -28,7 +27,6 @@ const Edit = ({
   setIsAnyFocused,
   userImages,
   setUserImages,
-  isLoading,
   setIsLoading,
 }: EditProps) => {
   const stickers = useStickers()
