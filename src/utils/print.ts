@@ -1,11 +1,14 @@
 'use server'
 
 export const reservePrint = async (recievedFormData: FormData) => {
+  const userAgent = recievedFormData.get('userAgent')
+  const file = recievedFormData.get('file')
+  if (!userAgent || !file) {
+    throw new Error('Invalid form data')
+  }
+
   const loginFormData = new FormData()
-  loginFormData.append(
-    'userAgent',
-    'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36'
-  )
+  loginFormData.append('userAgent', userAgent)
   const loginResponse: {
     result: string
     authToken: string
@@ -17,19 +20,26 @@ export const reservePrint = async (recievedFormData: FormData) => {
       cache: 'no-cache',
     })
   ).json()
-  recievedFormData.append('authToken', loginResponse.authToken)
-  recievedFormData.append('registerName', 'image.png')
 
-  const test = await fetch('https://networkprint.ne.jp/LiteServer/app/upload', {
-    method: 'POST',
-    body: recievedFormData,
-    cache: 'no-cache',
-    headers: {
-      contentType: 'multipart/form-data',
-    },
-  })
-
-  console.log(loginResponse.authToken, await test.json())
+  const uploadFormData = new FormData()
+  uploadFormData.append('file', file)
+  uploadFormData.append('authToken', loginResponse.authToken)
+  uploadFormData.append('registerName', 'image.png')
+  const uploadResponse: {
+    result: string
+  } = await (
+    await fetch('https://networkprint.ne.jp/LiteServer/app/upload', {
+      method: 'POST',
+      body: uploadFormData,
+      cache: 'no-cache',
+      headers: {
+        contentType: 'multipart/form-data',
+      },
+    })
+  ).json()
+  if (uploadResponse.result !== '') {
+    throw new Error('Upload failed')
+  }
 
   const qrcodeResponse = await (
     await fetch('https://networkprint.ne.jp/nwpsapi/v1/login/qrcode', {
@@ -39,6 +49,7 @@ export const reservePrint = async (recievedFormData: FormData) => {
       },
     })
   ).blob()
+
   return {
     base64QrCode: await blobToBase64(qrcodeResponse),
     userCode: loginResponse.userCode,
