@@ -64,7 +64,12 @@ const Renderer = ({ layout, userImages, onRender }: RendererProps) => {
   return (
     <>
       <div ref={containerRef} className={styles.container}>
-        <Card layout={layout} userImages={userImages} proxy />
+        <Card
+          layout={layout}
+          userImages={userImages}
+          randomVariants="revealed"
+          proxy
+        />
       </div>
     </>
   )
