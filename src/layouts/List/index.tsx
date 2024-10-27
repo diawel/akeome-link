@@ -5,6 +5,7 @@ import Card from '../../components/Card'
 import { getCreatedCards } from '../../utils/strapi/card'
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
+import { mediaRecordsToUrlSet } from '../../utils/strapiImage'
 
 type ListProps = {
   tab: 'created' | 'received'
@@ -43,14 +44,9 @@ const List = async ({ tab }: ListProps) => {
                   <div className={styles.card}>
                     <Card
                       layout={card.attributes.layout}
-                      userImages={
+                      userImages={mediaRecordsToUrlSet(
                         card.attributes.userImages.data
-                          ? card.attributes.userImages.data.map((image) => ({
-                              id: image.id,
-                              urlSet: image.attributes,
-                            }))
-                          : []
-                      }
+                      )}
                       maxFormat="thumbnail"
                     />
                   </div>

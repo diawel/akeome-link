@@ -45,9 +45,10 @@ export type CardProps = {
     isAnyFocused: boolean
     setIsAnyFocused: (isAnyFocused: boolean) => void
   }
+  proxy?: boolean
 }
 
-const Card = ({ layout, userImages, maxFormat, edit }: CardProps) => {
+const Card = ({ layout, userImages, maxFormat, edit, proxy }: CardProps) => {
   const stickers = useStickers()
   const [cardScale, setCardScale] = useState(0)
   const sizerRef = useRef<HTMLDivElement>(null)
@@ -209,7 +210,7 @@ const Card = ({ layout, userImages, maxFormat, edit }: CardProps) => {
                 edit && edit.isAnyFocused && index === layout.length - 1
               const content = (() => {
                 switch (target.content.type) {
-                  case 'text':
+                  case 'text': {
                     return (
                       <div
                         className={styles.text}
@@ -226,39 +227,70 @@ const Card = ({ layout, userImages, maxFormat, edit }: CardProps) => {
                         ))}
                       </div>
                     )
-                  case 'userImage':
+                  }
+                  case 'userImage': {
                     const id = target.content.id
                     const userImage = userImages.find(
                       (userImage) => userImage.id === id
                     )
                     if (!userImage) return null
+                    const longEdge = Math.max(
+                      userImage.urlSet.width,
+                      userImage.urlSet.height
+                    )
+                    const imageUrl = getImageUrl(userImage.urlSet, maxFormat)
                     return (
                       <div className={styles.userImageContainer}>
                         <img
-                          className={styles.userImage}
-                          src={getImageUrl(userImage.urlSet, maxFormat)}
+                          style={{
+                            width: `${
+                              (userImage.urlSet.width / longEdge) * 100
+                            }%`,
+                            height: `${
+                              (userImage.urlSet.height / longEdge) * 100
+                            }%`,
+                          }}
+                          src={proxy ? `/api/proxy?url=${imageUrl}` : imageUrl}
                           alt=""
                         />
                       </div>
                     )
-                  case 'sticker':
+                  }
+                  case 'sticker': {
                     const stickerId = target.content.stickerId
                     const sticker = stickers.find(
                       (sticker) => sticker.id === stickerId
                     )
                     if (!sticker) return null
+                    const longEdge = Math.max(
+                      sticker.attributes.image.data.attributes.width,
+                      sticker.attributes.image.data.attributes.height
+                    )
+                    const imageUrl = getImageUrl(
+                      sticker.attributes.image.data.attributes,
+                      maxFormat
+                    )
                     return (
                       <div className={styles.stickerContainer}>
                         <img
-                          className={styles.sticker}
-                          src={getImageUrl(
-                            sticker.attributes.image.data.attributes,
-                            maxFormat
-                          )}
+                          style={{
+                            width: `${
+                              (sticker.attributes.image.data.attributes.width /
+                                longEdge) *
+                              100
+                            }%`,
+                            height: `${
+                              (sticker.attributes.image.data.attributes.height /
+                                longEdge) *
+                              100
+                            }%`,
+                          }}
+                          src={proxy ? `/api/proxy?url=${imageUrl}` : imageUrl}
                           alt=""
                         />
                       </div>
                     )
+                  }
                 }
               })()
 
@@ -331,7 +363,7 @@ const Card = ({ layout, userImages, maxFormat, edit }: CardProps) => {
                       }) rotate(${-target.container.rotate}deg)`,
                     }}
                   >
-                    <Image src={removeIcon} alt="消す" />
+                    <Image src={removeIcon} alt="消す" loading="eager" />
                   </button>
                   <Image
                     className={styles.control.rotate}
@@ -356,6 +388,7 @@ const Card = ({ layout, userImages, maxFormat, edit }: CardProps) => {
                         1 / target.container.scale / cardScale
                       }) rotate(${-target.container.rotate}deg)`,
                     }}
+                    loading="eager"
                   />
                   <Image
                     className={styles.control.zoom}
@@ -380,6 +413,7 @@ const Card = ({ layout, userImages, maxFormat, edit }: CardProps) => {
                         1 / target.container.scale / cardScale
                       }) rotate(${-target.container.rotate}deg)`,
                     }}
+                    loading="eager"
                   />
                 </div>
               )

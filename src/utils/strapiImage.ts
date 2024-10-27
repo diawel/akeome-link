@@ -1,12 +1,20 @@
+import { StrapiRecord } from './strapi'
+import { MediaAttributes } from './strapi/media'
+
+type MinimumImage = {
+  url: string
+  width: number
+  height: number
+}
+
 export type ImageUrlSet = {
   formats?: {
-    large?: { url: string }
-    medium?: { url: string }
-    small?: { url: string }
-    thumbnail?: { url: string }
+    large?: MinimumImage
+    medium?: MinimumImage
+    small?: MinimumImage
+    thumbnail?: MinimumImage
   } | null
-  url: string
-}
+} & MinimumImage
 
 const imageFormats = [
   'large',
@@ -39,4 +47,15 @@ export const getImageUrl = (urlSet: ImageUrlSet, maxFormat?: ImageFormat) => {
   return url.startsWith('/')
     ? `${process.env.NEXT_PUBLIC_STRAPI_BACKEND_URL}${url}`
     : url
+}
+
+export const mediaRecordsToUrlSet = (
+  records: StrapiRecord<MediaAttributes>[] | null
+) => {
+  return (
+    records?.map((image) => ({
+      id: image.id,
+      urlSet: image.attributes,
+    })) ?? []
+  )
 }

@@ -42,7 +42,6 @@ export const card = style({
 export const text = style({
   position: 'relative',
   fontSize: 16,
-  color: '#000',
   fontWeight: 700,
   textWrap: 'nowrap',
 })
@@ -51,18 +50,18 @@ export const userImageContainer = style({
   position: 'relative',
   width: 160,
   height: 160,
-})
-
-export const userImage = style({
-  width: '100%',
-  height: '100%',
-  objectFit: 'contain',
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
 })
 
 export const stickerContainer = style({
   position: 'relative',
   width: 160,
   height: 160,
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
 })
 
 export const sticker = style({
