@@ -9,7 +9,7 @@ export type RecievedCardAttributes = {
   createdAt: string
   updatedAt: string
   publishedAt: string
-  card: { data: StrapiRecord<Omit<CardAttributes, 'userImages' | 'creator'>> }
+  card: { data: StrapiRecord<Omit<CardAttributes, 'creator'>> }
   reciever: { data: StrapiRecord<UserAttributes> }
 }
 
@@ -25,7 +25,7 @@ export const getRecievedCards = async () => {
       `${
         process.env.NEXT_PUBLIC_STRAPI_BACKEND_URL
       }/api/recieved-card?${stringify({
-        populate: ['card', 'reciever'],
+        populate: ['card.userImages', 'reciever'],
         filters: {
           reciever: {
             id: {
