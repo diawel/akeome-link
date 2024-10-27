@@ -4,6 +4,7 @@ import * as styles from './index.css'
 import { FaImage, FaNoteSticky } from 'react-icons/fa6'
 import { useStickers } from '../../../app/StickerProvider'
 import { uploadMedia } from '../../../utils/strapi/media'
+import { getImageUrl } from '../../../utils/strapiImage'
 
 type EditProps = {
   cardLayout: React.ComponentProps<typeof Card>['layout']
@@ -39,7 +40,7 @@ const Edit = ({
   }, [cardLayout, focusedContent])
 
   return (
-    <div>
+    <>
       <div className={styles.controlContainer}>
         {activeTab == 'userImage' ? (
           <div className={styles.control}>
@@ -93,7 +94,10 @@ const Edit = ({
               >
                 <img
                   className={styles.sticker}
-                  src={`${process.env.NEXT_PUBLIC_STRAPI_BACKEND_URL}${sticker.attributes.image.data.attributes.url}`}
+                  src={getImageUrl(
+                    sticker.attributes.image.data.attributes,
+                    'thumbnail'
+                  )}
                   alt=""
                 />
               </button>
@@ -232,7 +236,7 @@ const Edit = ({
           テキスト
         </button>
       </div>
-    </div>
+    </>
   )
 }
 
