@@ -1,8 +1,7 @@
 import { NextPage } from 'next'
-import { getServerSession } from 'next-auth'
-import { authOptions } from '../../../api/auth/[...nextauth]/authOptions'
 import { redirect } from 'next/navigation'
 import Detail from '../../../../layouts/Detail'
+import { getCard } from '../../../../utils/strapi/card'
 
 type PageProps = {
   params: {
@@ -10,14 +9,18 @@ type PageProps = {
   }
 }
 
-const Page: NextPage<PageProps> = ({ params }: { params: { id: number } }) => {
-  const session = getServerSession(authOptions)
+const Page: NextPage<PageProps> = async ({
+  params,
+}: {
+  params: { id: number }
+}) => {
+  const cardResponse = await getCard(params.id)
 
-  if (!session) {
+  if (!cardResponse) {
     redirect('/')
   }
 
-  return <Detail id={params.id} shareUrl='https://placehold.jp/1200x690.png' />
+  return <Detail cardRecord={cardResponse.data} />
 }
 
 export default Page
