@@ -1,13 +1,17 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
-import Card, { CardLayout } from '..'
+import { CardLayout } from '..'
 import { ImageUrlSet } from '../../../utils/strapiImage'
 import * as styles from './index.css'
 import * as catdStyles from '../index.css'
 import html2canvas from 'html2canvas'
+import dynamic from 'next/dynamic'
+
+const Card = dynamic(() => import('../../Card'))
 
 type RendererProps = {
+  id: number
   layout: CardLayout
   userImages: {
     id: number
@@ -16,7 +20,7 @@ type RendererProps = {
   onRender: (image: Blob) => void
 }
 
-const Renderer = ({ layout, userImages, onRender }: RendererProps) => {
+const Renderer = ({ id, layout, userImages, onRender }: RendererProps) => {
   const containerRef = useRef<HTMLDivElement>(null)
   const animationFrameRef = useRef<number | null>(null)
   const [isRendered, setIsRendered] = useState(false)
@@ -65,6 +69,7 @@ const Renderer = ({ layout, userImages, onRender }: RendererProps) => {
     <>
       <div ref={containerRef} className={styles.container}>
         <Card
+          id={id}
           layout={layout}
           userImages={userImages}
           randomVariants="revealed"

@@ -8,6 +8,7 @@ import removeIcon from './icon-remove.svg'
 import Image from 'next/image'
 import { useStickers } from '../../app/StickerProvider'
 import { getImageUrl, ImageFormat, ImageUrlSet } from '../../utils/strapiImage'
+import { useLocalRecievedCard } from '../../utils/localRecievedCard'
 
 export type CardLayout = {
   container: {
@@ -62,6 +63,7 @@ class Random {
 }
 
 export type CardProps = {
+  id: number
   layout: CardLayout
   userImages: {
     id: number
@@ -79,6 +81,7 @@ export type CardProps = {
 }
 
 const Card = ({
+  id,
   layout,
   userImages,
   maxFormat,
@@ -91,8 +94,7 @@ const Card = ({
   const [cardScale, setCardScale] = useState(0)
   const sizerRef = useRef<HTMLDivElement>(null)
   const cardRef = useRef<HTMLDivElement>(null)
-
-  const random = new Random(seed)
+  const localRecievedCard = useLocalRecievedCard(id, seed)
 
   useEffect(() => {
     if (!sizerRef.current) return
@@ -188,6 +190,7 @@ const Card = ({
           break
       }
     }
+
     const handleMouseMove = (event: MouseEvent) => {
       event.stopPropagation()
       event.preventDefault()
@@ -221,6 +224,8 @@ const Card = ({
       window.removeEventListener('touchleave', handleLeave)
     }
   }, [cardScale, dragState, edit, layout])
+
+  const random = new Random(localRecievedCard.seed)
 
   const focus = (index: number) => {
     if (!edit) return

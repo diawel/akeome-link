@@ -1,7 +1,6 @@
 'use client'
 
 import { CardAttributes } from '../../utils/strapi/card'
-import Card from '../../components/Card'
 import postImage from './post.svg'
 import xIcon from './icon-x.svg'
 import lineIcon from './icon-line.svg'
@@ -14,6 +13,10 @@ import { mediaRecordsToUrlSet } from '../../utils/strapiImage'
 import { StrapiRecord } from '../../utils/strapi'
 import Renderer from '../../components/Card/Renderer'
 import { useState } from 'react'
+
+import dynamic from 'next/dynamic'
+
+const Card = dynamic(() => import('../../components/Card'))
 
 type DetailProps = {
   cardRecord: StrapiRecord<CardAttributes>
@@ -29,6 +32,7 @@ const Detail = ({ cardRecord }: DetailProps) => {
           <Image className={styles.post} src={postImage} alt="postImage" />
           <div className={styles.card}>
             <Card
+              id={cardRecord.id}
               layout={cardRecord.attributes.layout}
               userImages={mediaRecordsToUrlSet(
                 cardRecord.attributes.userImages.data
@@ -111,6 +115,7 @@ const Detail = ({ cardRecord }: DetailProps) => {
         </div>
       </div>
       <Renderer
+        id={cardRecord.id}
         layout={cardRecord.attributes.layout}
         userImages={mediaRecordsToUrlSet(cardRecord.attributes.userImages.data)}
         onRender={setRenderedImage}

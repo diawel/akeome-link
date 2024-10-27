@@ -1,7 +1,6 @@
 'use client'
 
 import { FaDownload, FaPrint } from 'react-icons/fa6'
-import Card from '../../components/Card'
 import { StrapiRecord } from '../../utils/strapi'
 import { CardAttributes } from '../../utils/strapi/card'
 import { mediaRecordsToUrlSet } from '../../utils/strapiImage'
@@ -10,6 +9,10 @@ import Link from 'next/link'
 import Renderer from '../../components/Card/Renderer'
 import { useState } from 'react'
 import Print from './Print'
+
+import dynamic from 'next/dynamic'
+
+const Card = dynamic(() => import('../../components/Card'))
 
 type SharedProps = {
   cardRecord: StrapiRecord<CardAttributes>
@@ -30,6 +33,7 @@ const Shared = ({ cardRecord }: SharedProps) => {
             </div>
             <div className={styles.cardContainer}>
               <Card
+                id={cardRecord.id}
                 layout={cardRecord.attributes.layout}
                 userImages={mediaRecordsToUrlSet(
                   cardRecord.attributes.userImages.data
@@ -85,6 +89,7 @@ const Shared = ({ cardRecord }: SharedProps) => {
       </div>
 
       <Renderer
+        id={cardRecord.id}
         layout={cardRecord.attributes.layout}
         userImages={mediaRecordsToUrlSet(cardRecord.attributes.userImages.data)}
         onRender={(image) => setRenderedImage(image)}

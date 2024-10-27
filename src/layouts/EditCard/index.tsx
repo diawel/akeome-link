@@ -81,6 +81,7 @@ const EditCard = () => {
       />
       <div className={styles.cardWrapper}>
         <Card
+          id={-1}
           layout={cardLayout}
           userImages={userImages}
           maxFormat="medium"

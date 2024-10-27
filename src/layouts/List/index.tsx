@@ -1,12 +1,15 @@
 import * as styles from './index.css'
 import Header from './Header'
 import { FaPlus } from 'react-icons/fa6'
-import Card from '../../components/Card'
 import { getCreatedCards } from '../../utils/strapi/card'
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
 import { mediaRecordsToUrlSet } from '../../utils/strapiImage'
 import { getRecievedCards } from '../../utils/strapi/recievedCard'
+
+import dynamic from 'next/dynamic'
+
+const Card = dynamic(() => import('../../components/Card'))
 
 type ListProps = {
   tab: 'created' | 'recieved'
@@ -50,6 +53,7 @@ const List = async ({ tab }: ListProps) => {
                           card.attributes.userImages.data
                         )}
                         maxFormat="thumbnail"
+                        id={card.id}
                       />
                     </div>
                     <div className={styles.cardTitle}>
@@ -104,6 +108,7 @@ const List = async ({ tab }: ListProps) => {
                             .userImages.data
                         )}
                         maxFormat="thumbnail"
+                        id={recievedCard.attributes.card.data.id}
                       />
                     </div>
                     <div className={styles.cardTitle}>
