@@ -3,9 +3,10 @@ import * as styles from './index.css'
 import akeomeLinkLogo from './akeome-link-logo.svg'
 import postIcon from './icon-post.svg'
 import Image from 'next/image'
+import Link from 'next/link'
 
 type HeaderProps = {
-  activeTab: 'created' | 'received'
+  activeTab: 'created' | 'recieved'
 }
 
 const Header: React.FC<HeaderProps> = ({ activeTab }) => {
@@ -26,20 +27,22 @@ const Header: React.FC<HeaderProps> = ({ activeTab }) => {
       </div>
 
       <div className={styles.tabContainer}>
-        <div
+        <Link
+          href="/create/list"
           className={`${styles.tab} ${
             activeTab === 'created' ? styles.activeTab : ''
           }`}
         >
           つくった
-        </div>
-        <div
+        </Link>
+        <Link
+          href="/recieved/list"
           className={`${styles.tab} ${
-            activeTab === 'received' ? styles.activeTab : ''
+            activeTab === 'recieved' ? styles.activeTab : ''
           }`}
         >
           もらった
-        </div>
+        </Link>
       </div>
     </>
   )

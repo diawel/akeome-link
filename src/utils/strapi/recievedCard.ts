@@ -9,8 +9,8 @@ export type RecievedCardAttributes = {
   createdAt: string
   updatedAt: string
   publishedAt: string
-  card: { data: StrapiRecord<Omit<CardAttributes, 'creator'>> }
-  reciever: { data: StrapiRecord<UserAttributes> }
+  card: { data: StrapiRecord<Omit<CardAttributes, 'creator'>> | null }
+  reciever: { data: StrapiRecord<UserAttributes> | null }
 }
 
 export const getRecievedCard = async (id: number) => {
@@ -36,8 +36,7 @@ export const getRecievedCard = async (id: number) => {
     )
 
     if (!strapiResponse.ok) {
-      const strapiError: StrapiError = await strapiResponse.json()
-      throw new Error(strapiError.error.message)
+      return undefined
     }
 
     const card: StrapiRecord<RecievedCardAttributes> =
@@ -59,7 +58,7 @@ export const getRecievedCards = async () => {
     const strapiResponse = await fetch(
       `${
         process.env.NEXT_PUBLIC_STRAPI_BACKEND_URL
-      }/api/recieved-card?${stringify({
+      }/api/recieved-cards?${stringify({
         populate: ['card.userImages', 'reciever'],
         filters: {
           reciever: {
@@ -112,7 +111,7 @@ export const addRecievedCard = async ({
 
   try {
     const strapiResponse = await fetch(
-      `${process.env.NEXT_PUBLIC_STRAPI_BACKEND_URL}/api/recieved-card`,
+      `${process.env.NEXT_PUBLIC_STRAPI_BACKEND_URL}/api/recieved-cards`,
       {
         method: 'POST',
         headers: {

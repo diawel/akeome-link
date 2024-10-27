@@ -35,6 +35,8 @@ export const tab = style({
   padding: '10px',
   cursor: 'pointer',
   fontWeight: 'bold',
+  textDecoration: 'none',
+  color: `${color.gray[5]}`,
 })
 
 export const activeTab = style({
