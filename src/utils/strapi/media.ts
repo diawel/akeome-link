@@ -38,21 +38,25 @@ type ImageFormat = {
 }
 
 export const uploadMedia = async (recievedFormData: FormData) => {
-  const formData = new FormData()
-  formData.append('files', recievedFormData.get('files') as Blob)
-  const strapiResponse = await fetch(
-    `${process.env.NEXT_PUBLIC_STRAPI_BACKEND_URL}/api/upload`,
-    {
-      method: 'POST',
-      body: formData,
-      headers: {
-        Authorization: `Bearer ${process.env.STRAPI_API_TOKEN}`,
-      },
-    }
-  )
+  try {
+    const formData = new FormData()
+    formData.append('files', recievedFormData.get('files') as Blob)
+    const strapiResponse = await fetch(
+      `${process.env.NEXT_PUBLIC_STRAPI_BACKEND_URL}/api/upload`,
+      {
+        method: 'POST',
+        body: formData,
+        headers: {
+          Authorization: `Bearer ${process.env.STRAPI_API_TOKEN}`,
+        },
+      }
+    )
 
-  const strapiData: (MediaAttributes & { id: number })[] =
-    await strapiResponse.json()
+    const strapiData: (MediaAttributes & { id: number })[] =
+      await strapiResponse.json()
 
-  return strapiData
+    return strapiData
+  } catch (error) {
+    throw error
+  }
 }

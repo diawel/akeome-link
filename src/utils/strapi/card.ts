@@ -111,31 +111,35 @@ export const addCard = async ({
     throw new Error('Unauthorized')
   }
 
-  const strapiResponse = await fetch(
-    `${process.env.NEXT_PUBLIC_STRAPI_BACKEND_URL}/api/cards`,
-    {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${process.env.STRAPI_API_TOKEN}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        data: {
-          title,
-          creatorName,
-          layout: layout,
-          creator: session.user.strapiUserId,
-          userImages: userImages.map((userImage) => userImage.id),
+  try {
+    const strapiResponse = await fetch(
+      `${process.env.NEXT_PUBLIC_STRAPI_BACKEND_URL}/api/cards`,
+      {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${process.env.STRAPI_API_TOKEN}`,
+          'Content-Type': 'application/json',
         },
-      }),
+        body: JSON.stringify({
+          data: {
+            title,
+            creatorName,
+            layout: layout,
+            creator: session.user.strapiUserId,
+            userImages: userImages.map((userImage) => userImage.id),
+          },
+        }),
+      }
+    )
+
+    if (!strapiResponse.ok) {
+      throw new Error(`Failed to add card: ${strapiResponse.statusText}`)
     }
-  )
 
-  if (!strapiResponse.ok) {
-    throw new Error(`Failed to add card: ${strapiResponse.statusText}`)
+    const card: StrapiApiResponse<CardAttributes> = await strapiResponse.json()
+
+    return card
+  } catch (error) {
+    throw error
   }
-
-  const card: StrapiApiResponse<CardAttributes> = await strapiResponse.json()
-
-  return card
 }
