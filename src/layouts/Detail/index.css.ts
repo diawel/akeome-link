@@ -64,6 +64,11 @@ export const copyButton = style({
   color: color.red[5],
   fontSize: '14px',
   fontWeight: 'bold',
+  border: 'none',
+
+  ':focus': {
+    filter: 'brightness(0.9)',
+  },
 })
 
 export const linkInput = style({

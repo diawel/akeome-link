@@ -18,8 +18,7 @@ type DetailProps = {
 }
 
 const Detail = ({ cardRecord }: DetailProps) => {
-  const shareUrl = new URL(`/shared/${cardRecord.id}`, window.location.href)
-    .href
+  const shareUrl = new URL(`/link/${cardRecord.id}`, window.location.href).href
   return (
     <>
       <div>
@@ -44,9 +43,14 @@ const Detail = ({ cardRecord }: DetailProps) => {
               readOnly
               className={styles.linkInput}
             />
-            <div className={styles.copyButton}>
+            <button
+              className={styles.copyButton}
+              onClick={() => {
+                navigator.clipboard.writeText(shareUrl)
+              }}
+            >
               <Image src={copyIcon} alt="copyIcon"></Image>
-            </div>
+            </button>
           </div>
         </div>
         <div>
