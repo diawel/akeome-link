@@ -13,7 +13,7 @@ import Link from 'next/link'
 import { mediaRecordsToUrlSet } from '../../utils/strapiImage'
 import { StrapiRecord } from '../../utils/strapi'
 import Renderer from '../../components/Card/Renderer'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 type DetailProps = {
   cardRecord: StrapiRecord<CardAttributes>
@@ -21,7 +21,10 @@ type DetailProps = {
 
 const Detail = ({ cardRecord }: DetailProps) => {
   const [renderedImage, setRenderedImage] = useState<Blob | null>(null)
-  const shareUrl = new URL(`/link/${cardRecord.id}`, window.location.href).href
+  const [shareUrl, setShareUrl] = useState('')
+  useEffect(() => {
+    setShareUrl(new URL(`/link/${cardRecord.id}`, window.location.href).href)
+  }, [cardRecord.id])
   return (
     <>
       <div>

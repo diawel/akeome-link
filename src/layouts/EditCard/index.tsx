@@ -13,7 +13,7 @@ import { useRouter } from 'next/navigation'
 const creatorNameLocalStorageKey = 'creatorName'
 
 const EditCard = () => {
-  const { data: session } = useSession()
+  const { data: session } = useSession({ required: true })
   const [cardLayout, setCardLayout] = useState<
     React.ComponentProps<typeof Card>['layout']
   >([])
@@ -27,7 +27,7 @@ const EditCard = () => {
   const [isAnyFocused, setIsAnyFocused] = useState(false)
   const [title, setTitle] = useState('無題')
   const [creatorName, setCreatorName] = useState<string | undefined>(undefined)
-  const [isSaving, setIsSaving] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
   const router = useRouter()
 
   useEffect(() => {
@@ -41,12 +41,12 @@ const EditCard = () => {
 
   const save = () => {
     if (creatorName === undefined) return
-    if (isSaving) return
+    if (isLoading) return
 
     if (!title) alert('タイトルを入力してください')
     if (!creatorName) alert('作者名を入力してください')
 
-    setIsSaving(true)
+    setIsLoading(true)
     localStorage.setItem(creatorNameLocalStorageKey, creatorName)
     addCard({
       title,
@@ -62,10 +62,10 @@ const EditCard = () => {
     <div
       className={styles.screen}
       style={
-        isSaving
+        isLoading
           ? {
-              pointerEvents: isSaving ? 'none' : 'auto',
-              filter: isSaving ? 'brightness(0.5)' : 'none',
+              pointerEvents: isLoading ? 'none' : 'auto',
+              filter: isLoading ? 'brightness(0.5)' : 'none',
             }
           : {}
       }
@@ -99,6 +99,7 @@ const EditCard = () => {
           setIsAnyFocused,
           userImages,
           setUserImages,
+          setIsLoading,
         }}
       />
     </div>
