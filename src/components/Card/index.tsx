@@ -39,10 +39,10 @@ class Random {
   private z: number
   private w: number
 
-  constructor(seed: number = 1) {
-    this.x = 111111111
-    this.y = 222222222
-    this.z = 333333333
+  constructor(seed: number = 11223392) {
+    this.x = 126353252
+    this.y = 345232993
+    this.z = 848572548
     this.w = seed
   }
 
