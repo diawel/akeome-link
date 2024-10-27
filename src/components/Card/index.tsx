@@ -33,6 +33,34 @@ export type CardLayout = {
       }
 }[]
 
+class Random {
+  private x: number
+  private y: number
+  private z: number
+  private w: number
+
+  constructor(seed: number = 1) {
+    this.x = 111111111
+    this.y = 222222222
+    this.z = 333333333
+    this.w = seed
+  }
+
+  next(): number {
+    const t = this.x ^ (this.x << 11)
+    this.x = this.y
+    this.y = this.z
+    this.z = this.w
+    this.w = this.w ^ (this.w >>> 19) ^ (t ^ (t >>> 8))
+    return this.w
+  }
+
+  nextInt(min: number, max: number): number {
+    const r = Math.abs(this.next())
+    return min + (r % (max + 1 - min))
+  }
+}
+
 export type CardProps = {
   layout: CardLayout
   userImages: {
@@ -46,13 +74,25 @@ export type CardProps = {
     setIsAnyFocused: (isAnyFocused: boolean) => void
   }
   proxy?: boolean
+  randomVariants?: 'revealed' | 'hidden' | 'revealing'
+  seed?: number
 }
 
-const Card = ({ layout, userImages, maxFormat, edit, proxy }: CardProps) => {
+const Card = ({
+  layout,
+  userImages,
+  maxFormat,
+  edit,
+  proxy,
+  randomVariants = 'hidden',
+  seed,
+}: CardProps) => {
   const stickers = useStickers()
   const [cardScale, setCardScale] = useState(0)
   const sizerRef = useRef<HTMLDivElement>(null)
   const cardRef = useRef<HTMLDivElement>(null)
+
+  const random = new Random(seed)
 
   useEffect(() => {
     if (!sizerRef.current) return
@@ -262,6 +302,86 @@ const Card = ({ layout, userImages, maxFormat, edit, proxy }: CardProps) => {
                       (sticker) => sticker.id === stickerId
                     )
                     if (!sticker) return null
+                    if (sticker.attributes.randomVariants.data) {
+                      const variant = random.nextInt(
+                        0,
+                        sticker.attributes.randomVariants.data.length - 1
+                      )
+                      const baseLongEdge = Math.max(
+                        sticker.attributes.randomVariants.data[variant]
+                          .attributes.width,
+                        sticker.attributes.randomVariants.data[variant]
+                          .attributes.height
+                      )
+                      const baseImageUrl = getImageUrl(
+                        sticker.attributes.randomVariants.data[variant]
+                          .attributes,
+                        maxFormat
+                      )
+                      const coverLongEdge = Math.max(
+                        sticker.attributes.image.data.attributes.width,
+                        sticker.attributes.image.data.attributes.height
+                      )
+                      const coverImageUrl = getImageUrl(
+                        sticker.attributes.image.data.attributes,
+                        maxFormat
+                      )
+                      return (
+                        <div className={styles.stickerContainer}>
+                          <img
+                            style={{
+                              width: `${
+                                (sticker.attributes.randomVariants.data[variant]
+                                  .attributes.width /
+                                  baseLongEdge) *
+                                100
+                              }%`,
+                              height: `${
+                                (sticker.attributes.randomVariants.data[variant]
+                                  .attributes.height /
+                                  baseLongEdge) *
+                                100
+                              }%`,
+                            }}
+                            src={
+                              proxy
+                                ? `/api/proxy?url=${baseImageUrl}`
+                                : baseImageUrl
+                            }
+                            alt=""
+                          />
+                          <div
+                            className={
+                              styles.layeredStickerContainer[randomVariants]
+                            }
+                          >
+                            <img
+                              style={{
+                                width: `${
+                                  (sticker.attributes.image.data.attributes
+                                    .width /
+                                    coverLongEdge) *
+                                  100
+                                }%`,
+                                height: `${
+                                  (sticker.attributes.image.data.attributes
+                                    .height /
+                                    coverLongEdge) *
+                                  100
+                                }%`,
+                              }}
+                              src={
+                                proxy
+                                  ? `/api/proxy?url=${coverImageUrl}`
+                                  : coverImageUrl
+                              }
+                              alt=""
+                            />
+                          </div>
+                        </div>
+                      )
+                    }
+
                     const longEdge = Math.max(
                       sticker.attributes.image.data.attributes.width,
                       sticker.attributes.image.data.attributes.height

@@ -1,4 +1,4 @@
-import { style, styleVariants } from '@vanilla-extract/css'
+import { keyframes, style, styleVariants } from '@vanilla-extract/css'
 import { color } from '../../utils/styleSchema'
 
 export const container = style({
@@ -59,15 +59,49 @@ export const stickerContainer = style({
   position: 'relative',
   width: 160,
   height: 160,
+})
+
+const layeredStickerContainerBase = style({
+  position: 'absolute',
+  width: '100%',
+  height: '100%',
+  left: 0,
+  top: 0,
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
 })
 
+const reveale = keyframes({
+  from: {
+    opacity: 1,
+    transform: 'scale(1)',
+  },
+  to: {
+    opacity: 0,
+    transform: 'scale(1.25)',
+  },
+})
+
+export const layeredStickerContainer = styleVariants({
+  revealed: [
+    layeredStickerContainerBase,
+    {
+      opacity: 0,
+    },
+  ],
+  hidden: [layeredStickerContainerBase],
+  revealing: [
+    layeredStickerContainerBase,
+    {
+      animation: `0.5s ease-out 0.5s ${reveale} forwards`,
+    },
+  ],
+})
+
 export const sticker = style({
   width: '100%',
   height: '100%',
-  objectFit: 'contain',
 })
 
 const interactionContainerBase = style({
