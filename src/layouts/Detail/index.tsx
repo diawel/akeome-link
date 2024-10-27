@@ -33,7 +33,6 @@ const Detail = ({ cardRecord }: DetailProps) => {
               userImages={mediaRecordsToUrlSet(
                 cardRecord.attributes.userImages.data
               )}
-              maxFormat="thumbnail"
             />
           </div>
         </div>
