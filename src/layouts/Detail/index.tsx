@@ -9,6 +9,7 @@ import Image from 'next/image'
 import * as styles from './index.css'
 import copyIcon from './icon-copy.svg'
 import Link from 'next/link'
+import { mediaRecordsToUrlSet } from '../../utils/strapiImage'
 
 type DetailProps = {
   id: number
@@ -29,14 +30,9 @@ const Detail = async ({ id, shareUrl }: DetailProps) => {
         <div className={styles.card}>
           <Card
             layout={card.data.attributes.layout}
-            userImages={
+            userImages={mediaRecordsToUrlSet(
               card.data.attributes.userImages.data
-                ? card.data.attributes.userImages.data.map((image) => ({
-                    id: image.id,
-                    urlSet: image.attributes,
-                  }))
-                : []
-            }
+            )}
             maxFormat="thumbnail"
           />
         </div>
