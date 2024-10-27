@@ -3,7 +3,7 @@ import { color } from '../../../utils/styleSchema'
 
 export const headerContainer = style({
   backgroundColor: '#fff',
-  position: 'sticky',
+  position: 'relative',
   top: 0,
   zIndex: 1000,
 })
@@ -27,6 +27,9 @@ export const tabContainer = style({
   color: `${color.gray[5]}`,
   borderBottom: '1px solid #ddd',
   backgroundColor: '#fff',
+  position: 'sticky',
+  top: 0,
+  zIndex: 999,
 })
 
 export const tab = style({
