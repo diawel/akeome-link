@@ -11,7 +11,7 @@ export const GET = async (request: Request) => {
     )
   }
 
-  if (new URL(url).origin !== process.env.USER_CONTENT_URL) {
+  if (!url.startsWith(process.env.USER_CONTENT_URL ?? '')) {
     return NextResponse.json(
       { error: 'URL parameter is invalid' },
       { status: 400 }
