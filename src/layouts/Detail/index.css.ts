@@ -116,6 +116,7 @@ export const downloadContainer = style({
   justifyContent: 'center',
   alignItems: 'center',
   cursor: 'pointer',
+  border: 'none',
 })
 
 export const downloadContent = style({

@@ -12,12 +12,15 @@ import copyIcon from './icon-copy.svg'
 import Link from 'next/link'
 import { mediaRecordsToUrlSet } from '../../utils/strapiImage'
 import { StrapiRecord } from '../../utils/strapi'
+import Renderer from '../../components/Card/Renderer'
+import { useState } from 'react'
 
 type DetailProps = {
   cardRecord: StrapiRecord<CardAttributes>
 }
 
 const Detail = ({ cardRecord }: DetailProps) => {
+  const [renderedImage, setRenderedImage] = useState<Blob | null>(null)
   const shareUrl = new URL(`/link/${cardRecord.id}`, window.location.href).href
   return (
     <>
@@ -73,12 +76,29 @@ const Detail = ({ cardRecord }: DetailProps) => {
                 <Image src={lineIcon} alt="lineIcon"></Image>
               </Link>
             </div>
-            <div className={styles.downloadContainer}>
+            <button
+              className={styles.downloadContainer}
+              onClick={() => {
+                if (!renderedImage) return
+                const url = URL.createObjectURL(renderedImage)
+                const a = document.createElement('a')
+                a.href = url
+                a.setAttribute('download', `new_year_card_${Date.now()}`)
+                document.body.appendChild(a)
+                a.click()
+                URL.revokeObjectURL(url)
+                a.remove()
+              }}
+              style={{
+                pointerEvents: renderedImage ? 'auto' : 'none',
+                opacity: renderedImage ? 1 : 0.5,
+              }}
+            >
               <div className={styles.downloadContent}>
                 <Image src={downloadIcon} alt="downLoadIcon"></Image>
                 <div className={styles.downloadText}>画像として保存</div>
               </div>
-            </div>
+            </button>
           </div>
           <Link href="/create/list" className={styles.cardLink}>
             <div className={styles.buttonContainer}>
@@ -89,6 +109,11 @@ const Detail = ({ cardRecord }: DetailProps) => {
           </Link>
         </div>
       </div>
+      <Renderer
+        layout={cardRecord.attributes.layout}
+        userImages={mediaRecordsToUrlSet(cardRecord.attributes.userImages.data)}
+        onRender={setRenderedImage}
+      />
     </>
   )
 }
