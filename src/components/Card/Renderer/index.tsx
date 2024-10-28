@@ -73,9 +73,9 @@ const Renderer = ({
         <Card
           layout={layout}
           userImages={userImages}
-          randomVariants="revealed"
-          proxy
+          randomVariants={randomSeed !== undefined ? 'revealed' : 'hidden'}
           randomSeed={randomSeed}
+          proxy
         />
       </div>
     </>
