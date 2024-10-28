@@ -359,7 +359,9 @@ const Card = ({
                           />
                           <div
                             className={
-                              styles.layeredStickerContainer[randomVariants]
+                              styles.layeredStickerContainer[
+                                cardScale ? randomVariants : 'hidden'
+                              ]
                             }
                           >
                             <img
