@@ -8,7 +8,7 @@ import { mediaRecordsToUrlSet } from '../../utils/strapiImage'
 import * as styles from './index.css'
 import Link from 'next/link'
 import Renderer from '../../components/Card/Renderer'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Print from '../../components/Print'
 import { saveReceivedCard } from '../../utils/receivedCard'
 
@@ -19,9 +19,11 @@ type SharedProps = {
 const Shared = ({ cardRecord }: SharedProps) => {
   const [renderedImage, setRenderedImage] = useState<Blob | null>(null)
   const [isPrintModalOpen, setIsPrintModalOpen] = useState(false)
-  saveReceivedCard({
-    cardId: cardRecord.id,
-  })
+
+  useEffect(() => {
+    saveReceivedCard({ cardId: cardRecord.id })
+  }, [cardRecord.id])
+
   return (
     <>
       <div className={styles.container}>
