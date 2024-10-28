@@ -55,25 +55,32 @@ const Edit = ({
                 if (!file) return
                 const formData = new FormData()
                 formData.append('files', file)
-                uploadMedia(formData).then((media) => {
-                  setUserImages(
-                    userImages.concat({
-                      id: media[0].id,
-                      urlSet: media[0],
-                    })
-                  )
-                  setCardLayout(
-                    cardLayout.concat({
-                      container: { x: 200, y: 291, scale: 1, rotate: 0 },
-                      content: {
-                        type: 'userImage',
+                uploadMedia(formData)
+                  .then((media) => {
+                    setUserImages(
+                      userImages.concat({
                         id: media[0].id,
-                      },
-                    })
-                  )
-                  setIsAnyFocused(true)
-                  setIsLoading(false)
-                })
+                        urlSet: media[0],
+                      })
+                    )
+                    setCardLayout(
+                      cardLayout.concat({
+                        container: { x: 200, y: 291, scale: 1, rotate: 0 },
+                        content: {
+                          type: 'userImage',
+                          id: media[0].id,
+                        },
+                      })
+                    )
+                    setIsAnyFocused(true)
+                    setIsLoading(false)
+                  })
+                  .catch(() => {
+                    alert(
+                      `画像のアップロードに失敗しました。画像サイズの上限は${process.env.NEXT_PUBLIC_MAX_UPLOAD_SIZE_TEXT}です。`
+                    )
+                    setIsLoading(false)
+                  })
               }}
             />
           </div>
