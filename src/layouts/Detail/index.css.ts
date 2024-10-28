@@ -65,10 +65,6 @@ export const copyButton = style({
   fontSize: '14px',
   fontWeight: 'bold',
   border: 'none',
-
-  ':focus': {
-    filter: 'brightness(0.9)',
-  },
 })
 
 export const linkInput = style({

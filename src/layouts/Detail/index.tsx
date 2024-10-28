@@ -52,6 +52,7 @@ const Detail = ({ cardRecord }: DetailProps) => {
               className={styles.copyButton}
               onClick={() => {
                 navigator.clipboard.writeText(shareUrl)
+                alert('コピーしました')
               }}
             >
               <Image src={copyIcon} alt="copyIcon"></Image>
