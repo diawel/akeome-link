@@ -40,7 +40,9 @@ type ImageFormat = {
 export const uploadMedia = async (receivedFormData: FormData) => {
   try {
     const formData = new FormData()
-    formData.append('files', receivedFormData.get('files') as Blob)
+    const files = receivedFormData.get('files')
+    if (!files) throw new Error('Missing files')
+    formData.append('files', files)
     const strapiResponse = await fetch(
       `${process.env.NEXT_PUBLIC_STRAPI_BACKEND_URL}/api/upload`,
       {
