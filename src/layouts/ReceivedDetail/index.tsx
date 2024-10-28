@@ -35,6 +35,7 @@ const ReceivedDetail = ({ cardRecord }: ReceivedDetailProps) => {
                 userImages={mediaRecordsToUrlSet(
                   cardRecord.attributes.userImages.data
                 )}
+                randomVariants="revealing"
               />
             </div>
             <div className={styles.control}>

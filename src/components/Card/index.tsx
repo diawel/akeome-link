@@ -79,7 +79,7 @@ export type CardProps = {
   }
   proxy?: boolean
   randomVariants?: 'revealed' | 'hidden' | 'revealing'
-  seed?: number
+  randomSeed?: number
 }
 
 const Card = ({
@@ -89,14 +89,14 @@ const Card = ({
   edit,
   proxy,
   randomVariants = 'hidden',
-  seed,
+  randomSeed,
 }: CardProps) => {
   const stickers = useStickers()
   const [cardScale, setCardScale] = useState(0)
   const sizerRef = useRef<HTMLDivElement>(null)
   const cardRef = useRef<HTMLDivElement>(null)
 
-  const random = new Random(seed)
+  const random = new Random(randomSeed)
 
   useEffect(() => {
     if (!sizerRef.current) return

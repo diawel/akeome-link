@@ -3,6 +3,7 @@ import Dexie, { Table } from 'dexie'
 export type ReceivedCard = {
   cardId: number
   creatorId: number
+  randomSeed: number
 }
 
 class Default extends Dexie {
@@ -18,8 +19,23 @@ class Default extends Dexie {
 
 const db = new Default()
 
-export const putLocalReceivedCard = async (record: ReceivedCard) => {
-  await db.receivedCard.put(record)
+export const putLocalReceivedCard = async ({
+  cardId,
+  creatorId,
+}: {
+  cardId: number
+  creatorId: number
+}) => {
+  const existingLocalReceivedCard = await db.receivedCard.get(cardId)
+  if (existingLocalReceivedCard) {
+    return existingLocalReceivedCard
+  }
+  await db.receivedCard.put({
+    cardId,
+    creatorId,
+    randomSeed: 10000000 + Math.floor(Math.random() * 90000000),
+  })
+  return await db.receivedCard.get(cardId)
 }
 
 export const getLocalReceivedCard = async (cardId: number) => {
