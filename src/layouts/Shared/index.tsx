@@ -10,6 +10,7 @@ import Link from 'next/link'
 import Renderer from '../../components/Card/Renderer'
 import { useState } from 'react'
 import Print from '../../components/Print'
+import { saveRecievedCard } from '../../utils/db'
 
 type SharedProps = {
   cardRecord: StrapiRecord<CardAttributes>
@@ -18,6 +19,9 @@ type SharedProps = {
 const Shared = ({ cardRecord }: SharedProps) => {
   const [renderedImage, setRenderedImage] = useState<Blob | null>(null)
   const [isPrintModalOpen, setIsPrintModalOpen] = useState(false)
+  saveRecievedCard({
+    cardId: cardRecord.id,
+  })
   return (
     <>
       <div className={styles.container}>
