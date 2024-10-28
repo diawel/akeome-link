@@ -73,6 +73,7 @@ const Renderer = ({
         <Card
           layout={layout}
           userImages={userImages}
+          maxFormat="original"
           randomVariants={randomSeed !== undefined ? 'revealed' : 'hidden'}
           randomSeed={randomSeed}
           proxy

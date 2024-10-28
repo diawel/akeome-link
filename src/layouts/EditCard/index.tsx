@@ -83,7 +83,6 @@ const EditCard = () => {
         <Card
           layout={cardLayout}
           userImages={userImages}
-          maxFormat="medium"
           edit={{
             isAnyFocused,
             setIsAnyFocused,

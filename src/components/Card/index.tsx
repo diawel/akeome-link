@@ -85,7 +85,7 @@ export type CardProps = {
 const Card = ({
   layout,
   userImages,
-  maxFormat,
+  maxFormat = 'large',
   edit,
   proxy,
   randomVariants = 'hidden',
