@@ -37,7 +37,7 @@ const Detail = ({ cardRecord }: DetailProps) => {
                 cardRecord.attributes.userImages.data
               )}
               maxFormat="thumbnail"
-              randomVariants="revealing"
+              randomVariants="hidden"
             />
           </div>
         </div>

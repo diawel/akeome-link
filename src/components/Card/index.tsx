@@ -306,7 +306,10 @@ const Card = ({
                       (sticker) => sticker.id === stickerId
                     )
                     if (!sticker) return null
-                    if (sticker.attributes.randomVariants.data) {
+                    if (
+                      randomVariants !== 'hidden' &&
+                      sticker.attributes.randomVariants.data
+                    ) {
                       const variant = random.nextInt(
                         0,
                         sticker.attributes.randomVariants.data.length - 1
