@@ -13,7 +13,6 @@ export const control = style({
   gap: 16,
   padding: 16,
   alignItems: 'center',
-  justifyContent: 'center',
 })
 
 export const sticker = style({

@@ -36,6 +36,8 @@ const Detail = ({ cardRecord }: DetailProps) => {
               userImages={mediaRecordsToUrlSet(
                 cardRecord.attributes.userImages.data
               )}
+              maxFormat="thumbnail"
+              randomVariants="revealing"
             />
           </div>
         </div>

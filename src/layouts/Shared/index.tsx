@@ -54,6 +54,7 @@ const Shared = ({ cardRecord, cardCreatorId, strapiUserId }: SharedProps) => {
                 userImages={mediaRecordsToUrlSet(
                   cardRecord.attributes.userImages.data
                 )}
+                randomVariants="revealing"
               />
             </div>
             <div className={styles.control}>
