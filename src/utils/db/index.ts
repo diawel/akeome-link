@@ -17,6 +17,6 @@ class Default extends Dexie {
 
 const db = new Default()
 
-export const addLocalReceivedCard = async (record: ReceivedCard) => {
+export const putLocalReceivedCard = async (record: ReceivedCard) => {
   await db.receivedCard.put(record)
 }

@@ -10,19 +10,31 @@ import Link from 'next/link'
 import Renderer from '../../components/Card/Renderer'
 import { useEffect, useState } from 'react'
 import Print from '../../components/Print'
-import { saveReceivedCard } from '../../utils/receivedCard'
+import { addUniqueReceivedCard } from '../../utils/strapi/receivedCard'
+import { putLocalReceivedCard } from '../../utils/db'
 
 type SharedProps = {
   cardRecord: StrapiRecord<CardAttributes>
+  strapiUserId: number | undefined
 }
 
-const Shared = ({ cardRecord }: SharedProps) => {
+const Shared = ({ cardRecord, strapiUserId }: SharedProps) => {
   const [renderedImage, setRenderedImage] = useState<Blob | null>(null)
   const [isPrintModalOpen, setIsPrintModalOpen] = useState(false)
 
   useEffect(() => {
-    saveReceivedCard({ cardId: cardRecord.id })
-  }, [cardRecord.id])
+    if (!strapiUserId) {
+      putLocalReceivedCard({
+        cardId: cardRecord.id,
+      })
+    } else if (strapiUserId !== cardRecord.attributes.creator.data.id) {
+      addUniqueReceivedCard({
+        card: {
+          id: cardRecord.id,
+        },
+      })
+    }
+  }, [cardRecord.attributes.creator.data.id, cardRecord.id, strapiUserId])
 
   return (
     <>
@@ -30,9 +42,9 @@ const Shared = ({ cardRecord }: SharedProps) => {
         <div className={styles.screen}>
           <div className={styles.content}>
             <div className={styles.title}>
-              {cardRecord.attributes.creatorName} さんから
-              <br />
-              年賀状を受け取りました
+              {strapiUserId === cardRecord.attributes.creator.data.id
+                ? '共有した年賀状のプレビュー'
+                : `${cardRecord.attributes.creatorName} さんから年賀状を受け取りました`}
             </div>
             <div className={styles.cardContainer}>
               <Card
