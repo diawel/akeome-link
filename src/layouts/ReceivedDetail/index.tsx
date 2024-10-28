@@ -13,11 +13,13 @@ import Print from '../../components/Print'
 
 type ReceivedDetailProps = {
   cardRecord: StrapiRecord<Omit<CardAttributes, 'creator'>>
+  randomSeed: number
 }
 
-const ReceivedDetail = ({ cardRecord }: ReceivedDetailProps) => {
+const ReceivedDetail = ({ cardRecord, randomSeed }: ReceivedDetailProps) => {
   const [renderedImage, setRenderedImage] = useState<Blob | null>(null)
   const [isPrintModalOpen, setIsPrintModalOpen] = useState(false)
+
   return (
     <>
       <div className={styles.container}>
@@ -36,6 +38,7 @@ const ReceivedDetail = ({ cardRecord }: ReceivedDetailProps) => {
                   cardRecord.attributes.userImages.data
                 )}
                 randomVariants="revealing"
+                randomSeed={randomSeed}
               />
             </div>
             <div className={styles.control}>
