@@ -11,6 +11,7 @@ import { MediaAttributes } from './media'
 import { authOptions } from '../../app/api/auth/[...nextauth]/authOptions'
 import { stringify } from 'qs'
 import { CardLayout } from '../../components/Card'
+import { UserAttributes } from './user'
 
 export type CardAttributes = {
   title: string
@@ -20,7 +21,7 @@ export type CardAttributes = {
   updatedAt: string
   publishedAt: string
   userImages: { data: StrapiRecord<MediaAttributes>[] }
-  creator: { data: StrapiRecord<{ id: string }> }
+  creator: { data: StrapiRecord<UserAttributes> }
 }
 
 export const getCard = async (id: number) => {
@@ -44,6 +45,44 @@ export const getCard = async (id: number) => {
 
     const card: StrapiApiResponse<CardAttributes> = await strapiResponse.json()
     return card
+  } catch (error) {
+    throw error
+  }
+}
+
+export const getPublicCard = async (id: number) => {
+  try {
+    const strapiResponse = await fetch(
+      `${
+        process.env.NEXT_PUBLIC_STRAPI_BACKEND_URL
+      }/api/cards/${id}?${stringify({
+        populate: ['creator', 'userImages'],
+      })}`,
+      {
+        cache: 'no-cache',
+        headers: {
+          Authorization: `Bearer ${process.env.STRAPI_API_TOKEN}`,
+        },
+      }
+    )
+    if (!strapiResponse.ok) {
+      return undefined
+    }
+
+    const card: StrapiApiResponse<CardAttributes> = await strapiResponse.json()
+    return {
+      data: {
+        ...card.data,
+        attributes: {
+          ...card.data.attributes,
+          creator: {
+            data: {
+              id: card.data.attributes.creator.data.id,
+            },
+          },
+        },
+      },
+    }
   } catch (error) {
     throw error
   }

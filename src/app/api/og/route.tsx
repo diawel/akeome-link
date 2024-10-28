@@ -1,6 +1,6 @@
 import { ImageResponse } from 'next/og'
 import { NextResponse } from 'next/server'
-import { getCard } from '../../../utils/strapi/card'
+import { getPublicCard } from '../../../utils/strapi/card'
 
 export const GET = async (request: Request) => {
   const { searchParams } = new URL(request.url)
@@ -13,7 +13,7 @@ export const GET = async (request: Request) => {
     )
   }
 
-  const card = await getCard(parseInt(cardId, 10))
+  const card = await getPublicCard(parseInt(cardId, 10))
 
   return new ImageResponse(
     (
