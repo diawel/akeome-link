@@ -55,9 +55,15 @@ const Shared = ({ cardRecord, strapiUserId }: SharedProps) => {
               />
             </div>
             <div className={styles.control}>
-              <Link className={styles.primaryButton} href="/create/new">
-                年賀状を作ってみる
-              </Link>
+              {strapiUserId ? (
+                <Link className={styles.primaryButton} href="/receive/list">
+                  もらった年賀状一覧へ
+                </Link>
+              ) : (
+                <Link className={styles.primaryButton} href="/create/new">
+                  年賀状を作ってみる
+                </Link>
+              )}
               <button
                 className={
                   styles.seconradyButton[renderedImage ? 'default' : 'disabled']
