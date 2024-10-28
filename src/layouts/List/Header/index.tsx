@@ -6,7 +6,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 
 type HeaderProps = {
-  activeTab: 'created' | 'recieved'
+  activeTab: 'created' | 'received'
 }
 
 const Header: React.FC<HeaderProps> = ({ activeTab }) => {
@@ -36,9 +36,9 @@ const Header: React.FC<HeaderProps> = ({ activeTab }) => {
           つくった
         </Link>
         <Link
-          href="/recieve/list"
+          href="/receive/list"
           className={`${styles.tab} ${
-            activeTab === 'recieved' ? styles.activeTab : ''
+            activeTab === 'received' ? styles.activeTab : ''
           }`}
         >
           もらった

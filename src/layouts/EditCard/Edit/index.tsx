@@ -4,7 +4,7 @@ import * as styles from './index.css'
 import { FaImage, FaNoteSticky } from 'react-icons/fa6'
 import { useStickers } from '../../../app/StickerProvider'
 import { uploadMedia } from '../../../utils/strapi/media'
-import { getImageUrl } from '../../../utils/strapiImage'
+import { getImageUrl } from '../../../utils/strapi/strapiImage'
 
 type EditProps = {
   cardLayout: React.ComponentProps<typeof Card>['layout']

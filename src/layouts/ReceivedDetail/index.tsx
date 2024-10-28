@@ -4,18 +4,18 @@ import { FaDownload, FaPrint } from 'react-icons/fa6'
 import Card from '../../components/Card'
 import { StrapiRecord } from '../../utils/strapi'
 import { CardAttributes } from '../../utils/strapi/card'
-import { mediaRecordsToUrlSet } from '../../utils/strapiImage'
+import { mediaRecordsToUrlSet } from '../../utils/strapi/strapiImage'
 import * as styles from './index.css'
 import Link from 'next/link'
 import Renderer from '../../components/Card/Renderer'
 import { useState } from 'react'
 import Print from '../../components/Print'
 
-type RecievedDetailProps = {
+type ReceivedDetailProps = {
   cardRecord: StrapiRecord<Omit<CardAttributes, 'creator'>>
 }
 
-const RecievedDetail = ({ cardRecord }: RecievedDetailProps) => {
+const ReceivedDetail = ({ cardRecord }: ReceivedDetailProps) => {
   const [renderedImage, setRenderedImage] = useState<Blob | null>(null)
   const [isPrintModalOpen, setIsPrintModalOpen] = useState(false)
   return (
@@ -23,7 +23,7 @@ const RecievedDetail = ({ cardRecord }: RecievedDetailProps) => {
       <div className={styles.container}>
         <div className={styles.screen}>
           <div className={styles.metaContainer}>
-            <Link href="/recieve/list">戻る</Link>
+            <Link href="/receive/list">戻る</Link>
           </div>
           <div className={styles.content}>
             <div className={styles.title}>
@@ -90,4 +90,4 @@ const RecievedDetail = ({ cardRecord }: RecievedDetailProps) => {
   )
 }
 
-export default RecievedDetail
+export default ReceivedDetail

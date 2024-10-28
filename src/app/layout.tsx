@@ -4,6 +4,7 @@ import * as styles from './layout.css'
 import StickerProvider from './StickerProvider'
 import { getStickers } from '../utils/strapi/sticker'
 import ClientSessionProvider from './ClientSessionProvider'
+import StrapiAdoper from '../utils/db/StrapiAdaper'
 
 export const metadata: Metadata = {
   title: 'あけおめリンク',
@@ -25,13 +26,14 @@ const Layout = async ({
   return (
     <html lang="ja">
       <body className={styles.container}>
-        <div className={styles.display}>
-          <div className={styles.inner}>
-            <StickerProvider stickers={(await getStickers()).data}>
-              <ClientSessionProvider>{children}</ClientSessionProvider>
-            </StickerProvider>
-          </div>
-        </div>
+        <ClientSessionProvider>
+          <StickerProvider stickers={(await getStickers()).data}>
+            <div className={styles.display}>
+              <div className={styles.inner}>{children}</div>
+            </div>
+          </StickerProvider>
+          <StrapiAdoper />
+        </ClientSessionProvider>
       </body>
     </html>
   )

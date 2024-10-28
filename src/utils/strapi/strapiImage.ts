@@ -1,5 +1,5 @@
-import { StrapiRecord } from './strapi'
-import { MediaAttributes } from './strapi/media'
+import { StrapiRecord } from '.'
+import { MediaAttributes } from './media'
 
 type MinimumImage = {
   url: string

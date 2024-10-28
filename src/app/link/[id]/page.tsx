@@ -1,6 +1,8 @@
 import { redirect } from 'next/navigation'
 import { getCard } from '../../../utils/strapi/card'
 import Shared from '../../../layouts/Shared'
+import { getServerSession } from 'next-auth'
+import { authOptions } from '../../api/auth/[...nextauth]/authOptions'
 
 export const generateMetadata = async ({
   params,
@@ -18,11 +20,12 @@ export const generateMetadata = async ({
 
 const Page = async ({ params }: { params: { id: string } }) => {
   const card = await getCard(parseInt(params.id, 10))
-  if (!card) {
-    redirect('/')
-  }
+  const session = await getServerSession(authOptions)
+  if (!card) redirect('/')
 
-  return <Shared cardRecord={card.data} />
+  return (
+    <Shared cardRecord={card.data} strapiUserId={session?.user.strapiUserId} />
+  )
 }
 
 export default Page
