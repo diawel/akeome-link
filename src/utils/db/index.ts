@@ -1,22 +1,22 @@
 import Dexie, { Table } from 'dexie'
 
-export type RecievedCard = {
+export type ReceivedCard = {
   cardId: number
 }
 
 class Default extends Dexie {
-  recievedCard!: Table<RecievedCard>
+  receivedCard!: Table<ReceivedCard>
 
   constructor() {
     super('app')
     this.version(1).stores({
-      recievedCard: 'cardId',
+      receivedCard: 'cardId',
     })
   }
 }
 
 const db = new Default()
 
-export const addLocalRecievedCard = async (record: RecievedCard) => {
-  await db.recievedCard.put(record)
+export const addLocalReceivedCard = async (record: ReceivedCard) => {
+  await db.receivedCard.put(record)
 }

@@ -1,8 +1,8 @@
 'use server'
 
-export const reservePrint = async (recievedFormData: FormData) => {
-  const userAgent = recievedFormData.get('userAgent')
-  const file = recievedFormData.get('file')
+export const reservePrint = async (receivedFormData: FormData) => {
+  const userAgent = receivedFormData.get('userAgent')
+  const file = receivedFormData.get('file')
   if (!userAgent || !file) {
     throw new Error('Invalid form data')
   }

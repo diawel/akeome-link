@@ -1,16 +1,16 @@
-import { addLocalRecievedCard } from './db'
+import { addLocalReceivedCard } from './db'
 import { useEffect } from 'react'
-import { addUniqueRecievedCard } from './strapi/recievedCard'
+import { addUniqueReceivedCard } from './strapi/receivedCard'
 
-export const saveRecievedCard = async ({ cardId }: { cardId: number }) => {
+export const saveReceivedCard = async ({ cardId }: { cardId: number }) => {
   useEffect(() => {
-    const strapiResponse = addUniqueRecievedCard({
+    const strapiResponse = addUniqueReceivedCard({
       card: {
         id: cardId,
       },
     })
     if (!strapiResponse) {
-      addLocalRecievedCard({
+      addLocalReceivedCard({
         cardId,
       })
     }

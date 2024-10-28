@@ -6,10 +6,10 @@ import { getCreatedCards } from '../../utils/strapi/card'
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
 import { mediaRecordsToUrlSet } from '../../utils/strapiImage'
-import { getRecievedCards } from '../../utils/strapi/recievedCard'
+import { getReceivedCards } from '../../utils/strapi/receivedCard'
 
 type ListProps = {
-  tab: 'created' | 'recieved'
+  tab: 'created' | 'received'
 }
 
 const List = async ({ tab }: ListProps) => {
@@ -71,9 +71,9 @@ const List = async ({ tab }: ListProps) => {
       </div>
     )
   }
-  if (tab === 'recieved') {
-    const recievedCards = await getRecievedCards()
-    if (!recievedCards) {
+  if (tab === 'received') {
+    const receivedCards = await getReceivedCards()
+    if (!receivedCards) {
       redirect('/')
     }
     return (
@@ -81,33 +81,33 @@ const List = async ({ tab }: ListProps) => {
         <Header activeTab={tab} />
         <div className={styles.container}>
           <div className={styles.cardContainer}>
-            {recievedCards.data.map((recievedCard, index) => {
+            {receivedCards.data.map((receivedCard, index) => {
               if (
-                !recievedCard.attributes.card ||
-                !recievedCard.attributes.card.data
+                !receivedCard.attributes.card ||
+                !receivedCard.attributes.card.data
               ) {
                 return null
               }
               return (
                 <div className={styles.content} key={index}>
                   <Link
-                    href={`/recieve/detail/${recievedCard.id}`}
+                    href={`/receive/detail/${receivedCard.id}`}
                     className={styles.cardLink}
                   >
                     <div className={styles.card}>
                       <Card
                         layout={
-                          recievedCard.attributes.card.data.attributes.layout
+                          receivedCard.attributes.card.data.attributes.layout
                         }
                         userImages={mediaRecordsToUrlSet(
-                          recievedCard.attributes.card.data.attributes
+                          receivedCard.attributes.card.data.attributes
                             .userImages.data
                         )}
                         maxFormat="thumbnail"
                       />
                     </div>
                     <div className={styles.cardTitle}>
-                      {recievedCard.attributes.card.data.attributes.title}
+                      {receivedCard.attributes.card.data.attributes.title}
                     </div>
                   </Link>
                 </div>

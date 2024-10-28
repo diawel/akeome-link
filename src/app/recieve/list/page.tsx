@@ -11,7 +11,7 @@ const Page: NextPage = () => {
     redirect('/')
   }
 
-  return <List tab="recieved" />
+  return <List tab="received" />
 }
 
 export default Page

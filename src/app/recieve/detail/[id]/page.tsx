@@ -1,15 +1,15 @@
 import { redirect } from 'next/navigation'
-import { getRecievedCard } from '../../../../utils/strapi/recievedCard'
-import RecievedDetail from '../../../../layouts/RecievedDetail'
+import { getReceivedCard } from '../../../../utils/strapi/receivedCard'
+import ReceivedDetail from '../../../../layouts/ReceivedDetail'
 
 const Page = async ({ params }: { params: { id: string } }) => {
-  const card = await getRecievedCard(parseInt(params.id, 10))
+  const card = await getReceivedCard(parseInt(params.id, 10))
 
   if (!card?.data.attributes.card.data) {
-    redirect('/recieve/list')
+    redirect('/receive/list')
   }
 
-  return <RecievedDetail cardRecord={card.data.attributes.card.data} />
+  return <ReceivedDetail cardRecord={card.data.attributes.card.data} />
 }
 
 export default Page
