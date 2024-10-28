@@ -107,7 +107,7 @@ const List = async ({ tab }: ListProps) => {
                       />
                     </div>
                     <div className={styles.cardTitle}>
-                      {receivedCard.attributes.card.data.attributes.title}
+                      {receivedCard.attributes.card.data.attributes.creatorName}
                     </div>
                   </Link>
                 </div>
