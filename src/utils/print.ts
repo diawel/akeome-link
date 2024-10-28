@@ -56,7 +56,7 @@ export const reservePrint = async (recievedFormData: FormData) => {
   }
 }
 
-async function blobToBase64(blob: Blob): Promise<string> {
+const blobToBase64 = async (blob: Blob) => {
   const arrayBuffer = await blob.arrayBuffer()
   const buffer = Buffer.from(arrayBuffer)
   return `data:${blob.type};base64,${buffer.toString('base64')}`
