@@ -26,6 +26,7 @@ const Shared = ({ cardRecord, strapiUserId }: SharedProps) => {
     if (!strapiUserId) {
       putLocalReceivedCard({
         cardId: cardRecord.id,
+        creatorId: cardRecord.attributes.creator.data.id,
       })
     } else if (strapiUserId !== cardRecord.attributes.creator.data.id) {
       addUniqueReceivedCard({
