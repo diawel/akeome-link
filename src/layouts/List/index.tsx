@@ -49,7 +49,7 @@ const List = async ({ tab }: ListProps) => {
                         userImages={mediaRecordsToUrlSet(
                           card.attributes.userImages.data
                         )}
-                        maxFormat="thumbnail"
+                        maxFormat="small"
                       />
                     </div>
                     <div className={styles.cardTitle}>
@@ -103,7 +103,7 @@ const List = async ({ tab }: ListProps) => {
                           receivedCard.attributes.card.data.attributes
                             .userImages.data
                         )}
-                        maxFormat="thumbnail"
+                        maxFormat="small"
                       />
                     </div>
                     <div className={styles.cardTitle}>

@@ -59,6 +59,9 @@ export const stickerContainer = style({
   position: 'relative',
   width: 160,
   height: 160,
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
 })
 
 const layeredStickerContainerBase = style({

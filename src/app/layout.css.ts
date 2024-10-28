@@ -2,7 +2,7 @@ import { style } from '@vanilla-extract/css'
 
 export const container = style({
   display: 'flex',
-  height: '100svh',
+  height: '100dvh',
   width: '100%',
   justifyContent: 'center',
   alignItems: 'center',
