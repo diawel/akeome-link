@@ -14,9 +14,10 @@ type RendererProps = {
     urlSet: ImageUrlSet
   }[]
   onRender: (image: Blob) => void
+  seed?: number
 }
 
-const Renderer = ({ layout, userImages, onRender }: RendererProps) => {
+const Renderer = ({ layout, userImages, onRender, seed }: RendererProps) => {
   const containerRef = useRef<HTMLDivElement>(null)
   const animationFrameRef = useRef<number | null>(null)
   const [isRendered, setIsRendered] = useState(false)
@@ -69,6 +70,7 @@ const Renderer = ({ layout, userImages, onRender }: RendererProps) => {
           userImages={userImages}
           randomVariants="revealed"
           proxy
+          seed={seed}
         />
       </div>
     </>
