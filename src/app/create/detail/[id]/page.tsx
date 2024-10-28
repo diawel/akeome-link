@@ -1,12 +1,12 @@
 import { redirect } from 'next/navigation'
 import Detail from '../../../../layouts/Detail'
-import { getCard } from '../../../../utils/strapi/card'
+import { getPrivateCard } from '../../../../utils/strapi/card'
 
 const Page = async ({ params }: { params: { id: number } }) => {
-  const cardResponse = await getCard(params.id)
+  const cardResponse = await getPrivateCard(params.id)
 
   if (!cardResponse) {
-    redirect('/')
+    redirect('/create/list')
   }
 
   return <Detail cardRecord={cardResponse.data} />
