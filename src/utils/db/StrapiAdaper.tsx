@@ -14,14 +14,13 @@ const StrapiAdaper = () => {
       Promise.all(
         localReceivedCards
           .filter(
-            (recievedCard) =>
-              session.data.user.strapiUserId !== recievedCard.creatorId
+            (receivedCard) =>
+              session.data.user.strapiUserId !== receivedCard.creatorId
           )
-          .map((recievedCard) =>
+          .map((receivedCard) =>
             addUniqueReceivedCard({
-              card: {
-                id: recievedCard.cardId,
-              },
+              cardId: receivedCard.cardId,
+              randomSeed: receivedCard.randomSeed,
             })
           )
       ).then(() => {

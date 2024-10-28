@@ -14,9 +14,15 @@ type RendererProps = {
     urlSet: ImageUrlSet
   }[]
   onRender: (image: Blob) => void
+  randomSeed?: number
 }
 
-const Renderer = ({ layout, userImages, onRender }: RendererProps) => {
+const Renderer = ({
+  layout,
+  userImages,
+  onRender,
+  randomSeed,
+}: RendererProps) => {
   const containerRef = useRef<HTMLDivElement>(null)
   const animationFrameRef = useRef<number | null>(null)
   const [isRendered, setIsRendered] = useState(false)
@@ -64,7 +70,13 @@ const Renderer = ({ layout, userImages, onRender }: RendererProps) => {
   return (
     <>
       <div ref={containerRef} className={styles.container}>
-        <Card layout={layout} userImages={userImages} proxy />
+        <Card
+          layout={layout}
+          userImages={userImages}
+          randomVariants={randomSeed !== undefined ? 'revealed' : 'hidden'}
+          randomSeed={randomSeed}
+          proxy
+        />
       </div>
     </>
   )

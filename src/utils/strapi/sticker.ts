@@ -11,13 +11,16 @@ export type StickerAttributes = {
   image: {
     data: StrapiRecord<MediaAttributes>
   }
+  randomVariants: {
+    data: StrapiRecord<MediaAttributes>[] | null
+  }
 }
 
 export const getStickers = async () => {
   try {
     const strapiResponse = await fetch(
       `${process.env.NEXT_PUBLIC_STRAPI_BACKEND_URL}/api/stickers?${stringify({
-        populate: ['image'],
+        populate: ['image', 'randomVariants'],
       })}`,
       {
         cache: 'no-cache',

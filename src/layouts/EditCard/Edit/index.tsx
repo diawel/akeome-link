@@ -82,6 +82,7 @@ const Edit = ({
             {stickers.map((sticker) => (
               <button
                 key={sticker.id}
+                className={styles.stickerButton}
                 onClick={() => {
                   setCardLayout([
                     ...cardLayout,

@@ -13,13 +13,22 @@ export const control = style({
   gap: 16,
   padding: 16,
   alignItems: 'center',
+  width: 'fit-content',
+  height: '100%',
+})
+
+export const stickerButton = style({
+  height: '100%',
+  display: 'flex',
   justifyContent: 'center',
+  alignItems: 'center',
+  border: 'none',
+  backgroundColor: 'transparent',
 })
 
 export const sticker = style({
-  width: 72,
-  height: 72,
-  objectFit: 'contain',
+  width: 'auto',
+  height: '100%',
 })
 
 export const nav = style({

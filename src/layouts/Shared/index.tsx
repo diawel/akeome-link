@@ -22,21 +22,24 @@ type SharedProps = {
 const Shared = ({ cardRecord, cardCreatorId, strapiUserId }: SharedProps) => {
   const [renderedImage, setRenderedImage] = useState<Blob | null>(null)
   const [isPrintModalOpen, setIsPrintModalOpen] = useState(false)
+  const [randomSeed, setSeed] = useState<number | undefined>(undefined)
 
   useEffect(() => {
     if (!strapiUserId) {
       putLocalReceivedCard({
         cardId: cardRecord.id,
         creatorId: cardCreatorId,
-      })
+      }).then((record) => setSeed(record?.randomSeed))
     } else if (strapiUserId !== cardCreatorId) {
       addUniqueReceivedCard({
-        card: {
-          id: cardRecord.id,
-        },
-      })
+        cardId: cardRecord.id,
+      }).then((record) => setSeed(record?.data.attributes.randomSeed))
+    } else {
+      setSeed(10000000 + Math.floor(Math.random() * 90000000))
     }
   }, [cardCreatorId, cardRecord.id, strapiUserId])
+
+  if (!randomSeed) return null
 
   return (
     <>
@@ -54,6 +57,8 @@ const Shared = ({ cardRecord, cardCreatorId, strapiUserId }: SharedProps) => {
                 userImages={mediaRecordsToUrlSet(
                   cardRecord.attributes.userImages.data
                 )}
+                randomVariants="revealing"
+                randomSeed={randomSeed}
               />
             </div>
             <div className={styles.control}>
@@ -113,6 +118,7 @@ const Shared = ({ cardRecord, cardCreatorId, strapiUserId }: SharedProps) => {
         layout={cardRecord.attributes.layout}
         userImages={mediaRecordsToUrlSet(cardRecord.attributes.userImages.data)}
         onRender={(image) => setRenderedImage(image)}
+        randomSeed={randomSeed}
       />
     </>
   )

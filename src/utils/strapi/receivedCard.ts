@@ -18,6 +18,7 @@ export type ReceivedCardAttributes = {
   publishedAt: string
   card: { data: StrapiRecord<Omit<CardAttributes, 'creator'>> | null }
   receiver: { data: StrapiRecord<UserAttributes> | null }
+  randomSeed: number
 }
 
 export const getReceivedCard = async (id: number) => {
@@ -147,11 +148,11 @@ export const getReceivedCardByCardId = async (cardId: number) => {
 }
 
 export const addUniqueReceivedCard = async ({
-  card,
+  cardId,
+  randomSeed,
 }: {
-  card: {
-    id: number
-  }
+  cardId: number
+  randomSeed?: number
 }) => {
   const session = await getServerSession(authOptions)
 
@@ -160,7 +161,7 @@ export const addUniqueReceivedCard = async ({
   }
 
   try {
-    const existingReceivedCards = await getReceivedCardByCardId(card.id)
+    const existingReceivedCards = await getReceivedCardByCardId(cardId)
     if (existingReceivedCards?.data.length) {
       return { data: existingReceivedCards.data[0] }
     }
@@ -174,9 +175,10 @@ export const addUniqueReceivedCard = async ({
         },
         body: JSON.stringify({
           data: {
-            card: card.id,
+            card: cardId,
             receiver: session.user.strapiUserId,
-            randomSeed: 0,
+            randomSeed:
+              randomSeed ?? 10000000 + Math.floor(Math.random() * 90000000),
           },
         }),
       }
