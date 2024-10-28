@@ -10,7 +10,7 @@ import Link from 'next/link'
 import Renderer from '../../components/Card/Renderer'
 import { useState } from 'react'
 import Print from '../../components/Print'
-import { saveRecievedCard } from '../../utils/db'
+import { saveRecievedCard } from '../../utils/recievedCard'
 
 type SharedProps = {
   cardRecord: StrapiRecord<CardAttributes>

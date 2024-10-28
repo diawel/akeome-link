@@ -1,6 +1,6 @@
 import Dexie, { Table } from 'dexie'
 
-type RecievedCard = {
+export type RecievedCard = {
   cardId: number
 }
 
@@ -17,6 +17,6 @@ class Default extends Dexie {
 
 const db = new Default()
 
-export const saveRecievedCard = async (record: RecievedCard) => {
+export const addLocalRecievedCard = async (record: RecievedCard) => {
   await db.recievedCard.put(record)
 }
