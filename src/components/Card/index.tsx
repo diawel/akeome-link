@@ -7,7 +7,11 @@ import rotateIcon from './icon-rotate.svg'
 import removeIcon from './icon-remove.svg'
 import Image from 'next/image'
 import { useStickers } from '../../app/StickerProvider'
-import { getImageUrl, ImageFormat, ImageUrlSet } from '../../utils/strapiImage'
+import {
+  getImageUrl,
+  ImageFormat,
+  ImageUrlSet,
+} from '../../utils/strapi/strapiImage'
 
 export type CardLayout = {
   container: {

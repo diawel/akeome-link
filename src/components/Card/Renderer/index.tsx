@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react'
 import Card, { CardLayout } from '..'
-import { ImageUrlSet } from '../../../utils/strapiImage'
+import { ImageUrlSet } from '../../../utils/strapi/strapiImage'
 import * as styles from './index.css'
 import * as catdStyles from '../index.css'
 import html2canvas from 'html2canvas'

@@ -5,7 +5,7 @@ import Card from '../../components/Card'
 import { getCreatedCards } from '../../utils/strapi/card'
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
-import { mediaRecordsToUrlSet } from '../../utils/strapiImage'
+import { mediaRecordsToUrlSet } from '../../utils/strapi/strapiImage'
 import { getReceivedCards } from '../../utils/strapi/receivedCard'
 
 type ListProps = {
