@@ -31,9 +31,9 @@ const Shared = ({ cardRecord, cardCreatorId, strapiUserId }: SharedProps) => {
         creatorId: cardCreatorId,
       }).then((record) => setSeed(record?.randomSeed))
     } else if (strapiUserId !== cardCreatorId) {
-      addUniqueReceivedCard(cardRecord.id).then((record) =>
-        setSeed(record?.data.attributes.randomSeed)
-      )
+      addUniqueReceivedCard({
+        cardId: cardRecord.id,
+      }).then((record) => setSeed(record?.data.attributes.randomSeed))
     } else {
       setSeed(10000000 + Math.floor(Math.random() * 90000000))
     }

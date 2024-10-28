@@ -147,7 +147,13 @@ export const getReceivedCardByCardId = async (cardId: number) => {
   }
 }
 
-export const addUniqueReceivedCard = async (cardId: number) => {
+export const addUniqueReceivedCard = async ({
+  cardId,
+  randomSeed,
+}: {
+  cardId: number
+  randomSeed?: number
+}) => {
   const session = await getServerSession(authOptions)
 
   if (!session) {
@@ -171,7 +177,8 @@ export const addUniqueReceivedCard = async (cardId: number) => {
           data: {
             card: cardId,
             receiver: session.user.strapiUserId,
-            randomSeed: 10000000 + Math.floor(Math.random() * 90000000),
+            randomSeed:
+              randomSeed ?? 10000000 + Math.floor(Math.random() * 90000000),
           },
         }),
       }
