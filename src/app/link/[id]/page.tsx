@@ -21,9 +21,7 @@ export const generateMetadata = async ({
 const Page = async ({ params }: { params: { id: string } }) => {
   const card = await getCard(parseInt(params.id, 10))
   const session = await getServerSession(authOptions)
-  if (!card) {
-    redirect('/')
-  }
+  if (!card) redirect('/')
 
   return (
     <Shared cardRecord={card.data} strapiUserId={session?.user.strapiUserId} />
