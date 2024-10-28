@@ -24,13 +24,25 @@ export type CardAttributes = {
   creator: { data: StrapiRecord<UserAttributes> }
 }
 
-export const getCard = async (id: number) => {
+export const getPrivateCard = async (id: number) => {
   try {
+    const session = await getServerSession(authOptions)
+    if (!session) {
+      return undefined
+    }
+
     const strapiResponse = await fetch(
       `${
         process.env.NEXT_PUBLIC_STRAPI_BACKEND_URL
       }/api/cards/${id}?${stringify({
         populate: ['creator', 'userImages'],
+        filter: {
+          creator: {
+            id: {
+              $eq: session.user.strapiUserId,
+            },
+          },
+        },
       })}`,
       {
         cache: 'no-cache',
@@ -44,6 +56,10 @@ export const getCard = async (id: number) => {
     }
 
     const card: StrapiApiResponse<CardAttributes> = await strapiResponse.json()
+    if (card.data.attributes.creator.data.id !== session.user.strapiUserId) {
+      return undefined
+    }
+
     return card
   } catch (error) {
     throw error
