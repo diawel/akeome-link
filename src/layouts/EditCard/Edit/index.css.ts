@@ -24,11 +24,18 @@ export const stickerButton = style({
   alignItems: 'center',
   border: 'none',
   backgroundColor: 'transparent',
+  position: 'relative',
 })
 
 export const sticker = style({
   width: 'auto',
   height: '100%',
+})
+
+export const stickerLabel = style({
+  position: 'absolute',
+  top: 0,
+  right: 0,
 })
 
 export const nav = style({
