@@ -5,6 +5,8 @@ import { FaImage, FaNoteSticky } from 'react-icons/fa6'
 import { useStickers } from '../../../app/StickerProvider'
 import { uploadMedia } from '../../../utils/strapi/media'
 import { getImageUrl } from '../../../utils/strapi/strapiImage'
+import randomLabel from './random-label.svg'
+import Image from 'next/image'
 
 type EditProps = {
   cardLayout: React.ComponentProps<typeof Card>['layout']
@@ -112,6 +114,13 @@ const Edit = ({
                   )}
                   alt=""
                 />
+                {sticker.attributes.randomVariants.data?.length && (
+                  <Image
+                    className={styles.stickerLabel}
+                    src={randomLabel}
+                    alt="おみくじ対応"
+                  />
+                )}
               </button>
             ))}
           </div>
