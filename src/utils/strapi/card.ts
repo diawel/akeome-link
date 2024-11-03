@@ -154,14 +154,17 @@ export const addCard = async ({
   title,
   creatorName,
   userImages,
-  layout,
+  view,
 }: {
   title: string
   creatorName: string
   userImages: {
     id: number
   }[]
-  layout: CardLayout
+  view: {
+    layout: CardLayout
+    background: CardBackground
+  }
 }) => {
   const session = await getServerSession(authOptions)
 
@@ -182,7 +185,7 @@ export const addCard = async ({
           data: {
             title,
             creatorName,
-            layout: layout,
+            view,
             creator: session.user.strapiUserId,
             userImages: userImages.map((userImage) => userImage.id),
           },
