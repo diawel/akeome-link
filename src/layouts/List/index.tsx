@@ -45,7 +45,8 @@ const List = async ({ tab }: ListProps) => {
                   >
                     <div className={styles.card}>
                       <Card
-                        layout={card.attributes.layout}
+                        layout={card.attributes.view.layout}
+                        background={card.attributes.view.background}
                         userImages={mediaRecordsToUrlSet(
                           card.attributes.userImages.data
                         )}
@@ -97,7 +98,12 @@ const List = async ({ tab }: ListProps) => {
                     <div className={styles.card}>
                       <Card
                         layout={
-                          receivedCard.attributes.card.data.attributes.layout
+                          receivedCard.attributes.card.data.attributes.view
+                            .layout
+                        }
+                        background={
+                          receivedCard.attributes.card.data.attributes.view
+                            .background
                         }
                         userImages={mediaRecordsToUrlSet(
                           receivedCard.attributes.card.data.attributes

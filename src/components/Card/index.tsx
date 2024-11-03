@@ -13,6 +13,16 @@ import {
   ImageUrlSet,
 } from '../../utils/strapi/strapiImage'
 
+export type CardBackground =
+  | {
+      type: 'userImage'
+      id: number
+    }
+  | {
+      type: 'solid'
+      color: string
+    }
+
 export type CardLayout = {
   container: {
     x: number
@@ -67,13 +77,15 @@ class Random {
 
 export type CardProps = {
   layout: CardLayout
+  background: CardBackground
   userImages: {
     id: number
     urlSet: ImageUrlSet
   }[]
   maxFormat?: ImageFormat
   edit?: {
-    setLayout: (layout: CardProps['layout']) => void
+    setLayout: (layout: CardLayout) => void
+    setBackground: (background: CardBackground) => void
     isAnyFocused: boolean
     setIsAnyFocused: (isAnyFocused: boolean) => void
   }
@@ -84,6 +96,7 @@ export type CardProps = {
 
 const Card = ({
   layout,
+  background,
   userImages,
   maxFormat = 'large',
   edit,
@@ -249,6 +262,40 @@ const Card = ({
             onTouchStart={() => edit?.setIsAnyFocused(false)}
             ref={cardRef}
           >
+            <div className={styles.backgroundContainer}>
+              {background.type === 'userImage' ? (
+                (() => {
+                  const userImage = userImages.find(
+                    (userImage) => userImage.id === background.id
+                  )
+                  if (!userImage) return null
+                  const shortEdge = Math.min(
+                    userImage.urlSet.width / 100,
+                    userImage.urlSet.height / 148
+                  )
+                  const imageUrl = getImageUrl(userImage.urlSet, maxFormat)
+                  return (
+                    <img
+                      src={proxy ? `/api/proxy?url=${imageUrl}` : imageUrl}
+                      style={{
+                        width: `${
+                          (userImage.urlSet.width / 100 / shortEdge) * 100
+                        }%`,
+                        height: `${
+                          (userImage.urlSet.height / 148 / shortEdge) * 100
+                        }%`,
+                      }}
+                      alt=""
+                    />
+                  )
+                })()
+              ) : (
+                <div
+                  className={styles.solidBackground}
+                  style={{ backgroundColor: background.color }}
+                />
+              )}
+            </div>
             {layout.map((target, index) => {
               const isFocused =
                 edit && edit.isAnyFocused && index === layout.length - 1

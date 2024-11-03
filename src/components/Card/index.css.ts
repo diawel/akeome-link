@@ -31,12 +31,24 @@ export const sizerInner = style({
 export const card = style({
   width: 400,
   height: 592,
-  backgroundColor: '#fff',
   position: 'absolute',
   left: '50%',
   top: '50%',
   translate: '-50% -50%',
   userSelect: 'none',
+})
+
+export const backgroundContainer = style({
+  width: '100%',
+  height: '100%',
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+})
+
+export const solidBackground = style({
+  width: '100%',
+  height: '100%',
 })
 
 export const text = style({

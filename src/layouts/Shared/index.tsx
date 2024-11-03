@@ -53,7 +53,8 @@ const Shared = ({ cardRecord, cardCreatorId, strapiUserId }: SharedProps) => {
             </div>
             <div className={styles.cardContainer}>
               <Card
-                layout={cardRecord.attributes.layout}
+                layout={cardRecord.attributes.view.layout}
+                background={cardRecord.attributes.view.background}
                 userImages={mediaRecordsToUrlSet(
                   cardRecord.attributes.userImages.data
                 )}
@@ -115,7 +116,8 @@ const Shared = ({ cardRecord, cardCreatorId, strapiUserId }: SharedProps) => {
       </div>
 
       <Renderer
-        layout={cardRecord.attributes.layout}
+        layout={cardRecord.attributes.view.layout}
+        background={cardRecord.attributes.view.background}
         userImages={mediaRecordsToUrlSet(cardRecord.attributes.userImages.data)}
         onRender={(image) => setRenderedImage(image)}
         randomSeed={randomSeed}
