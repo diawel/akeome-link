@@ -38,6 +38,19 @@ export const card = style({
   userSelect: 'none',
 })
 
+export const backgroundContainer = style({
+  width: '100%',
+  height: '100%',
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+})
+
+export const solidBackground = style({
+  width: '100%',
+  height: '100%',
+})
+
 export const text = style({
   position: 'relative',
   fontSize: 16,

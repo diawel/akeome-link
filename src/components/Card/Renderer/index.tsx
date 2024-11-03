@@ -33,7 +33,7 @@ const Renderer = ({
     const checkLoadingProgress = () => {
       if (containerRef.current) {
         const images = containerRef.current?.querySelectorAll(
-          `.${catdStyles.userImageContainer} .${catdStyles.sticker}`
+          `.${catdStyles.card} .${catdStyles.backgroundContainer} > img, .${catdStyles.card} .${catdStyles.userImageContainer} > img, .${catdStyles.card} .${catdStyles.stickerContainer} > img`
         )
         const allCompleted =
           !images ||

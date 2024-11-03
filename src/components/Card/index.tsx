@@ -257,32 +257,45 @@ const Card = ({
             className={styles.card}
             style={{
               transform: `scale(${cardScale})`,
-              ...(background.type === 'solid'
-                ? {
-                    backgroundColor: background.color,
-                  }
-                : (() => {
-                    const userImage = userImages.find(
-                      (userImage) => userImage.id === background.id
-                    )
-                    if (!userImage)
-                      return {
-                        backgroundColor: '#ffffff',
-                      }
-                    const imageUrl = getImageUrl(userImage.urlSet, maxFormat)
-                    return {
-                      backgroundImage: `url(${
-                        proxy ? `/api/proxy?url=${imageUrl}` : imageUrl
-                      })`,
-                      backgroundSize: 'cover',
-                      backgroundPosition: 'center',
-                    }
-                  })()),
             }}
             onMouseDown={() => edit?.setIsAnyFocused(false)}
             onTouchStart={() => edit?.setIsAnyFocused(false)}
             ref={cardRef}
           >
+            <div className={styles.backgroundContainer}>
+              {background.type === 'userImage' ? (
+                (() => {
+                  const userImage = userImages.find(
+                    (userImage) => userImage.id === background.id
+                  )
+                  if (!userImage) return null
+                  const shortEdge = Math.min(
+                    userImage.urlSet.width / 100,
+                    userImage.urlSet.height / 148
+                  )
+                  const imageUrl = getImageUrl(userImage.urlSet, maxFormat)
+                  return (
+                    <img
+                      src={proxy ? `/api/proxy?url=${imageUrl}` : imageUrl}
+                      style={{
+                        width: `${
+                          (userImage.urlSet.width / 100 / shortEdge) * 100
+                        }%`,
+                        height: `${
+                          (userImage.urlSet.height / 148 / shortEdge) * 100
+                        }%`,
+                      }}
+                      alt=""
+                    />
+                  )
+                })()
+              ) : (
+                <div
+                  className={styles.solidBackground}
+                  style={{ backgroundColor: background.color }}
+                />
+              )}
+            </div>
             {layout.map((target, index) => {
               const isFocused =
                 edit && edit.isAnyFocused && index === layout.length - 1
