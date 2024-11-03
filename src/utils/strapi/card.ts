@@ -22,7 +22,7 @@ export type CardAttributes = {
   publishedAt: string
   userImages: { data: StrapiRecord<MediaAttributes>[] }
   creator: { data: StrapiRecord<UserAttributes> }
-  shareId: string | null
+  shareId: string
 }
 
 export const getPrivateCard = async (id: number) => {
