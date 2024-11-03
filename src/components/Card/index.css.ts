@@ -31,7 +31,6 @@ export const sizerInner = style({
 export const card = style({
   width: 400,
   height: 592,
-  backgroundColor: '#fff',
   position: 'absolute',
   left: '50%',
   top: '50%',

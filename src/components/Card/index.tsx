@@ -96,6 +96,7 @@ export type CardProps = {
 
 const Card = ({
   layout,
+  background,
   userImages,
   maxFormat = 'large',
   edit,
@@ -256,6 +257,27 @@ const Card = ({
             className={styles.card}
             style={{
               transform: `scale(${cardScale})`,
+              ...(background.type === 'solid'
+                ? {
+                    backgroundColor: background.color,
+                  }
+                : (() => {
+                    const userImage = userImages.find(
+                      (userImage) => userImage.id === background.id
+                    )
+                    if (!userImage)
+                      return {
+                        backgroundColor: '#ffffff',
+                      }
+                    const imageUrl = getImageUrl(userImage.urlSet, maxFormat)
+                    return {
+                      backgroundImage: `url(${
+                        proxy ? `/api/proxy?url=${imageUrl}` : imageUrl
+                      })`,
+                      backgroundSize: 'cover',
+                      backgroundPosition: 'center',
+                    }
+                  })()),
             }}
             onMouseDown={() => edit?.setIsAnyFocused(false)}
             onTouchStart={() => edit?.setIsAnyFocused(false)}
