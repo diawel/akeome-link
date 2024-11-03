@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
-import Card, { CardLayout } from '..'
+import Card, { CardBackground, CardLayout } from '..'
 import { ImageUrlSet } from '../../../utils/strapi/strapiImage'
 import * as styles from './index.css'
 import * as catdStyles from '../index.css'
@@ -9,6 +9,7 @@ import html2canvas from 'html2canvas'
 
 type RendererProps = {
   layout: CardLayout
+  background: CardBackground
   userImages: {
     id: number
     urlSet: ImageUrlSet
@@ -19,6 +20,7 @@ type RendererProps = {
 
 const Renderer = ({
   layout,
+  background,
   userImages,
   onRender,
   randomSeed,
@@ -72,6 +74,7 @@ const Renderer = ({
       <div ref={containerRef} className={styles.container}>
         <Card
           layout={layout}
+          background={background}
           userImages={userImages}
           maxFormat="original"
           randomVariants={randomSeed !== undefined ? 'revealed' : 'hidden'}

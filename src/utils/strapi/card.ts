@@ -10,13 +10,16 @@ import {
 import { MediaAttributes } from './media'
 import { authOptions } from '../../app/api/auth/[...nextauth]/authOptions'
 import { stringify } from 'qs'
-import { CardLayout } from '../../components/Card'
+import { CardBackground, CardLayout } from '../../components/Card'
 import { UserAttributes } from './user'
 
 export type CardAttributes = {
   title: string
   creatorName: string
-  layout: CardLayout
+  view: {
+    background: CardBackground
+    layout: CardLayout
+  }
   createdAt: string
   updatedAt: string
   publishedAt: string

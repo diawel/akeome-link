@@ -32,7 +32,8 @@ const Detail = ({ cardRecord }: DetailProps) => {
           <Image className={styles.post} src={postImage} alt="postImage" />
           <div className={styles.card}>
             <Card
-              layout={cardRecord.attributes.layout}
+              layout={cardRecord.attributes.view.layout}
+              background={cardRecord.attributes.view.background}
               userImages={mediaRecordsToUrlSet(
                 cardRecord.attributes.userImages.data
               )}
@@ -114,7 +115,8 @@ const Detail = ({ cardRecord }: DetailProps) => {
         </div>
       </div>
       <Renderer
-        layout={cardRecord.attributes.layout}
+        layout={cardRecord.attributes.view.layout}
+        background={cardRecord.attributes.view.background}
         userImages={mediaRecordsToUrlSet(cardRecord.attributes.userImages.data)}
         onRender={setRenderedImage}
       />

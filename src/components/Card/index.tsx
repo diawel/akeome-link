@@ -13,6 +13,16 @@ import {
   ImageUrlSet,
 } from '../../utils/strapi/strapiImage'
 
+export type CardBackground =
+  | {
+      type: 'userImage'
+      id: number
+    }
+  | {
+      type: 'solid'
+      color: string
+    }
+
 export type CardLayout = {
   container: {
     x: number
@@ -67,13 +77,15 @@ class Random {
 
 export type CardProps = {
   layout: CardLayout
+  background: CardBackground
   userImages: {
     id: number
     urlSet: ImageUrlSet
   }[]
   maxFormat?: ImageFormat
   edit?: {
-    setLayout: (layout: CardProps['layout']) => void
+    setLayout: (layout: CardLayout) => void
+    setBackground: (background: CardBackground) => void
     isAnyFocused: boolean
     setIsAnyFocused: (isAnyFocused: boolean) => void
   }

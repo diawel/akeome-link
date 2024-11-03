@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import Card from '../../components/Card'
+import Card, { CardBackground, CardLayout } from '../../components/Card'
 import * as styles from './index.css'
 import Meta from './Meta'
 import Edit from './Edit'
@@ -14,9 +14,11 @@ const creatorNameLocalStorageKey = 'creatorName'
 
 const EditCard = () => {
   const { data: session } = useSession({ required: true })
-  const [cardLayout, setCardLayout] = useState<
-    React.ComponentProps<typeof Card>['layout']
-  >([])
+  const [cardLayout, setCardLayout] = useState<CardLayout>([])
+  const [cardBackground, setCardBackground] = useState<CardBackground>({
+    type: 'solid',
+    color: '#ffffff',
+  })
   const [userImages, setUserImages] = useState<
     {
       id: number
@@ -82,11 +84,13 @@ const EditCard = () => {
       <div className={styles.cardWrapper}>
         <Card
           layout={cardLayout}
+          background={cardBackground}
           userImages={userImages}
           edit={{
             isAnyFocused,
             setIsAnyFocused,
             setLayout: setCardLayout,
+            setBackground: setCardBackground,
           }}
         />
       </div>
