@@ -7,7 +7,7 @@ import {
   StrapiError,
   StrapiRecord,
 } from '.'
-import { CardAttributes } from './card'
+import { CardAttributes, getSharedCard } from './card'
 import { UserAttributes } from './user'
 import { authOptions } from '../../app/api/auth/[...nextauth]/authOptions'
 import { stringify } from 'qs'
@@ -135,23 +135,28 @@ export const getReceivedCardByCardId = async (cardId: number) => {
     )
 
     if (!strapiResponse.ok) {
-      const strapiError: StrapiError = await strapiResponse.json()
-      throw new Error(strapiError.error.message)
+      return undefined
     }
 
     const cards: StrapiApiListResponse<ReceivedCardAttributes> =
       await strapiResponse.json()
-    return cards
+    if (cards.data.length === 0) {
+      return undefined
+    }
+
+    return {
+      data: cards.data[0],
+    }
   } catch (error) {
     throw error
   }
 }
 
 export const addUniqueReceivedCard = async ({
-  cardId,
+  shareId,
   randomSeed,
 }: {
-  cardId: number
+  shareId: string
   randomSeed?: number
 }) => {
   const session = await getServerSession(authOptions)
@@ -161,9 +166,14 @@ export const addUniqueReceivedCard = async ({
   }
 
   try {
-    const existingReceivedCards = await getReceivedCardByCardId(cardId)
-    if (existingReceivedCards?.data.length) {
-      return { data: existingReceivedCards.data[0] }
+    const card = await getSharedCard(shareId)
+    if (!card) {
+      return undefined
+    }
+
+    const existingReceivedCards = await getReceivedCardByCardId(card.data.id)
+    if (existingReceivedCards) {
+      return existingReceivedCards
     }
     const strapiResponse = await fetch(
       `${process.env.NEXT_PUBLIC_STRAPI_BACKEND_URL}/api/received-cards`,
@@ -175,7 +185,7 @@ export const addUniqueReceivedCard = async ({
         },
         body: JSON.stringify({
           data: {
-            card: cardId,
+            card: card.data.id,
             receiver: session.user.strapiUserId,
             randomSeed:
               randomSeed ?? 10000000 + Math.floor(Math.random() * 90000000),

@@ -19,7 +19,7 @@ const StrapiAdaper = () => {
           )
           .map((receivedCard) =>
             addUniqueReceivedCard({
-              cardId: receivedCard.cardId,
+              shareId: receivedCard.shareId,
               randomSeed: receivedCard.randomSeed,
             })
           )

@@ -22,6 +22,7 @@ export type CardAttributes = {
   publishedAt: string
   userImages: { data: StrapiRecord<MediaAttributes>[] }
   creator: { data: StrapiRecord<UserAttributes> }
+  shareId: string
 }
 
 export const getPrivateCard = async (id: number) => {
@@ -66,13 +67,16 @@ export const getPrivateCard = async (id: number) => {
   }
 }
 
-export const getPublicCard = async (id: number) => {
+export const getSharedCard = async (shareId: string) => {
   try {
     const strapiResponse = await fetch(
-      `${
-        process.env.NEXT_PUBLIC_STRAPI_BACKEND_URL
-      }/api/cards/${id}?${stringify({
+      `${process.env.NEXT_PUBLIC_STRAPI_BACKEND_URL}/api/cards?${stringify({
         populate: ['creator', 'userImages'],
+        filters: {
+          shareId: {
+            $eq: shareId,
+          },
+        },
       })}`,
       {
         cache: 'no-cache',
@@ -85,15 +89,20 @@ export const getPublicCard = async (id: number) => {
       return undefined
     }
 
-    const card: StrapiApiResponse<CardAttributes> = await strapiResponse.json()
+    const card: StrapiApiListResponse<CardAttributes> =
+      await strapiResponse.json()
+    if (card.data.length === 0) {
+      return undefined
+    }
+
     return {
       data: {
-        ...card.data,
+        ...card.data[0],
         attributes: {
-          ...card.data.attributes,
+          ...card.data[0].attributes,
           creator: {
             data: {
-              id: card.data.attributes.creator.data.id,
+              id: card.data[0].attributes.creator.data.id,
             },
           },
         },
