@@ -50,9 +50,18 @@ const Renderer = ({
             // 画面内のnext/imageは全てloading=eagerにしないとハングする
             html2canvas(containerRef.current, {}).then(
               (canvas: HTMLCanvasElement) => {
-                canvas.toBlob((blob) => {
-                  if (blob) onRender(blob)
-                })
+                const toBlob = (quality?: number) => {
+                  canvas.toBlob(
+                    (blob) => {
+                      if (!blob) return
+                      if (blob.size < 4718592) onRender(blob)
+                      else toBlob(quality === undefined ? 1 : quality - 0.1)
+                    },
+                    quality === undefined ? 'image/png' : 'image/jpeg',
+                    quality
+                  )
+                }
+                toBlob()
               }
             )
             setIsRendered(true)
