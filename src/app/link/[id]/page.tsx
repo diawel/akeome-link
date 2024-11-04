@@ -4,10 +4,7 @@ import { getServerSession } from 'next-auth'
 import { authOptions } from '../../api/auth/[...nextauth]/authOptions'
 import { CardAttributes, getSharedCard } from '../../../utils/strapi/card'
 import { StrapiRecord } from '../../../utils/strapi'
-import {
-  getReceivedCardByCardId,
-  getReservedCardByCardId,
-} from '../../../utils/strapi/receivedCard'
+import { getReceivedCardByCardId } from '../../../utils/strapi/receivedCard'
 
 export const generateMetadata = async ({
   params,
@@ -45,13 +42,7 @@ const Page = async ({ params }: { params: { id: string } }) => {
   const card = await getSharedCard(params.id)
   if (!card) redirect('/')
   const session = await getServerSession(authOptions)
-  const isDelivered = checkIsDelivered(card.data)
-  const isReceived =
-    isDelivered && Boolean(await getReceivedCardByCardId(card.data.id))
-  const isReserved =
-    !isDelivered &&
-    !isReceived &&
-    Boolean(await getReservedCardByCardId(card.data.id))
+  const recievedCard = await getReceivedCardByCardId(card.data.id)
 
   return (
     <Shared
@@ -61,9 +52,12 @@ const Page = async ({ params }: { params: { id: string } }) => {
       }}
       cardCreatorId={card.data.attributes.creator.data.id}
       strapiUserId={session?.user.strapiUserId}
-      isDelivered={isDelivered}
-      isAlreadyReceived={isReceived}
-      isAlreadyReserved={isReserved}
+      isDelivered={checkIsDelivered(card.data)}
+      isAlreadyReceived={recievedCard?.data.attributes.publishedAt !== null}
+      isAlreadyReserved={
+        recievedCard !== undefined &&
+        !recievedCard.data.attributes.publishedAt === null
+      }
     />
   )
 }
