@@ -7,7 +7,7 @@ import { stringify } from 'qs'
 import { CardBackground, CardLayout } from '../../../components/Card'
 import { CardAttributes } from '.'
 
-export const getPrivateCard = async (id: number) => {
+export const getCreatedCard = async (id: number) => {
   try {
     const session = await getServerSession(authOptions)
     if (!session) {
