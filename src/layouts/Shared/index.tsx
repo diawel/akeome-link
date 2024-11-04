@@ -13,48 +13,61 @@ import Print from '../../components/Print'
 import { addUniqueReceivedCard } from '../../utils/strapi/receivedCard'
 import { putLocalReceivedCard } from '../../utils/db'
 
-type SharedProps =
+type SharedProps = {
+  cardCreatorId: number
+  strapiUserId: number | undefined
+  isAlreadyReceived: boolean
+  isAlreadyReserved: boolean
+} & (
   | {
       cardRecord: StrapiRecord<Omit<CardAttributes, 'creator'>>
-      cardCreatorId: number
-      strapiUserId: number | undefined
       isDelivered: true
     }
   | {
       cardRecord: StrapiRecord<
         Omit<CardAttributes, 'creator' | 'view' | 'userImages'>
       >
-      cardCreatorId: number
-      strapiUserId: number | undefined
       isDelivered: false
     }
-
+)
 const Shared = ({
   cardRecord,
   cardCreatorId,
   strapiUserId,
   isDelivered,
+  isAlreadyReceived,
+  isAlreadyReserved,
 }: SharedProps) => {
   const [renderedImage, setRenderedImage] = useState<Blob | null>(null)
   const [isPrintModalOpen, setIsPrintModalOpen] = useState(false)
   const [randomSeed, setSeed] = useState<number | undefined>(undefined)
+  const [isReceived, setIsReceived] = useState(isAlreadyReceived)
+  const [isReserved, setIsReserved] = useState(isAlreadyReserved)
 
   useEffect(() => {
-    if (!strapiUserId) {
-      putLocalReceivedCard({
-        shareId: cardRecord.attributes.shareId,
-        creatorId: cardCreatorId,
-      }).then((record) => setSeed(record?.randomSeed))
-    } else if (strapiUserId !== cardCreatorId) {
-      addUniqueReceivedCard({
-        shareId: cardRecord.attributes.shareId,
-      }).then((record) => setSeed(record?.data.attributes.randomSeed))
-    } else {
+    if (strapiUserId == cardCreatorId) {
       setSeed(10000000 + Math.floor(Math.random() * 90000000))
     }
-  }, [cardRecord, cardCreatorId, strapiUserId])
+  }, [cardCreatorId, strapiUserId])
 
-  if (!randomSeed) return null
+  const receiveCard = async () => {
+    if (strapiUserId === cardCreatorId) return
+    if (isReceived) return
+
+    setIsReceived(true)
+    if (!strapiUserId) {
+      const localReceivedCard = await putLocalReceivedCard({
+        shareId: cardRecord.attributes.shareId,
+        creatorId: cardCreatorId,
+      })
+      setSeed(localReceivedCard?.randomSeed)
+    } else {
+      const receivedCard = await addUniqueReceivedCard({
+        shareId: cardRecord.attributes.shareId,
+      })
+      setSeed(receivedCard?.data.attributes.randomSeed)
+    }
+  }
 
   return (
     <>
@@ -83,64 +96,87 @@ const Shared = ({
             ) : (
               <div>配達中のアニメーション</div>
             )}
-
             <div className={styles.control}>
-              {strapiUserId ? (
-                <Link className={styles.primaryButton} href="/receive/list">
-                  もらった年賀状一覧へ
+              {strapiUserId === cardCreatorId ? (
+                <Link className={styles.primaryButton} href="/create/list">
+                  つくった年賀状一覧へ
                 </Link>
-              ) : (
+              ) : isDelivered ? (
+                isReceived ? (
+                  <Link className={styles.primaryButton} href="/receive/list">
+                    もらった年賀状一覧へ
+                  </Link>
+                ) : (
+                  <button
+                    className={styles.primaryButton}
+                    onClick={receiveCard}
+                  >
+                    受け取る
+                  </button>
+                )
+              ) : isReserved ? (
                 <Link className={styles.primaryButton} href="/create/new">
                   年賀状を作ってみる
                 </Link>
+              ) : (
+                <button
+                  className={styles.primaryButton}
+                  onClick={() => console.log('受け取り予約')}
+                >
+                  受け取り予約する
+                </button>
               )}
-              {isDelivered && (
-                <>
-                  <button
-                    className={
-                      styles.seconradyButton[
-                        renderedImage ? 'default' : 'disabled'
-                      ]
-                    }
-                    onClick={() => {
-                      if (!renderedImage) return
-                      const url = URL.createObjectURL(renderedImage)
-                      const a = document.createElement('a')
-                      a.href = url
-                      a.setAttribute('download', `new_year_card_${Date.now()}`)
-                      document.body.appendChild(a)
-                      a.click()
-                      URL.revokeObjectURL(url)
-                      a.remove()
-                    }}
-                  >
-                    <FaDownload />
-                    保存
-                  </button>
-                  <button
-                    className={
-                      styles.seconradyButton[
-                        renderedImage ? 'default' : 'disabled'
-                      ]
-                    }
-                    onClick={() => {
-                      setIsPrintModalOpen(true)
-                    }}
-                  >
-                    <FaPrint />
-                    印刷
-                  </button>
-                  <Renderer
-                    layout={cardRecord.attributes.view.layout}
-                    background={cardRecord.attributes.view.background}
-                    userImages={mediaRecordsToUrlSet(
-                      cardRecord.attributes.userImages.data
-                    )}
-                    onRender={(image) => setRenderedImage(image)}
-                    randomSeed={randomSeed}
-                  />
-                </>
-              )}
+              {isDelivered &&
+                (strapiUserId === cardCreatorId || isReceived) && (
+                  <>
+                    <button
+                      className={
+                        styles.seconradyButton[
+                          renderedImage ? 'default' : 'disabled'
+                        ]
+                      }
+                      onClick={() => {
+                        if (!renderedImage) return
+                        const url = URL.createObjectURL(renderedImage)
+                        const a = document.createElement('a')
+                        a.href = url
+                        a.setAttribute(
+                          'download',
+                          `new_year_card_${Date.now()}`
+                        )
+                        document.body.appendChild(a)
+                        a.click()
+                        URL.revokeObjectURL(url)
+                        a.remove()
+                      }}
+                    >
+                      <FaDownload />
+                      保存
+                    </button>
+                    <button
+                      className={
+                        styles.seconradyButton[
+                          renderedImage ? 'default' : 'disabled'
+                        ]
+                      }
+                      onClick={() => {
+                        setIsPrintModalOpen(true)
+                      }}
+                    >
+                      <FaPrint />
+                      印刷
+                    </button>
+                    <Renderer
+                      layout={cardRecord.attributes.view.layout}
+                      background={cardRecord.attributes.view.background}
+                      userImages={mediaRecordsToUrlSet(
+                        cardRecord.attributes.userImages.data
+                      )}
+                      onRender={(image) => setRenderedImage(image)}
+                      randomSeed={randomSeed}
+                    />
+                  </>
+                )}
             </div>
           </div>
         </div>
