@@ -27,17 +27,17 @@ const Shared = ({ cardRecord, cardCreatorId, strapiUserId }: SharedProps) => {
   useEffect(() => {
     if (!strapiUserId) {
       putLocalReceivedCard({
-        cardId: cardRecord.id,
+        shareId: cardRecord.attributes.shareId,
         creatorId: cardCreatorId,
       }).then((record) => setSeed(record?.randomSeed))
     } else if (strapiUserId !== cardCreatorId) {
       addUniqueReceivedCard({
-        cardId: cardRecord.id,
+        shareId: cardRecord.attributes.shareId,
       }).then((record) => setSeed(record?.data.attributes.randomSeed))
     } else {
       setSeed(10000000 + Math.floor(Math.random() * 90000000))
     }
-  }, [cardCreatorId, cardRecord.id, strapiUserId])
+  }, [cardRecord, cardCreatorId, strapiUserId])
 
   if (!randomSeed) return null
 
@@ -53,7 +53,8 @@ const Shared = ({ cardRecord, cardCreatorId, strapiUserId }: SharedProps) => {
             </div>
             <div className={styles.cardContainer}>
               <Card
-                layout={cardRecord.attributes.layout}
+                layout={cardRecord.attributes.view.layout}
+                background={cardRecord.attributes.view.background}
                 userImages={mediaRecordsToUrlSet(
                   cardRecord.attributes.userImages.data
                 )}
@@ -115,7 +116,8 @@ const Shared = ({ cardRecord, cardCreatorId, strapiUserId }: SharedProps) => {
       </div>
 
       <Renderer
-        layout={cardRecord.attributes.layout}
+        layout={cardRecord.attributes.view.layout}
+        background={cardRecord.attributes.view.background}
         userImages={mediaRecordsToUrlSet(cardRecord.attributes.userImages.data)}
         onRender={(image) => setRenderedImage(image)}
         randomSeed={randomSeed}

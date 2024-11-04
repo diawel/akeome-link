@@ -1,19 +1,22 @@
 import { ImageResponse } from 'next/og'
 import { NextResponse } from 'next/server'
-import { getPublicCard } from '../../../utils/strapi/card'
+import { getSharedCard } from '../../../utils/strapi/card'
 
 export const GET = async (request: Request) => {
   const { searchParams } = new URL(request.url)
-  const cardId = searchParams.get('cardId')
+  const shareId = searchParams.get('shareId')
 
-  if (!cardId) {
+  if (!shareId) {
     return NextResponse.json(
-      { error: 'CardId parameter is required' },
+      { error: 'ShareId parameter is required' },
       { status: 400 }
     )
   }
 
-  const card = await getPublicCard(parseInt(cardId, 10))
+  const card = await getSharedCard(shareId)
+  if (!card) {
+    return NextResponse.json({ error: 'Card not found' }, { status: 404 })
+  }
 
   return new ImageResponse(
     (

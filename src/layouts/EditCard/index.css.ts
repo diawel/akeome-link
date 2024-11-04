@@ -6,7 +6,7 @@ export const screen = style({
   height: '100%',
   display: 'grid',
   gridTemplateColumns: '1fr',
-  gridTemplateRows: 'auto 1fr auto',
+  gridTemplateRows: 'auto auto 1fr auto',
   backgroundColor: color.gray[90],
   overflow: 'hidden',
   userSelect: 'none',

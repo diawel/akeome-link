@@ -23,8 +23,11 @@ const Detail = ({ cardRecord }: DetailProps) => {
   const [renderedImage, setRenderedImage] = useState<Blob | null>(null)
   const [shareUrl, setShareUrl] = useState('')
   useEffect(() => {
-    setShareUrl(new URL(`/link/${cardRecord.id}`, window.location.href).href)
-  }, [cardRecord.id])
+    setShareUrl(
+      new URL(`/link/${cardRecord.attributes.shareId}`, window.location.href)
+        .href
+    )
+  }, [cardRecord.attributes.shareId])
   return (
     <>
       <div>
@@ -32,7 +35,8 @@ const Detail = ({ cardRecord }: DetailProps) => {
           <Image className={styles.post} src={postImage} alt="postImage" />
           <div className={styles.card}>
             <Card
-              layout={cardRecord.attributes.layout}
+              layout={cardRecord.attributes.view.layout}
+              background={cardRecord.attributes.view.background}
               userImages={mediaRecordsToUrlSet(
                 cardRecord.attributes.userImages.data
               )}
@@ -114,7 +118,8 @@ const Detail = ({ cardRecord }: DetailProps) => {
         </div>
       </div>
       <Renderer
-        layout={cardRecord.attributes.layout}
+        layout={cardRecord.attributes.view.layout}
+        background={cardRecord.attributes.view.background}
         userImages={mediaRecordsToUrlSet(cardRecord.attributes.userImages.data)}
         onRender={setRenderedImage}
       />

@@ -33,7 +33,8 @@ const ReceivedDetail = ({ cardRecord, randomSeed }: ReceivedDetailProps) => {
             </div>
             <div className={styles.cardContainer}>
               <Card
-                layout={cardRecord.attributes.layout}
+                layout={cardRecord.attributes.view.layout}
+                background={cardRecord.attributes.view.background}
                 userImages={mediaRecordsToUrlSet(
                   cardRecord.attributes.userImages.data
                 )}
@@ -86,7 +87,8 @@ const ReceivedDetail = ({ cardRecord, randomSeed }: ReceivedDetailProps) => {
       </div>
 
       <Renderer
-        layout={cardRecord.attributes.layout}
+        layout={cardRecord.attributes.view.layout}
+        background={cardRecord.attributes.view.background}
         userImages={mediaRecordsToUrlSet(cardRecord.attributes.userImages.data)}
         onRender={(image) => setRenderedImage(image)}
         randomSeed={randomSeed}
