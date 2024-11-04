@@ -55,7 +55,9 @@ const Renderer = ({
                   canvas.toBlob(
                     (blob) => {
                       if (!blob) return
-                      if (blob.size < 4718592) onRender(blob)
+                      if (blob.size < 4718592)
+                        // 4718592 = 4.5MB Vercelの制限
+                        onRender(blob)
                       else toBlob(quality === undefined ? 1 : quality * 0.9)
                     },
                     quality === undefined ? 'image/png' : 'image/jpeg',
