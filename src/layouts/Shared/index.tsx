@@ -3,7 +3,6 @@
 import { FaDownload, FaPrint } from 'react-icons/fa6'
 import Card from '../../components/Card'
 import { StrapiRecord } from '../../utils/strapi'
-import { CardAttributes } from '../../utils/strapi/card/server'
 import { mediaRecordsToUrlSet } from '../../utils/strapi/strapiImage'
 import * as styles from './index.css'
 import Link from 'next/link'
@@ -13,6 +12,7 @@ import Print from '../../components/Print'
 import { addUniqueReceivedCard } from '../../utils/strapi/receivedCard'
 import { putLocalReceivedCard } from '../../utils/db'
 import { signIn } from 'next-auth/react'
+import { CardAttributes } from '../../utils/strapi/card'
 
 type SharedProps = {
   cardCreatorId: number

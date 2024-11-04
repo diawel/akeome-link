@@ -1,33 +1,11 @@
 'use server'
 
 import { getServerSession } from 'next-auth'
-import {
-  StrapiApiListResponse,
-  StrapiApiResponse,
-  StrapiError,
-  StrapiRecord,
-} from '..'
-import { MediaAttributes } from '../media'
+import { StrapiApiListResponse, StrapiApiResponse, StrapiError } from '..'
 import { authOptions } from '../../../app/api/auth/[...nextauth]/authOptions'
 import { stringify } from 'qs'
 import { CardBackground, CardLayout } from '../../../components/Card'
-import { UserAttributes } from '../user'
-
-export type CardAttributes = {
-  title: string
-  creatorName: string
-  view: {
-    background: CardBackground
-    layout: CardLayout
-  }
-  createdAt: string
-  updatedAt: string
-  publishedAt: string
-  userImages: { data: StrapiRecord<MediaAttributes>[] }
-  creator: { data: StrapiRecord<UserAttributes> }
-  shareId: string
-  isExpress: boolean
-}
+import { CardAttributes } from '.'
 
 export const getPrivateCard = async (id: number) => {
   try {

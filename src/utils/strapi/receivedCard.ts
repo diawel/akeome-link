@@ -7,11 +7,11 @@ import {
   StrapiError,
   StrapiRecord,
 } from '.'
-import { CardAttributes, getSharedCard } from './card/server'
+import { getSharedCard } from './card/server'
 import { UserAttributes } from './user'
 import { authOptions } from '../../app/api/auth/[...nextauth]/authOptions'
 import { stringify } from 'qs'
-import { checkIsDelivered } from './card'
+import { CardAttributes, checkIsDelivered } from './card'
 
 export type ReceivedCardAttributes = {
   createdAt: string

@@ -1,5 +1,23 @@
 import { StrapiRecord } from '..'
-import { CardAttributes } from './server'
+import { CardBackground, CardLayout } from '../../../components/Card'
+import { MediaAttributes } from '../media'
+import { UserAttributes } from '../user'
+
+export type CardAttributes = {
+  title: string
+  creatorName: string
+  view: {
+    background: CardBackground
+    layout: CardLayout
+  }
+  createdAt: string
+  updatedAt: string
+  publishedAt: string
+  userImages: { data: StrapiRecord<MediaAttributes>[] }
+  creator: { data: StrapiRecord<UserAttributes> }
+  shareId: string
+  isExpress: boolean
+}
 
 export const checkIsDelivered = (
   card: StrapiRecord<Pick<CardAttributes, 'isExpress' | 'publishedAt'>>
