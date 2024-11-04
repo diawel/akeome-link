@@ -12,7 +12,9 @@ import Print from '../../components/Print'
 import { CardAttributes } from '../../utils/strapi/card'
 
 type ReceivedDetailProps = {
-  cardRecord: StrapiRecord<Omit<CardAttributes, 'creator'>>
+  cardRecord: StrapiRecord<
+    Pick<CardAttributes, 'creatorName' | 'view' | 'userImages'>
+  >
   randomSeed: number
 }
 

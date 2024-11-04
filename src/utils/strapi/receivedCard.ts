@@ -17,10 +17,48 @@ export type ReceivedCardAttributes = {
   createdAt: string
   updatedAt: string
   publishedAt: string | null
-  card: { data: StrapiRecord<Omit<CardAttributes, 'creator'>> | null }
+  card: {
+    data: StrapiRecord<
+      Pick<
+        CardAttributes,
+        | 'creatorName'
+        | 'view'
+        | 'userImages'
+        | 'publishedAt'
+        | 'isExpress'
+        | 'shareId'
+      >
+    > | null
+  }
   receiver: { data: StrapiRecord<UserAttributes> | null }
   randomSeed: number
 }
+
+const recordFilter = (record: StrapiRecord<ReceivedCardAttributes>) => ({
+  id: record.id,
+  attributes: {
+    createdAt: record.attributes.createdAt,
+    updatedAt: record.attributes.updatedAt,
+    publishedAt: record.attributes.publishedAt,
+    card: {
+      data: record.attributes.card.data
+        ? {
+            id: record.attributes.card.data.id,
+            attributes: {
+              creatorName: record.attributes.card.data.attributes.creatorName,
+              view: record.attributes.card.data.attributes.view,
+              userImages: record.attributes.card.data.attributes.userImages,
+              publishedAt: record.attributes.card.data.attributes.publishedAt,
+              isExpress: record.attributes.card.data.attributes.isExpress,
+              shareId: record.attributes.card.data.attributes.shareId,
+            },
+          }
+        : null,
+    },
+    receiver: record.attributes.receiver,
+    randomSeed: record.attributes.randomSeed,
+  },
+})
 
 export const getReceivedCard = async (id: number) => {
   const session = await getServerSession(authOptions)
@@ -55,9 +93,11 @@ export const getReceivedCard = async (id: number) => {
       return undefined
     }
 
-    const card: StrapiApiResponse<ReceivedCardAttributes> =
+    const receivedCard: StrapiApiResponse<ReceivedCardAttributes> =
       await strapiResponse.json()
-    return card
+    return {
+      data: recordFilter(receivedCard.data),
+    }
   } catch (error) {
     throw error
   }
@@ -100,9 +140,13 @@ export const getReceivedCards = async () => {
       throw new Error(strapiError.error.message)
     }
 
-    const cards: StrapiApiListResponse<ReceivedCardAttributes> =
+    const receivedCards: StrapiApiListResponse<ReceivedCardAttributes> =
       await strapiResponse.json()
-    return cards
+    return {
+      data: receivedCards.data.map((receivedCard) =>
+        recordFilter(receivedCard)
+      ),
+    }
   } catch (error) {
     throw error
   }
@@ -147,14 +191,14 @@ export const getReceivedCardByCardId = async (cardId: number) => {
       return undefined
     }
 
-    const cards: StrapiApiListResponse<ReceivedCardAttributes> =
+    const receivedCards: StrapiApiListResponse<ReceivedCardAttributes> =
       await strapiResponse.json()
-    if (cards.data.length === 0) {
+    if (receivedCards.data.length === 0) {
       return undefined
     }
 
     return {
-      data: cards.data[0],
+      data: recordFilter(receivedCards.data[0]),
     }
   } catch (error) {
     throw error
