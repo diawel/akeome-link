@@ -51,11 +51,12 @@ const Renderer = ({
             html2canvas(containerRef.current, {}).then(
               (canvas: HTMLCanvasElement) => {
                 const toBlob = (quality?: number) => {
+                  if (quality !== undefined && quality < 0.1) return
                   canvas.toBlob(
                     (blob) => {
                       if (!blob) return
                       if (blob.size < 4718592) onRender(blob)
-                      else toBlob(quality === undefined ? 1 : quality - 0.1)
+                      else toBlob(quality === undefined ? 1 : quality * 0.9)
                     },
                     quality === undefined ? 'image/png' : 'image/jpeg',
                     quality
