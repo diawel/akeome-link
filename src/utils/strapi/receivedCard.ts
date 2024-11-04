@@ -120,7 +120,7 @@ export const getReceivedCardByCardId = async (cardId: number) => {
         process.env.NEXT_PUBLIC_STRAPI_BACKEND_URL
       }/api/received-cards?${stringify({
         populate: ['card.userImages', 'receiver'],
-        _publicationState: 'preview',
+        publicationState: 'preview',
         filters: {
           receiver: {
             id: {

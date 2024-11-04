@@ -56,7 +56,7 @@ const Page = async ({ params }: { params: { id: string } }) => {
       isAlreadyReceived={recievedCard?.data.attributes.publishedAt !== null}
       isAlreadyReserved={
         recievedCard !== undefined &&
-        !recievedCard.data.attributes.publishedAt === null
+        recievedCard.data.attributes.publishedAt === null
       }
     />
   )

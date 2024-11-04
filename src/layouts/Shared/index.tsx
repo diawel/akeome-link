@@ -12,6 +12,7 @@ import { useEffect, useState } from 'react'
 import Print from '../../components/Print'
 import { addUniqueReceivedCard } from '../../utils/strapi/receivedCard'
 import { putLocalReceivedCard } from '../../utils/db'
+import { signIn } from 'next-auth/react'
 
 type SharedProps = {
   cardCreatorId: number
@@ -69,6 +70,18 @@ const Shared = ({
     }
   }
 
+  const reserve = async () => {
+    if (!strapiUserId) signIn()
+    if (strapiUserId === cardCreatorId) return
+    if (isReserved) return
+
+    setIsReserved(true)
+    await addUniqueReceivedCard({
+      shareId: cardRecord.attributes.shareId,
+      isReserve: true,
+    })
+  }
+
   return (
     <>
       <div className={styles.container}>
@@ -116,10 +129,7 @@ const Shared = ({
                   年賀状を作ってみる
                 </Link>
               ) : (
-                <button
-                  className={styles.primaryButton}
-                  onClick={() => console.log('受け取り予約')}
-                >
+                <button className={styles.primaryButton} onClick={reserve}>
                   受け取り予約する
                 </button>
               )}
