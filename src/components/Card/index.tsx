@@ -407,7 +407,9 @@ const Card = ({
                           <div
                             className={
                               styles.layeredStickerContainer[
-                                cardScale ? randomVariants : 'hidden'
+                                cardScale && randomSeed !== undefined
+                                  ? randomVariants
+                                  : 'hidden'
                               ]
                             }
                           >
