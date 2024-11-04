@@ -25,21 +25,35 @@ const Page = async ({ params }: { params: { id: string } }) => {
   if (!card) redirect('/')
   const session = await getServerSession(authOptions)
   const recievedCard = await getReceivedCardByCardId(card.data.id)
+  const isDelivered = checkIsDelivered(card.data)
 
   return (
     <Shared
-      cardRecord={{
-        attributes: card.data.attributes,
-        id: card.data.id,
-      }}
       cardCreatorId={card.data.attributes.creator.data.id}
       strapiUserId={session?.user.strapiUserId}
-      isDelivered={checkIsDelivered(card.data)}
       isAlreadyReceived={
         recievedCard !== undefined &&
         recievedCard.data.attributes.publishedAt !== null
       }
       isAlreadyReserved={recievedCard !== undefined}
+      {...(isDelivered
+        ? {
+            isDelivered: true,
+            cardRecord: {
+              attributes: card.data.attributes,
+              id: card.data.id,
+            },
+          }
+        : {
+            isDelivered: false,
+            cardRecord: {
+              attributes: {
+                shareId: card.data.attributes.shareId,
+                creatorName: card.data.attributes.creatorName,
+              },
+              id: card.data.id,
+            },
+          })}
     />
   )
 }

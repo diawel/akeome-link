@@ -25,9 +25,7 @@ type SharedProps = {
       isDelivered: true
     }
   | {
-      cardRecord: StrapiRecord<
-        Omit<CardAttributes, 'creator' | 'view' | 'userImages'>
-      >
+      cardRecord: StrapiRecord<Pick<CardAttributes, 'shareId' | 'creatorName'>>
       isDelivered: false
     }
 )
