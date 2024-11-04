@@ -3,7 +3,7 @@
 import { FaDownload, FaPrint } from 'react-icons/fa6'
 import Card from '../../components/Card'
 import { StrapiRecord } from '../../utils/strapi'
-import { CardAttributes } from '../../utils/strapi/card'
+import { CardAttributes } from '../../utils/strapi/card/server'
 import { mediaRecordsToUrlSet } from '../../utils/strapi/strapiImage'
 import * as styles from './index.css'
 import Link from 'next/link'

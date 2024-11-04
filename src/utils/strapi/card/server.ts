@@ -6,12 +6,12 @@ import {
   StrapiApiResponse,
   StrapiError,
   StrapiRecord,
-} from '.'
-import { MediaAttributes } from './media'
-import { authOptions } from '../../app/api/auth/[...nextauth]/authOptions'
+} from '..'
+import { MediaAttributes } from '../media'
+import { authOptions } from '../../../app/api/auth/[...nextauth]/authOptions'
 import { stringify } from 'qs'
-import { CardBackground, CardLayout } from '../../components/Card'
-import { UserAttributes } from './user'
+import { CardBackground, CardLayout } from '../../../components/Card'
+import { UserAttributes } from '../user'
 
 export type CardAttributes = {
   title: string

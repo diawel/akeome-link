@@ -1,6 +1,6 @@
 'use client'
 
-import { CardAttributes } from '../../utils/strapi/card'
+import { CardAttributes } from '../../utils/strapi/card/server'
 import Card from '../../components/Card'
 import postImage from './post.svg'
 import xIcon from './icon-x.svg'

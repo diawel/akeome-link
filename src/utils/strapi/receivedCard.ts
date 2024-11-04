@@ -7,15 +7,16 @@ import {
   StrapiError,
   StrapiRecord,
 } from '.'
-import { CardAttributes, getSharedCard } from './card'
+import { CardAttributes, getSharedCard } from './card/server'
 import { UserAttributes } from './user'
 import { authOptions } from '../../app/api/auth/[...nextauth]/authOptions'
 import { stringify } from 'qs'
+import { checkIsDelivered } from './card'
 
 export type ReceivedCardAttributes = {
   createdAt: string
   updatedAt: string
-  publishedAt: string
+  publishedAt: string | null
   card: { data: StrapiRecord<Omit<CardAttributes, 'creator'>> | null }
   receiver: { data: StrapiRecord<UserAttributes> | null }
   randomSeed: number
@@ -182,28 +183,51 @@ export const addUniqueReceivedCard = async ({
     }
 
     const existingReceivedCards = await getReceivedCardByCardId(card.data.id)
-    if (existingReceivedCards) {
+    const shouldUpdate =
+      !isReserve &&
+      existingReceivedCards?.data.attributes.publishedAt === null &&
+      checkIsDelivered(card.data)
+    if (existingReceivedCards && !shouldUpdate) {
       return existingReceivedCards
     }
-    const strapiResponse = await fetch(
-      `${process.env.NEXT_PUBLIC_STRAPI_BACKEND_URL}/api/received-cards`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${process.env.STRAPI_API_TOKEN}`,
-        },
-        body: JSON.stringify({
-          data: {
-            card: card.data.id,
-            receiver: session.user.strapiUserId,
-            randomSeed:
-              randomSeed ?? 10000000 + Math.floor(Math.random() * 90000000),
-            ...(isReserve ? { publishedAt: null } : {}),
-          },
-        }),
-      }
-    )
+    const strapiResponse = shouldUpdate
+      ? await fetch(
+          `${process.env.NEXT_PUBLIC_STRAPI_BACKEND_URL}/api/received-cards/${existingReceivedCards.data.id}`,
+          {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${process.env.STRAPI_API_TOKEN}`,
+            },
+            body: JSON.stringify({
+              data: {
+                card: card.data.id,
+                receiver: session.user.strapiUserId,
+                randomSeed: existingReceivedCards.data.attributes.randomSeed,
+                publishedAt: new Date().toISOString(),
+              },
+            }),
+          }
+        )
+      : await fetch(
+          `${process.env.NEXT_PUBLIC_STRAPI_BACKEND_URL}/api/received-cards`,
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${process.env.STRAPI_API_TOKEN}`,
+            },
+            body: JSON.stringify({
+              data: {
+                card: card.data.id,
+                receiver: session.user.strapiUserId,
+                randomSeed:
+                  randomSeed ?? 10000000 + Math.floor(Math.random() * 90000000),
+                ...(isReserve ? { publishedAt: null } : {}),
+              },
+            }),
+          }
+        )
 
     if (!strapiResponse.ok) {
       const strapiError: StrapiError = await strapiResponse.json()
