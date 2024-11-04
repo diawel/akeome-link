@@ -50,7 +50,7 @@ const Shared = ({
     }
   }, [cardCreatorId, strapiUserId])
 
-  const receiveCard = async () => {
+  const receive = async () => {
     if (strapiUserId === cardCreatorId) return
     if (isReceived) return
 
@@ -107,10 +107,7 @@ const Shared = ({
                     もらった年賀状一覧へ
                   </Link>
                 ) : (
-                  <button
-                    className={styles.primaryButton}
-                    onClick={receiveCard}
-                  >
+                  <button className={styles.primaryButton} onClick={receive}>
                     受け取る
                   </button>
                 )
