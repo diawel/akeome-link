@@ -26,6 +26,7 @@ export type CardAttributes = {
   userImages: { data: StrapiRecord<MediaAttributes>[] }
   creator: { data: StrapiRecord<UserAttributes> }
   shareId: string
+  isExpress: boolean
 }
 
 export const getPrivateCard = async (id: number) => {

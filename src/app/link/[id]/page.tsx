@@ -31,6 +31,7 @@ const Page = async ({ params }: { params: { id: string } }) => {
       }}
       cardCreatorId={card.data.attributes.creator.data.id}
       strapiUserId={session?.user.strapiUserId}
+      isDelivered={false}
     />
   )
 }
