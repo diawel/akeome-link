@@ -71,7 +71,10 @@ const Shared = ({
   }
 
   const reserve = async () => {
-    if (!strapiUserId) signIn()
+    if (!strapiUserId) {
+      signIn()
+      return
+    }
     if (strapiUserId === cardCreatorId) return
     if (isReserved) return
 
@@ -91,8 +94,12 @@ const Shared = ({
               {strapiUserId === cardCreatorId
                 ? '共有した年賀状のプレビュー'
                 : isDelivered
-                ? `${cardRecord.attributes.creatorName} さんから年賀状を受け取りました`
-                : `${cardRecord.attributes.creatorName} さんからの年賀状を配達中です`}
+                ? isReceived
+                  ? `${cardRecord.attributes.creatorName} さんから年賀状を受け取りました`
+                  : `${cardRecord.attributes.creatorName} さんから年賀状が届いています`
+                : isReserved
+                ? `${cardRecord.attributes.creatorName} さんからの年賀状を配達中です`
+                : `${cardRecord.attributes.creatorName} さんが年賀状を出しました`}
             </div>
             {isDelivered ? (
               <div className={styles.cardContainer}>
