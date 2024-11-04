@@ -2,7 +2,8 @@ import { redirect } from 'next/navigation'
 import Shared from '../../../layouts/Shared'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '../../api/auth/[...nextauth]/authOptions'
-import { getSharedCard } from '../../../utils/strapi/card'
+import { CardAttributes, getSharedCard } from '../../../utils/strapi/card'
+import { StrapiRecord } from '../../../utils/strapi'
 
 export const generateMetadata = async ({
   params,
@@ -18,6 +19,24 @@ export const generateMetadata = async ({
   }
 }
 
+const checkIsDelivered = (
+  card: StrapiRecord<Pick<CardAttributes, 'isExpress' | 'publishedAt'>>
+) => {
+  if (card.attributes.isExpress) return true
+  const now = new Date()
+  const publishedAt = new Date(card.attributes.publishedAt)
+  if (publishedAt.getMonth() === 0) {
+    const deliveredAt = new Date(
+      publishedAt.getFullYear(),
+      publishedAt.getMonth(),
+      publishedAt.getDate() + 1,
+      6
+    )
+    return now >= deliveredAt
+  }
+  return now.getFullYear() > publishedAt.getFullYear()
+}
+
 const Page = async ({ params }: { params: { id: string } }) => {
   const card = await getSharedCard(params.id)
   if (!card) redirect('/')
@@ -31,7 +50,7 @@ const Page = async ({ params }: { params: { id: string } }) => {
       }}
       cardCreatorId={card.data.attributes.creator.data.id}
       strapiUserId={session?.user.strapiUserId}
-      isDelivered={false}
+      isDelivered={checkIsDelivered(card.data)}
     />
   )
 }
