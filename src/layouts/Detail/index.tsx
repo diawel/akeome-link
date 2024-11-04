@@ -23,8 +23,11 @@ const Detail = ({ cardRecord }: DetailProps) => {
   const [renderedImage, setRenderedImage] = useState<Blob | null>(null)
   const [shareUrl, setShareUrl] = useState('')
   useEffect(() => {
-    setShareUrl(new URL(`/link/${cardRecord.id}`, window.location.href).href)
-  }, [cardRecord.id])
+    setShareUrl(
+      new URL(`/link/${cardRecord.attributes.shareId}`, window.location.href)
+        .href
+    )
+  }, [cardRecord.attributes.shareId])
   return (
     <>
       <div>
