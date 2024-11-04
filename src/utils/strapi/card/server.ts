@@ -165,6 +165,7 @@ export const addCard = async ({
   creatorName,
   userImages,
   view,
+  isExpress,
 }: {
   title: string
   creatorName: string
@@ -175,6 +176,7 @@ export const addCard = async ({
     layout: CardLayout
     background: CardBackground
   }
+  isExpress: boolean
 }) => {
   const session = await getServerSession(authOptions)
 
@@ -198,6 +200,7 @@ export const addCard = async ({
             view,
             creator: session.user.strapiUserId,
             userImages: userImages.map((userImage) => userImage.id),
+            isExpress,
           },
         }),
       }

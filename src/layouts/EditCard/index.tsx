@@ -30,6 +30,7 @@ const EditCard = () => {
   const [title, setTitle] = useState('無題')
   const [creatorName, setCreatorName] = useState<string | undefined>(undefined)
   const [isLoading, setIsLoading] = useState(false)
+  const [isExpress, setIsExpress] = useState(false)
   const router = useRouter()
 
   useEffect(() => {
@@ -57,7 +58,8 @@ const EditCard = () => {
         layout: cardLayout,
         background: cardBackground,
       },
-      userImages: userImages,
+      userImages,
+      isExpress,
     }).then((response) => {
       router.push(`/create/detail/${response.data.id}`)
     })
@@ -82,6 +84,8 @@ const EditCard = () => {
           setTitle,
           creatorName,
           setCreatorName,
+          isExpress,
+          setIsExpress,
         }}
       />
       <div>
