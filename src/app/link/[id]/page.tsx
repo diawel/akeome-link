@@ -25,7 +25,7 @@ const Page = async ({ params }: { params: { id: string } }) => {
   if (!card) redirect('/')
   const session = await getServerSession(authOptions)
   const recievedCard = await getReceivedCardByCardId(card.data.id)
-  console.log(checkIsDelivered(card.data))
+
   return (
     <Shared
       cardRecord={{
