@@ -34,6 +34,13 @@ export const getReceivedCard = async (id: number) => {
         process.env.NEXT_PUBLIC_STRAPI_BACKEND_URL
       }/api/received-cards/${id}?${stringify({
         populate: ['card.userImages', 'receiver'],
+        filters: {
+          receiver: {
+            id: {
+              $eq: session.user.strapiUserId,
+            },
+          },
+        },
       })}`,
       {
         cache: 'no-cache',
