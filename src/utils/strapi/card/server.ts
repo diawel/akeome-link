@@ -81,7 +81,12 @@ export const getSharedCard = async (shareId: string) => {
       data: {
         ...card.data[0],
         attributes: {
-          ...card.data[0].attributes,
+          creatorName: card.data[0].attributes.creatorName,
+          shareId: card.data[0].attributes.shareId,
+          view: card.data[0].attributes.view,
+          userImages: card.data[0].attributes.userImages,
+          isExpress: card.data[0].attributes.isExpress,
+          publishedAt: card.data[0].attributes.publishedAt,
           creator: {
             data: {
               id: card.data[0].attributes.creator.data.id,

@@ -21,7 +21,9 @@ type SharedProps = {
   isAlreadyReserved: boolean
 } & (
   | {
-      cardRecord: StrapiRecord<Omit<CardAttributes, 'creator'>>
+      cardRecord: StrapiRecord<
+        Pick<CardAttributes, 'shareId' | 'view' | 'userImages' | 'creatorName'>
+      >
       isDelivered: true
     }
   | {
