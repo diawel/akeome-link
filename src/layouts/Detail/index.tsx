@@ -1,6 +1,5 @@
 'use client'
 
-import { CardAttributes } from '../../utils/strapi/card'
 import Card from '../../components/Card'
 import postImage from './post.svg'
 import xIcon from './icon-x.svg'
@@ -14,6 +13,7 @@ import { mediaRecordsToUrlSet } from '../../utils/strapi/strapiImage'
 import { StrapiRecord } from '../../utils/strapi'
 import Renderer from '../../components/Card/Renderer'
 import { useEffect, useState } from 'react'
+import { CardAttributes } from '../../utils/strapi/card'
 
 type DetailProps = {
   cardRecord: StrapiRecord<CardAttributes>

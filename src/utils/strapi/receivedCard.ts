@@ -7,19 +7,58 @@ import {
   StrapiError,
   StrapiRecord,
 } from '.'
-import { CardAttributes, getSharedCard } from './card'
+import { getSharedCard } from './card/server'
 import { UserAttributes } from './user'
 import { authOptions } from '../../app/api/auth/[...nextauth]/authOptions'
 import { stringify } from 'qs'
+import { CardAttributes, checkIsDelivered } from './card'
 
 export type ReceivedCardAttributes = {
   createdAt: string
   updatedAt: string
-  publishedAt: string
-  card: { data: StrapiRecord<Omit<CardAttributes, 'creator'>> | null }
+  publishedAt: string | null
+  card: {
+    data: StrapiRecord<
+      Pick<
+        CardAttributes,
+        | 'creatorName'
+        | 'view'
+        | 'userImages'
+        | 'publishedAt'
+        | 'isExpress'
+        | 'shareId'
+      >
+    > | null
+  }
   receiver: { data: StrapiRecord<UserAttributes> | null }
   randomSeed: number
 }
+
+const recordFilter = (record: StrapiRecord<ReceivedCardAttributes>) => ({
+  id: record.id,
+  attributes: {
+    createdAt: record.attributes.createdAt,
+    updatedAt: record.attributes.updatedAt,
+    publishedAt: record.attributes.publishedAt,
+    card: {
+      data: record.attributes.card.data
+        ? {
+            id: record.attributes.card.data.id,
+            attributes: {
+              creatorName: record.attributes.card.data.attributes.creatorName,
+              view: record.attributes.card.data.attributes.view,
+              userImages: record.attributes.card.data.attributes.userImages,
+              publishedAt: record.attributes.card.data.attributes.publishedAt,
+              isExpress: record.attributes.card.data.attributes.isExpress,
+              shareId: record.attributes.card.data.attributes.shareId,
+            },
+          }
+        : null,
+    },
+    receiver: record.attributes.receiver,
+    randomSeed: record.attributes.randomSeed,
+  },
+})
 
 export const getReceivedCard = async (id: number) => {
   const session = await getServerSession(authOptions)
@@ -34,6 +73,13 @@ export const getReceivedCard = async (id: number) => {
         process.env.NEXT_PUBLIC_STRAPI_BACKEND_URL
       }/api/received-cards/${id}?${stringify({
         populate: ['card.userImages', 'receiver'],
+        filters: {
+          receiver: {
+            id: {
+              $eq: session.user.strapiUserId,
+            },
+          },
+        },
       })}`,
       {
         cache: 'no-cache',
@@ -47,9 +93,11 @@ export const getReceivedCard = async (id: number) => {
       return undefined
     }
 
-    const card: StrapiApiResponse<ReceivedCardAttributes> =
+    const receivedCard: StrapiApiResponse<ReceivedCardAttributes> =
       await strapiResponse.json()
-    return card
+    return {
+      data: recordFilter(receivedCard.data),
+    }
   } catch (error) {
     throw error
   }
@@ -92,9 +140,13 @@ export const getReceivedCards = async () => {
       throw new Error(strapiError.error.message)
     }
 
-    const cards: StrapiApiListResponse<ReceivedCardAttributes> =
+    const receivedCards: StrapiApiListResponse<ReceivedCardAttributes> =
       await strapiResponse.json()
-    return cards
+    return {
+      data: receivedCards.data.map((receivedCard) =>
+        recordFilter(receivedCard)
+      ),
+    }
   } catch (error) {
     throw error
   }
@@ -113,6 +165,7 @@ export const getReceivedCardByCardId = async (cardId: number) => {
         process.env.NEXT_PUBLIC_STRAPI_BACKEND_URL
       }/api/received-cards?${stringify({
         populate: ['card.userImages', 'receiver'],
+        publicationState: 'preview',
         filters: {
           receiver: {
             id: {
@@ -138,14 +191,14 @@ export const getReceivedCardByCardId = async (cardId: number) => {
       return undefined
     }
 
-    const cards: StrapiApiListResponse<ReceivedCardAttributes> =
+    const receivedCards: StrapiApiListResponse<ReceivedCardAttributes> =
       await strapiResponse.json()
-    if (cards.data.length === 0) {
+    if (receivedCards.data.length === 0) {
       return undefined
     }
 
     return {
-      data: cards.data[0],
+      data: recordFilter(receivedCards.data[0]),
     }
   } catch (error) {
     throw error
@@ -155,9 +208,11 @@ export const getReceivedCardByCardId = async (cardId: number) => {
 export const addUniqueReceivedCard = async ({
   shareId,
   randomSeed,
+  isReserve,
 }: {
   shareId: string
   randomSeed?: number
+  isReserve?: boolean
 }) => {
   const session = await getServerSession(authOptions)
 
@@ -172,27 +227,51 @@ export const addUniqueReceivedCard = async ({
     }
 
     const existingReceivedCards = await getReceivedCardByCardId(card.data.id)
-    if (existingReceivedCards) {
+    const shouldUpdate =
+      !isReserve &&
+      existingReceivedCards?.data.attributes.publishedAt === null &&
+      checkIsDelivered(card.data)
+    if (existingReceivedCards && !shouldUpdate) {
       return existingReceivedCards
     }
-    const strapiResponse = await fetch(
-      `${process.env.NEXT_PUBLIC_STRAPI_BACKEND_URL}/api/received-cards`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${process.env.STRAPI_API_TOKEN}`,
-        },
-        body: JSON.stringify({
-          data: {
-            card: card.data.id,
-            receiver: session.user.strapiUserId,
-            randomSeed:
-              randomSeed ?? 10000000 + Math.floor(Math.random() * 90000000),
-          },
-        }),
-      }
-    )
+    const strapiResponse = shouldUpdate
+      ? await fetch(
+          `${process.env.NEXT_PUBLIC_STRAPI_BACKEND_URL}/api/received-cards/${existingReceivedCards.data.id}`,
+          {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${process.env.STRAPI_API_TOKEN}`,
+            },
+            body: JSON.stringify({
+              data: {
+                card: card.data.id,
+                receiver: session.user.strapiUserId,
+                randomSeed: existingReceivedCards.data.attributes.randomSeed,
+                publishedAt: new Date().toISOString(),
+              },
+            }),
+          }
+        )
+      : await fetch(
+          `${process.env.NEXT_PUBLIC_STRAPI_BACKEND_URL}/api/received-cards`,
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${process.env.STRAPI_API_TOKEN}`,
+            },
+            body: JSON.stringify({
+              data: {
+                card: card.data.id,
+                receiver: session.user.strapiUserId,
+                randomSeed:
+                  randomSeed ?? 10000000 + Math.floor(Math.random() * 90000000),
+                ...(isReserve ? { publishedAt: null } : {}),
+              },
+            }),
+          }
+        )
 
     if (!strapiResponse.ok) {
       const strapiError: StrapiError = await strapiResponse.json()
@@ -202,6 +281,59 @@ export const addUniqueReceivedCard = async ({
     const receivedCard: StrapiApiResponse<ReceivedCardAttributes> =
       await strapiResponse.json()
     return receivedCard
+  } catch (error) {
+    throw error
+  }
+}
+
+export const getReservedCards = async () => {
+  const session = await getServerSession(authOptions)
+
+  if (!session) {
+    return undefined
+  }
+
+  try {
+    const strapiResponse = await fetch(
+      `${
+        process.env.NEXT_PUBLIC_STRAPI_BACKEND_URL
+      }/api/received-cards?${stringify({
+        populate: ['card.userImages', 'receiver'],
+        publicationState: 'preview',
+        filters: {
+          receiver: {
+            id: {
+              $eq: session.user.strapiUserId,
+            },
+          },
+          publishedAt: {
+            $null: true,
+          },
+        },
+        sort: {
+          0: 'updatedAt:desc',
+        },
+      })}`,
+      {
+        cache: 'no-cache',
+        headers: {
+          Authorization: `Bearer ${process.env.STRAPI_API_TOKEN}`,
+        },
+      }
+    )
+
+    if (!strapiResponse.ok) {
+      const strapiError: StrapiError = await strapiResponse.json()
+      throw new Error(strapiError.error.message)
+    }
+
+    const receivedCards: StrapiApiListResponse<ReceivedCardAttributes> =
+      await strapiResponse.json()
+    return {
+      data: receivedCards.data.map((receivedCard) =>
+        recordFilter(receivedCard)
+      ),
+    }
   } catch (error) {
     throw error
   }
