@@ -56,6 +56,7 @@ export const primaryButton = style({
   borderRadius: 12,
   fontWeight: 'bold',
   cursor: 'pointer',
+  border: 'none',
 })
 
 const seconradyButtonBase = style({

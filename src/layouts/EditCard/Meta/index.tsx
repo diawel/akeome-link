@@ -7,6 +7,8 @@ type MetaProps = {
   setTitle: (title: string) => void
   creatorName: string | undefined
   setCreatorName: (creatorName: string) => void
+  isExpress: boolean
+  setIsExpress: (isExpress: boolean) => void
 }
 
 const Meta = ({
@@ -15,6 +17,8 @@ const Meta = ({
   setTitle,
   creatorName,
   setCreatorName,
+  isExpress,
+  setIsExpress,
 }: MetaProps) => {
   return (
     <div className={styles.control}>
@@ -34,6 +38,14 @@ const Meta = ({
         style={{ width: 80 }}
         disabled={creatorName === undefined}
       />
+      <label>
+        <input
+          type="checkbox"
+          checked={isExpress}
+          onChange={(event) => setIsExpress(event.target.checked)}
+        />
+        速達
+      </label>
       <button onClick={onSave}>Save</button>
     </div>
   )

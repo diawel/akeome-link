@@ -1,34 +1,13 @@
 'use server'
 
 import { getServerSession } from 'next-auth'
-import {
-  StrapiApiListResponse,
-  StrapiApiResponse,
-  StrapiError,
-  StrapiRecord,
-} from '.'
-import { MediaAttributes } from './media'
-import { authOptions } from '../../app/api/auth/[...nextauth]/authOptions'
+import { StrapiApiListResponse, StrapiApiResponse, StrapiError } from '..'
+import { authOptions } from '../../../app/api/auth/[...nextauth]/authOptions'
 import { stringify } from 'qs'
-import { CardBackground, CardLayout } from '../../components/Card'
-import { UserAttributes } from './user'
+import { CardBackground, CardLayout } from '../../../components/Card'
+import { CardAttributes } from '.'
 
-export type CardAttributes = {
-  title: string
-  creatorName: string
-  view: {
-    background: CardBackground
-    layout: CardLayout
-  }
-  createdAt: string
-  updatedAt: string
-  publishedAt: string
-  userImages: { data: StrapiRecord<MediaAttributes>[] }
-  creator: { data: StrapiRecord<UserAttributes> }
-  shareId: string
-}
-
-export const getPrivateCard = async (id: number) => {
+export const getCreatedCard = async (id: number) => {
   try {
     const session = await getServerSession(authOptions)
     if (!session) {
@@ -102,7 +81,12 @@ export const getSharedCard = async (shareId: string) => {
       data: {
         ...card.data[0],
         attributes: {
-          ...card.data[0].attributes,
+          creatorName: card.data[0].attributes.creatorName,
+          shareId: card.data[0].attributes.shareId,
+          view: card.data[0].attributes.view,
+          userImages: card.data[0].attributes.userImages,
+          isExpress: card.data[0].attributes.isExpress,
+          publishedAt: card.data[0].attributes.publishedAt,
           creator: {
             data: {
               id: card.data[0].attributes.creator.data.id,
@@ -164,6 +148,7 @@ export const addCard = async ({
   creatorName,
   userImages,
   view,
+  isExpress,
 }: {
   title: string
   creatorName: string
@@ -174,6 +159,7 @@ export const addCard = async ({
     layout: CardLayout
     background: CardBackground
   }
+  isExpress: boolean
 }) => {
   const session = await getServerSession(authOptions)
 
@@ -197,6 +183,7 @@ export const addCard = async ({
             view,
             creator: session.user.strapiUserId,
             userImages: userImages.map((userImage) => userImage.id),
+            isExpress,
           },
         }),
       }
