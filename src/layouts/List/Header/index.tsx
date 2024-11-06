@@ -16,7 +16,7 @@ const Header = async ({ activeTab }: HeaderProps) => {
   const reservedCards = await getReservedCards()
   if (!reservedCards) redirect('/')
 
-  const newArriavalCount = reservedCards.data.filter(
+  const newArrivalCount = reservedCards.data.filter(
     (receivedCard) =>
       receivedCard.attributes.card.data &&
       checkIsDelivered(receivedCard.attributes.card.data)
@@ -33,8 +33,8 @@ const Header = async ({ activeTab }: HeaderProps) => {
         </div>
         <Link href="/post" className={styles.notificationIcon}>
           <Image src={postIcon} alt="postIcon" />
-          {newArriavalCount > 0 && (
-            <div className={styles.notificationCount}>{newArriavalCount}</div>
+          {newArrivalCount > 0 && (
+            <div className={styles.notificationCount}>{newArrivalCount}</div>
           )}
         </Link>
       </div>
