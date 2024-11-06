@@ -8,7 +8,6 @@ import {
   StrapiRecord,
 } from '.'
 import { getSharedCard } from './card/server'
-import { UserAttributes } from './user'
 import { authOptions } from '../../app/api/auth/[...nextauth]/authOptions'
 import { stringify } from 'qs'
 import { CardAttributes, checkIsDelivered } from './card'
@@ -18,9 +17,8 @@ export type ReceivedCardAttributes = {
   updatedAt: string
   publishedAt: string | null
   card: {
-    data: StrapiRecord<CardAttributes> | null
+    data: StrapiRecord<Omit<CardAttributes, 'creator'>> | null
   }
-  receiver: { data: StrapiRecord<UserAttributes> | null }
   randomSeed: number
 }
 
@@ -45,7 +43,6 @@ const recordFilter = (record: StrapiRecord<ReceivedCardAttributes>) => ({
           }
         : null,
     },
-    receiver: record.attributes.receiver,
     randomSeed: record.attributes.randomSeed,
   },
 })
@@ -62,7 +59,7 @@ export const getReceivedCard = async (id: number) => {
       `${
         process.env.NEXT_PUBLIC_STRAPI_BACKEND_URL
       }/api/received-cards/${id}?${stringify({
-        populate: ['card.userImages', 'receiver'],
+        populate: 'card.userImages',
         filters: {
           receiver: {
             id: {
@@ -105,7 +102,7 @@ export const getReceivedCards = async () => {
       `${
         process.env.NEXT_PUBLIC_STRAPI_BACKEND_URL
       }/api/received-cards?${stringify({
-        populate: ['card.userImages', 'receiver'],
+        populate: 'card.userImages',
         filters: {
           receiver: {
             id: {
@@ -154,7 +151,7 @@ export const getReceivedCardByCardId = async (cardId: number) => {
       `${
         process.env.NEXT_PUBLIC_STRAPI_BACKEND_URL
       }/api/received-cards?${stringify({
-        populate: ['card.userImages', 'receiver'],
+        populate: 'card.userImages',
         publicationState: 'preview',
         filters: {
           receiver: {
