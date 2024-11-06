@@ -18,17 +18,7 @@ export type ReceivedCardAttributes = {
   updatedAt: string
   publishedAt: string | null
   card: {
-    data: StrapiRecord<
-      Pick<
-        CardAttributes,
-        | 'creatorName'
-        | 'view'
-        | 'userImages'
-        | 'publishedAt'
-        | 'isExpress'
-        | 'shareId'
-      >
-    > | null
+    data: StrapiRecord<CardAttributes> | null
   }
   receiver: { data: StrapiRecord<UserAttributes> | null }
   randomSeed: number
@@ -334,6 +324,52 @@ export const getReservedCards = async () => {
         recordFilter(receivedCard)
       ),
     }
+  } catch (error) {
+    throw error
+  }
+}
+
+export const countReceivedRecords = async () => {
+  const session = await getServerSession(authOptions)
+
+  if (!session) {
+    return undefined
+  }
+
+  try {
+    const strapiResponse = await fetch(
+      `${
+        process.env.NEXT_PUBLIC_STRAPI_BACKEND_URL
+      }/api/received-cards?${stringify({
+        publicationState: 'preview',
+        filters: {
+          card: {
+            creator: {
+              id: {
+                $eq: session.user.strapiUserId,
+              },
+            },
+          },
+        },
+        pagination: {
+          pageSize: 1,
+        },
+      })}`,
+      {
+        cache: 'no-cache',
+        headers: {
+          Authorization: `Bearer ${process.env.STRAPI_API_TOKEN}`,
+        },
+      }
+    )
+
+    if (!strapiResponse.ok) {
+      return undefined
+    }
+
+    const receivedCards: StrapiApiListResponse<ReceivedCardAttributes> =
+      await strapiResponse.json()
+    return receivedCards.meta.pagination.total
   } catch (error) {
     throw error
   }
