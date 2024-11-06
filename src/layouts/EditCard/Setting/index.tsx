@@ -59,9 +59,12 @@ const Setting = ({
   const router = useRouter()
 
   const save = () => {
-    if (creatorName === undefined) return
-    if (title === undefined) {
+    if (!title) {
       alert('タイトルを入力してください')
+      return
+    }
+    if (!creatorName) {
+      alert('作者名を入力してください')
       return
     }
 
@@ -87,7 +90,7 @@ const Setting = ({
       <input
         value={creatorName ?? ''}
         onChange={(event) => setCreatorName(event.target.value)}
-        placeholder="差出人名"
+        placeholder="作者名"
         disabled={creatorName === undefined}
       />
       <input
