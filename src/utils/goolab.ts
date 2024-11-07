@@ -10,6 +10,10 @@ export const extractPersonName = async (sentence: string) => {
     throw new Error('Unauthorized')
   }
 
+  if (sentence.length === 0) {
+    return []
+  }
+
   try {
     const response = await fetch('https://labs.goo.ne.jp/api/entity', {
       method: 'POST',
