@@ -47,6 +47,11 @@ export type CardLayout = {
       }
 }[]
 
+export type UserImages = {
+  id: number
+  urlSet: ImageUrlSet
+}[]
+
 class Random {
   private x: number
   private y: number
@@ -78,10 +83,7 @@ class Random {
 export type CardProps = {
   layout: CardLayout
   background: CardBackground
-  userImages: {
-    id: number
-    urlSet: ImageUrlSet
-  }[]
+  userImages: UserImages
   maxFormat?: ImageFormat
   edit?: {
     setLayout: (layout: CardLayout) => void
