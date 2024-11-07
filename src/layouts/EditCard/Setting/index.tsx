@@ -45,14 +45,13 @@ const Setting = ({
     const texts = cardLayout.flatMap((item) =>
       item.content.type === 'text' ? item.content.text : []
     )
-    const allText = texts.join('\n')
-    if (allText.length === 0) {
-      setTitle('無題')
-      return
-    }
-    extractPersonName(texts.join('\n')).then((names) => {
-      if (names.length === 0) return
-      setTitle(`${names[0]}宛`)
+    const sourceText = texts.join('\n')
+    extractPersonName(sourceText).then((names) => {
+      if (names.length === 0) {
+        setTitle('無題')
+      } else {
+        setTitle(`${names[0]}宛`)
+      }
     })
   }, [cardLayout, title])
 
