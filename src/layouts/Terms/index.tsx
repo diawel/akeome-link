@@ -1,12 +1,12 @@
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
 
-const License = async () => {
+const Terms = async () => {
   return (
     <div>
-      <h1>License</h1>
+      <h1>Terms of service</h1>
     </div>
   )
 }
 
-export default License
+export default Terms
