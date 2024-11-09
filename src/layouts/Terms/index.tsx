@@ -10,20 +10,20 @@ const Terms = () => {
         <div key={index}>
           <p className={styles.articleTitle}>{section.article}</p>
           <div>
-            <ul className={styles.ulItem}>
+            <ul className={styles.indentListItem}>
               {section.content.map((item, idx) => {
                 if (item.type === "default") {
                   return <p key={idx}>{item.text}</p>;
-                } else if (item.type === "li") {
+                } else if (item.type === "list") {
                   const nextItem = section.content[idx + 1];
                   return (
                     <li key={idx} className={styles.listItem}>
                       {item.text}
-                      {nextItem?.type === "ul" && (
-                        <ul className={styles.ulItem}>
+                      {nextItem?.type === "indentList" && (
+                        <ul className={styles.indentListItem}>
                           {section.content
                             .slice(idx + 1)
-                            .filter((nestedItem) => nestedItem.type === "ul")
+                            .filter((nestedItem) => nestedItem.type === "indentList")
                             .map((nestedItem, nestedIdx) => (
                               <li key={`${idx}-${nestedIdx}`} className="custom-li">
                                 {nestedItem.text}

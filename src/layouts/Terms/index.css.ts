@@ -31,7 +31,7 @@ export const articleTitle = style({
   padding: "16px 0px 8px 0px",
 });
 
-export const ulItem = style({
+export const indentListItem = style({
   listStyleType: 'disc',
   paddingLeft: '14px'
 });
