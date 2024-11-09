@@ -1,6 +1,6 @@
 import { ImageResponse } from 'next/og'
 import { NextResponse } from 'next/server'
-import { getSharedCard } from '../../../utils/strapi/card/server'
+import { getSharedCard } from '../../../utils/strapi/card'
 
 export const GET = async (request: Request) => {
   const { searchParams } = new URL(request.url)

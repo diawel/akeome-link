@@ -4,23 +4,17 @@ import akeomeLinkLogo from './akeome-link-logo.svg'
 import postIcon from './icon-post.svg'
 import Image from 'next/image'
 import Link from 'next/link'
-import { getReservedCards } from '../../../utils/strapi/receivedCard'
+import { countNewArrivalCards } from '../../../utils/strapi/receivedCard'
 import { redirect } from 'next/navigation'
-import { checkIsDelivered } from '../../../utils/strapi/card'
 
 type HeaderProps = {
   activeTab: 'created' | 'received'
 }
 
 const Header = async ({ activeTab }: HeaderProps) => {
-  const reservedCards = await getReservedCards()
-  if (!reservedCards) redirect('/')
+  const newArrivalCount = await countNewArrivalCards()
+  if (newArrivalCount === undefined) redirect('/')
 
-  const newArrivalCount = reservedCards.data.filter(
-    (receivedCard) =>
-      receivedCard.attributes.card.data &&
-      checkIsDelivered(receivedCard.attributes.card.data)
-  ).length
   return (
     <>
       <div className={styles.headerContainer}>
