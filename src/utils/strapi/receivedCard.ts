@@ -285,7 +285,7 @@ export const getReservedCards = async () => {
       `${
         process.env.NEXT_PUBLIC_STRAPI_BACKEND_URL
       }/api/received-cards?${stringify({
-        populate: ['card.userImages', 'receiver'],
+        populate: 'card.userImages',
         publicationState: 'preview',
         filters: {
           receiver: {
@@ -326,6 +326,59 @@ export const getReservedCards = async () => {
   }
 }
 
+export const countNewArrivalCards = async () => {
+  const session = await getServerSession(authOptions)
+
+  if (!session) {
+    return undefined
+  }
+
+  try {
+    const strapiResponse = await fetch(
+      `${
+        process.env.NEXT_PUBLIC_STRAPI_BACKEND_URL
+      }/api/received-cards?${stringify({
+        publicationState: 'preview',
+        filters: {
+          receiver: {
+            id: {
+              $eq: session.user.strapiUserId,
+            },
+          },
+          publishedAt: {
+            $null: true,
+          },
+          card: {
+            deliveredAt: {
+              $lt: new Date().toISOString(),
+            },
+          },
+        },
+        pagination: {
+          pageSize: 1,
+        },
+      })}`,
+      {
+        cache: 'no-cache',
+        headers: {
+          Authorization: `Bearer ${process.env.STRAPI_API_TOKEN}`,
+        },
+      }
+    )
+
+    if (!strapiResponse.ok) {
+      const strapiError: StrapiError = await strapiResponse.json()
+      throw new Error(strapiError.error.message)
+    }
+
+    const receivedCards: StrapiApiListResponse<ReceivedCardAttributes> =
+      await strapiResponse.json()
+    return receivedCards.meta.pagination.total
+  } catch (error) {
+    throw error
+  }
+}
+
 export const countReceivedRecords = async () => {
   const session = await getServerSession(authOptions)
 
@@ -361,7 +414,8 @@ export const countReceivedRecords = async () => {
     )
 
     if (!strapiResponse.ok) {
-      return undefined
+      const strapiError: StrapiError = await strapiResponse.json()
+      throw new Error(strapiError.error.message)
     }
 
     const receivedCards: StrapiApiListResponse<ReceivedCardAttributes> =
