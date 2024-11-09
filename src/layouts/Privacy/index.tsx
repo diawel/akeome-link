@@ -1,10 +1,10 @@
 import * as styles from './index.css'
-import { beginningOfSentence, privacyPolicy, endSentence } from './PrivacyPolicyText'
+import { beginningOfSentence, privacyPolicy } from './PrivacyPolicyText'
 
 const Privacy = () => {
   return (
     <div className={styles.card}>
-      <p className={styles.centeredText}>利用規約</p>
+      <p className={styles.centeredText}>プライバシーポリシー</p>
       <p className={styles.beginningText}>{beginningOfSentence}</p>
       {privacyPolicy.map((section, index) => (
         <div key={index}>
@@ -40,10 +40,8 @@ const Privacy = () => {
           </div>
         </div>
       ))}
-      <p className={styles.endSentenceText}>{endSentence}</p>
     </div>
   )
 }
 
 export default Privacy
-
