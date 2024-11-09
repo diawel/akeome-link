@@ -1,24 +1,26 @@
+import * as styles from './index.css'
 import { beginningOfSentence, termsOfService, endSentence } from './TermsOfServiceText'
 
-const Terms = async () => {
+const Terms = () => {
   return (
-    <div>
-      <p>{beginningOfSentence}</p>
+    <div className={styles.card}>
+      <p className={styles.centeredText}>利用規約</p>
+      <p className={styles.beginningText}>{beginningOfSentence}</p>
       {termsOfService.map((section, index) => (
         <div key={index}>
-          <p>{section.article}</p>
+          <p className={styles.articleTitle}>{section.article}</p>
           <div>
-            <ul style={{ listStyleType: "disc", paddingLeft: "20px" }}>
+            <ul className={styles.ulItem}>
               {section.content.map((item, idx) => {
                 if (item.type === "default") {
                   return <p key={idx}>{item.text}</p>;
                 } else if (item.type === "li") {
                   const nextItem = section.content[idx + 1];
                   return (
-                    <li key={idx} className="custom-li">
+                    <li key={idx} className={styles.listItem}>
                       {item.text}
                       {nextItem?.type === "ul" && (
-                        <ul style={{ listStyleType: "disc", paddingLeft: "20px" }}>
+                        <ul className={styles.ulItem}>
                           {section.content
                             .slice(idx + 1)
                             .filter((nestedItem) => nestedItem.type === "ul")
@@ -38,7 +40,7 @@ const Terms = async () => {
           </div>
         </div>
       ))}
-      <p>{endSentence}</p>
+      <p className={styles.endSentenceText}>{endSentence}</p>
     </div>
   )
 }
