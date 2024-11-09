@@ -6,7 +6,7 @@ import {
   CardLayout,
   UserImages,
 } from '../../../components/Card'
-import { addCard } from '../../../utils/strapi/card/server'
+import { addCard } from '../../../utils/strapi/card'
 import { extractPersonName } from '../../../utils/goolab'
 import * as styles from './index.css'
 
@@ -19,6 +19,14 @@ type SettingProps = {
   userImages: UserImages
 }
 
+const calcDeliveredAt = () => {
+  const date = new Date()
+  if (date.getMonth() === 0) {
+    return new Date(date.getFullYear(), 0, date.getDate() + 1, 6)
+  }
+  return new Date(date.getFullYear() + 1, 0, 1)
+}
+
 const Setting = ({
   onClose,
   cardLayout,
@@ -28,8 +36,8 @@ const Setting = ({
   const { data: session } = useSession({ required: true })
   const [creatorName, setCreatorName] = useState<string | undefined>(undefined)
   const [title, setTitle] = useState<string | undefined>(undefined)
-  const [isExpress, setIsExpress] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
+  const [deliveredAt, setDeliveredAt] = useState<Date>(calcDeliveredAt())
 
   useEffect(() => {
     if (!session) return
@@ -77,7 +85,7 @@ const Setting = ({
         background: cardBackground,
       },
       userImages,
-      isExpress,
+      deliveredAt,
     }).then((response) => {
       router.push(`/create/detail/${response.data.id}`)
     })
@@ -101,8 +109,14 @@ const Setting = ({
       <label>
         <input
           type="checkbox"
-          checked={isExpress}
-          onChange={(event) => setIsExpress(event.target.checked)}
+          checked={deliveredAt <= new Date()}
+          onChange={(event) => {
+            if (event.target.checked) {
+              setDeliveredAt(new Date())
+            } else {
+              setDeliveredAt(calcDeliveredAt())
+            }
+          }}
         />
         速達
       </label>

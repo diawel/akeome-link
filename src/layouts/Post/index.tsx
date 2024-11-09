@@ -1,6 +1,5 @@
 import { redirect } from 'next/navigation'
 import { getReservedCards } from '../../utils/strapi/receivedCard'
-import { checkIsDelivered } from '../../utils/strapi/card'
 import Link from 'next/link'
 
 const Post = async () => {
@@ -12,9 +11,9 @@ const Post = async () => {
       <div>
         {reservedCards.data.map((receivedCard, index) => {
           if (!receivedCard.attributes.card.data) return
-          const isDelivered = checkIsDelivered(
-            receivedCard.attributes.card.data
-          )
+          const isDelivered =
+            new Date(receivedCard.attributes.card.data.attributes.deliveredAt) <
+            new Date()
           return (
             <Link
               href={`/link/${receivedCard.attributes.card.data.attributes.shareId}`}

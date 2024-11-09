@@ -6,7 +6,6 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { getReservedCards } from '../../../utils/strapi/receivedCard'
 import { redirect } from 'next/navigation'
-import { checkIsDelivered } from '../../../utils/strapi/card'
 
 type HeaderProps = {
   activeTab: 'created' | 'received'
@@ -19,7 +18,8 @@ const Header = async ({ activeTab }: HeaderProps) => {
   const newArrivalCount = reservedCards.data.filter(
     (receivedCard) =>
       receivedCard.attributes.card.data &&
-      checkIsDelivered(receivedCard.attributes.card.data)
+      new Date(receivedCard.attributes.card.data.attributes.deliveredAt) <
+        new Date()
   ).length
   return (
     <>

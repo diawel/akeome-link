@@ -7,10 +7,10 @@ import {
   StrapiError,
   StrapiRecord,
 } from '.'
-import { getSharedCard } from './card/server'
+import { getSharedCard } from './card'
 import { authOptions } from '../../app/api/auth/[...nextauth]/authOptions'
 import { stringify } from 'qs'
-import { CardAttributes, checkIsDelivered } from './card'
+import { CardAttributes } from './card'
 
 export type ReceivedCardAttributes = {
   createdAt: string
@@ -37,7 +37,7 @@ const recordFilter = (record: StrapiRecord<ReceivedCardAttributes>) => ({
               view: record.attributes.card.data.attributes.view,
               userImages: record.attributes.card.data.attributes.userImages,
               publishedAt: record.attributes.card.data.attributes.publishedAt,
-              isExpress: record.attributes.card.data.attributes.isExpress,
+              deliveredAt: record.attributes.card.data.attributes.deliveredAt,
               shareId: record.attributes.card.data.attributes.shareId,
             },
           }
@@ -217,7 +217,7 @@ export const addUniqueReceivedCard = async ({
     const shouldUpdate =
       !isReserve &&
       existingReceivedCards?.data.attributes.publishedAt === null &&
-      checkIsDelivered(card.data)
+      new Date(card.data.attributes.deliveredAt) < new Date()
     if (existingReceivedCards && !shouldUpdate) {
       return existingReceivedCards
     }
