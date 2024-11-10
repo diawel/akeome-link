@@ -1,69 +1,27 @@
 'use client'
 
-import { useEffect, useState } from 'react'
-import Card, { CardBackground, CardLayout } from '../../components/Card'
+import { useState } from 'react'
+import Card, {
+  CardBackground,
+  CardLayout,
+  UserImages,
+} from '../../components/Card'
 import * as styles from './index.css'
 import Meta from './Meta'
 import Edit from './Edit'
-import { ImageUrlSet } from '../../utils/strapi/strapiImage'
-import { addCard } from '../../utils/strapi/card/server'
-import { useSession } from 'next-auth/react'
-import { useRouter } from 'next/navigation'
 import { uploadMedia } from '../../utils/strapi/media'
-
-const creatorNameLocalStorageKey = 'creatorName'
+import Setting from './Setting'
 
 const EditCard = () => {
-  const { data: session } = useSession({ required: true })
   const [cardLayout, setCardLayout] = useState<CardLayout>([])
   const [cardBackground, setCardBackground] = useState<CardBackground>({
     type: 'solid',
     color: '#ffffff',
   })
-  const [userImages, setUserImages] = useState<
-    {
-      id: number
-      urlSet: ImageUrlSet
-    }[]
-  >([])
+  const [userImages, setUserImages] = useState<UserImages>([])
   const [isAnyFocused, setIsAnyFocused] = useState(false)
-  const [title, setTitle] = useState('無題')
-  const [creatorName, setCreatorName] = useState<string | undefined>(undefined)
   const [isLoading, setIsLoading] = useState(false)
-  const [isExpress, setIsExpress] = useState(false)
-  const router = useRouter()
-
-  useEffect(() => {
-    if (!session) return
-    setCreatorName(
-      localStorage.getItem(creatorNameLocalStorageKey) ??
-        session?.user?.name ??
-        'ゲスト'
-    )
-  }, [session])
-
-  const save = () => {
-    if (creatorName === undefined) return
-    if (isLoading) return
-
-    if (!title) alert('タイトルを入力してください')
-    if (!creatorName) alert('作者名を入力してください')
-
-    setIsLoading(true)
-    localStorage.setItem(creatorNameLocalStorageKey, creatorName)
-    addCard({
-      title,
-      creatorName,
-      view: {
-        layout: cardLayout,
-        background: cardBackground,
-      },
-      userImages,
-      isExpress,
-    }).then((response) => {
-      router.push(`/create/detail/${response.data.id}`)
-    })
-  }
+  const [isCompleted, setIsCompleted] = useState(false)
 
   return (
     <div
@@ -78,14 +36,9 @@ const EditCard = () => {
       }
     >
       <Meta
-        onSave={save}
-        {...{
-          title,
-          setTitle,
-          creatorName,
-          setCreatorName,
-          isExpress,
-          setIsExpress,
+        onComplete={() => {
+          if (isLoading) return
+          setIsCompleted(true)
         }}
       />
       <div>
@@ -165,6 +118,21 @@ const EditCard = () => {
           setIsLoading,
         }}
       />
+      {isCompleted && (
+        <div className={styles.settingContainer}>
+          <Setting
+            onClose={() => setIsCompleted(false)}
+            {...{
+              cardLayout,
+              cardBackground,
+              userImages,
+              isLoading,
+              isCompleted,
+              setIsCompleted,
+            }}
+          />
+        </div>
+      )}
     </div>
   )
 }

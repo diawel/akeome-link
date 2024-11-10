@@ -2,9 +2,8 @@ import { redirect } from 'next/navigation'
 import Shared from '../../../layouts/Shared'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '../../api/auth/[...nextauth]/authOptions'
-import { getSharedCard } from '../../../utils/strapi/card/server'
+import { getSharedCard } from '../../../utils/strapi/card'
 import { getReceivedCardByCardId } from '../../../utils/strapi/receivedCard'
-import { checkIsDelivered } from '../../../utils/strapi/card'
 
 export const generateMetadata = async ({
   params,
@@ -25,7 +24,7 @@ const Page = async ({ params }: { params: { id: string } }) => {
   if (!card) redirect('/')
   const session = await getServerSession(authOptions)
   const recievedCard = await getReceivedCardByCardId(card.data.id)
-  const isDelivered = checkIsDelivered(card.data)
+  const isDelivered = new Date(card.data.attributes.deliveredAt) < new Date()
 
   return (
     <Shared

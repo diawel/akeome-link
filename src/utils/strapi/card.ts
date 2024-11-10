@@ -1,11 +1,33 @@
 'use server'
 
 import { getServerSession } from 'next-auth'
-import { StrapiApiListResponse, StrapiApiResponse, StrapiError } from '..'
-import { authOptions } from '../../../app/api/auth/[...nextauth]/authOptions'
+import {
+  StrapiApiListResponse,
+  StrapiApiResponse,
+  StrapiError,
+  StrapiRecord,
+} from '.'
+import { authOptions } from '../../app/api/auth/[...nextauth]/authOptions'
 import { stringify } from 'qs'
-import { CardBackground, CardLayout } from '../../../components/Card'
-import { CardAttributes } from '.'
+import { CardBackground, CardLayout } from '../../components/Card'
+import { MediaAttributes } from './media'
+import { UserAttributes } from './user'
+
+export type CardAttributes = {
+  title: string
+  creatorName: string
+  view: {
+    background: CardBackground
+    layout: CardLayout
+  }
+  createdAt: string
+  updatedAt: string
+  publishedAt: string
+  userImages: { data: StrapiRecord<MediaAttributes>[] }
+  creator: { data: StrapiRecord<UserAttributes> }
+  shareId: string
+  deliveredAt: string
+}
 
 export const getCreatedCard = async (id: number) => {
   try {
@@ -85,7 +107,7 @@ export const getSharedCard = async (shareId: string) => {
           shareId: card.data[0].attributes.shareId,
           view: card.data[0].attributes.view,
           userImages: card.data[0].attributes.userImages,
-          isExpress: card.data[0].attributes.isExpress,
+          deliveredAt: card.data[0].attributes.deliveredAt,
           publishedAt: card.data[0].attributes.publishedAt,
           creator: {
             data: {
@@ -148,7 +170,7 @@ export const addCard = async ({
   creatorName,
   userImages,
   view,
-  isExpress,
+  deliveredAt,
 }: {
   title: string
   creatorName: string
@@ -159,7 +181,7 @@ export const addCard = async ({
     layout: CardLayout
     background: CardBackground
   }
-  isExpress: boolean
+  deliveredAt: Date
 }) => {
   const session = await getServerSession(authOptions)
 
@@ -183,7 +205,7 @@ export const addCard = async ({
             view,
             creator: session.user.strapiUserId,
             userImages: userImages.map((userImage) => userImage.id),
-            isExpress,
+            deliveredAt: deliveredAt.toISOString(),
           },
         }),
       }

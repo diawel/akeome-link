@@ -1,6 +1,6 @@
 import { redirect } from 'next/navigation'
 import Detail from '../../../../layouts/Detail'
-import { getCreatedCard } from '../../../../utils/strapi/card/server'
+import { getCreatedCard } from '../../../../utils/strapi/card'
 
 const Page = async ({ params }: { params: { id: number } }) => {
   const cardResponse = await getCreatedCard(params.id)
