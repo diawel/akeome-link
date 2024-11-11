@@ -40,35 +40,40 @@ export const stickerLabel = style({
 
 export const nav = style({
   display: 'grid',
-  gridTemplateColumns: 'repeat(3, 1fr)',
+  gridTemplateColumns: 'repeat(4, 1fr)',
+  paddingInline: 10,
+  borderTop: `1px solid ${color.gray[90]}`,
+  backgroundColor: color.gray[100],
 })
 
 const navButtonBase = style({
-  padding: '16px 16px max(env(safe-area-inset-bottom), 16px)',
+  padding: '16px 4px max(env(safe-area-inset-bottom), 16px)',
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'center',
   alignItems: 'center',
   border: 'none',
-  fontSize: 10,
+  fontSize: 14,
   gap: 2,
+  marginTop: -1,
+  backgroundColor: 'transparent',
+  borderTop: `2px solid`,
+  fontWeight: 'bold',
 })
 
 export const navButton = styleVariants({
   default: [
     navButtonBase,
     {
-      backgroundColor: color.gray[80],
       color: color.gray[5],
-      fill: color.gray[5],
+      borderColor: 'transparent',
     },
   ],
   active: [
     navButtonBase,
     {
-      backgroundColor: color.red[5],
-      color: color.gray[100],
-      fill: color.gray[100],
+      color: color.red[5],
+      borderColor: color.red[5],
     },
   ],
 })
