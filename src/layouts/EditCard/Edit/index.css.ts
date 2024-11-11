@@ -177,3 +177,24 @@ export const textEditTextarea = style({
   font: 'inherit',
   letterSpacing: 'inherit',
 })
+
+export const errorContainer = style({
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  flexDirection: 'column',
+  gap: 6,
+  width: 'max-content',
+  maxWidth: 'calc(100% - 32px)',
+  padding: 10,
+  borderRadius: 10,
+  backgroundColor: color.gray[90],
+  color: color.red[5],
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  translate: '-50% -50%',
+  fontSize: 12,
+  fontWeight: 'bold',
+  textAlign: 'center',
+})

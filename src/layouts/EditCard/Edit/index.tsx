@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { Fragment, useEffect, useState } from 'react'
 import Card, { CardBackground } from '../../../components/Card'
 import * as styles from './index.css'
 import { useStickers } from '../../../app/StickerProvider'
@@ -14,6 +14,7 @@ import {
   FaPalette,
   FaPen,
   FaPlus,
+  FaTriangleExclamation,
 } from 'react-icons/fa6'
 
 type EditProps = {
@@ -54,6 +55,53 @@ const Edit = ({
     }
   }, [activeTab, cardLayout, focusedContent])
   const [isTextEditing, setIsTextEditing] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+
+  useEffect(() => {
+    if (!error) return
+    const timer = setTimeout(() => {
+      setError(null)
+    }, 5000)
+    const handleClick = () => {
+      setError(null)
+    }
+    window.addEventListener('click', handleClick)
+    return () => {
+      clearTimeout(timer)
+      window.removeEventListener('click', handleClick)
+    }
+  }, [error])
+
+  const handleUpload = (
+    event: React.ChangeEvent<HTMLInputElement>,
+    callback: (userImage: (typeof userImages)[number]) => void
+  ) => {
+    setIsLoading(true)
+    const file = event.target.files?.[0]
+    if (!file) return
+    const formData = new FormData()
+    formData.append('files', file)
+    uploadMedia(formData)
+      .then((media) => {
+        setUserImages(
+          userImages.concat({
+            id: media[0].id,
+            urlSet: media[0],
+          })
+        )
+        callback({
+          id: media[0].id,
+          urlSet: media[0],
+        })
+        setIsLoading(false)
+      })
+      .catch(() => {
+        setError(
+          `画像のアップロードに失敗しました。\n画像サイズの上限は${process.env.NEXT_PUBLIC_MAX_UPLOAD_SIZE_TEXT}です。`
+        )
+        setIsLoading(false)
+      })
+  }
 
   return (
     <>
@@ -69,31 +117,12 @@ const Edit = ({
                   type="file"
                   accept="image/*"
                   onChange={(event) => {
-                    setIsLoading(true)
-                    const file = event.target.files?.[0]
-                    if (!file) return
-                    const formData = new FormData()
-                    formData.append('files', file)
-                    uploadMedia(formData)
-                      .then((media) => {
-                        setUserImages(
-                          userImages.concat({
-                            id: media[0].id,
-                            urlSet: media[0],
-                          })
-                        )
-                        setCardBackground({
-                          type: 'userImage',
-                          id: media[0].id,
-                        })
-                        setIsLoading(false)
+                    handleUpload(event, (userImage) => {
+                      setCardBackground({
+                        type: 'userImage',
+                        id: userImage.id,
                       })
-                      .catch(() => {
-                        alert(
-                          `画像のアップロードに失敗しました。画像サイズの上限は${process.env.NEXT_PUBLIC_MAX_UPLOAD_SIZE_TEXT}です。`
-                        )
-                        setIsLoading(false)
-                      })
+                    })
                   }}
                 />
               </label>
@@ -124,37 +153,18 @@ const Edit = ({
                   type="file"
                   accept="image/*"
                   onChange={(event) => {
-                    setIsLoading(true)
-                    const file = event.target.files?.[0]
-                    if (!file) return
-                    const formData = new FormData()
-                    formData.append('files', file)
-                    uploadMedia(formData)
-                      .then((media) => {
-                        setUserImages(
-                          userImages.concat({
-                            id: media[0].id,
-                            urlSet: media[0],
-                          })
-                        )
-                        setCardLayout(
-                          cardLayout.concat({
-                            container: { x: 200, y: 291, scale: 1, rotate: 0 },
-                            content: {
-                              type: 'userImage',
-                              id: media[0].id,
-                            },
-                          })
-                        )
-                        setIsAnyFocused(true)
-                        setIsLoading(false)
-                      })
-                      .catch(() => {
-                        alert(
-                          `画像のアップロードに失敗しました。画像サイズの上限は${process.env.NEXT_PUBLIC_MAX_UPLOAD_SIZE_TEXT}です。`
-                        )
-                        setIsLoading(false)
-                      })
+                    handleUpload(event, (userImage) => {
+                      setCardLayout(
+                        cardLayout.concat({
+                          container: { x: 200, y: 291, scale: 1, rotate: 0 },
+                          content: {
+                            type: 'userImage',
+                            id: userImage.id,
+                          },
+                        })
+                      )
+                      setIsAnyFocused(true)
+                    })
                   }}
                 />
               </label>
@@ -381,6 +391,17 @@ const Edit = ({
               }}
             />
           </div>
+        </div>
+      )}
+      {error !== null && (
+        <div className={styles.errorContainer}>
+          <FaTriangleExclamation size={20} />
+          {error.split('\n').map((line, index) => (
+            <Fragment key={index}>
+              {line}
+              <br />
+            </Fragment>
+          ))}
         </div>
       )}
     </>
