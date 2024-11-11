@@ -30,6 +30,7 @@ export const stickerButton = style({
 export const sticker = style({
   width: 'auto',
   height: '100%',
+  filter: 'drop-shadow(0 2px 1px rgba(0, 0, 0, 0.25))',
 })
 
 export const stickerLabel = style({
