@@ -45,14 +45,8 @@ const EditCard = () => {
       </div>
       <Edit
         {...{
-          cardLayout,
-          setCardLayout,
           isAnyFocused,
           setIsAnyFocused,
-          userImages,
-          setUserImages,
-          cardBackground,
-          setCardBackground,
           setIsLoading,
         }}
       />

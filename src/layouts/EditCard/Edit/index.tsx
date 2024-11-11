@@ -1,5 +1,5 @@
 import { Fragment, useEffect, useState } from 'react'
-import Card, { CardBackground, UserImages } from '../../../components/Card'
+import { UserImages } from '../../../components/Card'
 import * as styles from './index.css'
 import { useStickers } from '../../../app/StickerProvider'
 import { uploadMedia } from '../../../utils/strapi/media'
@@ -16,34 +16,20 @@ import {
   FaPlus,
   FaTriangleExclamation,
 } from 'react-icons/fa6'
+import { useEditCard } from '../EditCardProvider'
 
 type EditProps = {
-  cardLayout: React.ComponentProps<typeof Card>['layout']
-  setCardLayout: (
-    cardLayout: React.ComponentProps<typeof Card>['layout']
-  ) => void
   isAnyFocused: boolean
   setIsAnyFocused: (isAnyFocused: boolean) => void
-  userImages: React.ComponentProps<typeof Card>['userImages']
-  setUserImages: (
-    userImages: React.ComponentProps<typeof Card>['userImages']
-  ) => void
-  cardBackground: CardBackground
-  setCardBackground: (background: CardBackground) => void
   setIsLoading: (isLoading: boolean) => void
 }
 
-const Edit = ({
-  cardLayout,
-  setCardLayout,
-  isAnyFocused,
-  setIsAnyFocused,
-  userImages,
-  setUserImages,
-  cardBackground,
-  setCardBackground,
-  setIsLoading,
-}: EditProps) => {
+const Edit = ({ isAnyFocused, setIsAnyFocused, setIsLoading }: EditProps) => {
+  const {
+    cardLayoutState: [cardLayout, setCardLayout],
+    cardBackgroundState: [cardBackground, setCardBackground],
+    userImagesState: [userImages, setUserImages],
+  } = useEditCard()
   const stickers = useStickers()
   const [activeTab, setActiveTab] = useState<
     'background' | 'userImage' | 'sticker' | 'text'
