@@ -161,8 +161,8 @@ export const control = styleVariants({
     {
       position: 'absolute',
       bottom: 0,
-      right: 0,
-      translate: '50% 50%',
+      left: 0,
+      translate: '-50% 50%',
     },
   ],
   zoom: [
@@ -170,8 +170,8 @@ export const control = styleVariants({
     {
       position: 'absolute',
       bottom: 0,
-      left: 0,
-      translate: '-50% 50%',
+      right: 0,
+      translate: '50% 50%',
     },
   ],
 })
