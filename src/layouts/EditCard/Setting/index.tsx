@@ -1,23 +1,15 @@
+'use client'
+
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
-import {
-  CardBackground,
-  CardLayout,
-  UserImages,
-} from '../../../components/Card'
 import { addCard } from '../../../utils/strapi/card'
 import { extractPersonName } from '../../../utils/goolab'
 import * as styles from './index.css'
+import Meta from './Meta'
+import { useEditCard } from '../EditCardProvider'
 
 const creatorNameLocalStorageKey = 'creatorName'
-
-type SettingProps = {
-  onClose: () => void
-  cardLayout: CardLayout
-  cardBackground: CardBackground
-  userImages: UserImages
-}
 
 const calcDeliveredAt = () => {
   const date = new Date()
@@ -27,12 +19,12 @@ const calcDeliveredAt = () => {
   return new Date(date.getFullYear() + 1, 0, 1)
 }
 
-const Setting = ({
-  onClose,
-  cardLayout,
-  cardBackground,
-  userImages,
-}: SettingProps) => {
+const Setting = () => {
+  const {
+    cardLayoutState: [cardLayout],
+    cardBackgroundState: [cardBackground],
+    userImagesState: [userImages],
+  } = useEditCard()
   const { data: session } = useSession({ required: true })
   const [creatorName, setCreatorName] = useState<string | undefined>(undefined)
   const [title, setTitle] = useState<string | undefined>(undefined)
@@ -93,7 +85,7 @@ const Setting = ({
 
   return (
     <div className={styles.screen}>
-      <button onClick={onClose}>戻る</button>
+      <Meta onComplete={save} />
       <input
         value={creatorName ?? ''}
         onChange={(event) => setCreatorName(event.target.value)}

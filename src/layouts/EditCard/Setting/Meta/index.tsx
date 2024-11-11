@@ -2,15 +2,19 @@ import Link from 'next/link'
 import * as styles from './index.css'
 import { FaChevronLeft } from 'react-icons/fa6'
 
-const Meta = () => {
+type MetaProps = {
+  onComplete: () => void
+}
+
+const Meta = ({ onComplete }: MetaProps) => {
   return (
     <div className={styles.control}>
-      <Link className={styles.returnButtonContainer} href="/create/list">
+      <Link className={styles.returnButtonContainer} href="/create/new">
         <FaChevronLeft className={styles.returnButton} size={24} />
       </Link>
-      <Link className={styles.primaryButton} href="/create/new/setting">
-        次へ
-      </Link>
+      <button className={styles.primaryButton} onClick={onComplete}>
+        完成
+      </button>
     </div>
   )
 }

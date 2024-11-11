@@ -1,26 +1,20 @@
 'use client'
 
 import { useState } from 'react'
-import Card, {
-  CardBackground,
-  CardLayout,
-  UserImages,
-} from '../../components/Card'
+import Card from '../../components/Card'
 import * as styles from './index.css'
 import Meta from './Meta'
 import Edit from './Edit'
-import Setting from './Setting'
+import { useEditCard } from './EditCardProvider'
 
 const EditCard = () => {
-  const [cardLayout, setCardLayout] = useState<CardLayout>([])
-  const [cardBackground, setCardBackground] = useState<CardBackground>({
-    type: 'solid',
-    color: '#ffffff',
-  })
-  const [userImages, setUserImages] = useState<UserImages>([])
+  const {
+    cardLayoutState: [cardLayout, setCardLayout],
+    cardBackgroundState: [cardBackground, setCardBackground],
+    userImagesState: [userImages, setUserImages],
+  } = useEditCard()
   const [isAnyFocused, setIsAnyFocused] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
-  const [isCompleted, setIsCompleted] = useState(false)
 
   return (
     <div
@@ -34,12 +28,7 @@ const EditCard = () => {
           : {}
       }
     >
-      <Meta
-        onComplete={() => {
-          if (isLoading) return
-          setIsCompleted(true)
-        }}
-      />
+      <Meta />
       <div className={styles.cardWrapper}>
         <Card
           layout={cardLayout}
@@ -65,21 +54,6 @@ const EditCard = () => {
           setIsLoading,
         }}
       />
-      {isCompleted && (
-        <div className={styles.settingContainer}>
-          <Setting
-            onClose={() => setIsCompleted(false)}
-            {...{
-              cardLayout,
-              cardBackground,
-              userImages,
-              isLoading,
-              isCompleted,
-              setIsCompleted,
-            }}
-          />
-        </div>
-      )}
     </div>
   )
 }
