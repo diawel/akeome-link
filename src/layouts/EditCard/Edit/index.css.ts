@@ -15,6 +15,41 @@ export const control = style({
   alignItems: 'center',
   width: 'fit-content',
   height: '100%',
+  minWidth: '100%',
+})
+
+export const controlGrid = style({
+  height: '100%',
+  width: '100%',
+  display: 'grid',
+  gridTemplateColumns: 'repeat(4, 1fr)',
+  gap: 12,
+  paddingBlock: 8,
+})
+
+export const controlButton = style({
+  height: '100%',
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  flexDirection: 'column',
+  border: 'none',
+  gap: 6,
+  fontSize: 10,
+  backgroundColor: color.gray[90],
+  color: color.gray[5],
+  fontWeight: 'bold',
+  borderRadius: 6,
+  cursor: 'pointer',
+  position: 'relative',
+})
+
+export const controlInput = style({
+  position: 'absolute',
+  top: 0,
+  left: 0,
+  pointerEvents: 'none',
+  opacity: 0,
 })
 
 export const stickerButton = style({
@@ -60,6 +95,7 @@ const navButtonBase = style({
   backgroundColor: 'transparent',
   borderTop: `2px solid`,
   fontWeight: 'bold',
+  cursor: 'pointer',
 })
 
 export const navButton = styleVariants({
@@ -81,4 +117,63 @@ export const navButton = styleVariants({
 
 export const navButtonIcon = style({
   fontSize: 24,
+})
+
+export const textEditWindow = style({
+  position: 'absolute',
+  top: 0,
+  left: 0,
+  width: '100%',
+  height: '100%',
+  display: 'grid',
+  gridTemplateColumns: '1fr',
+  gridTemplateRows: 'auto 1fr',
+  alignItems: 'center',
+  gap: 16,
+  padding: 16,
+  backgroundColor: `rgb(255 255 255 / 0.9)`,
+})
+
+export const textEditButtonContainer = style({
+  width: '100%',
+  display: 'flex',
+  justifyContent: 'flex-end',
+})
+
+export const textEditButton = style({
+  padding: 8,
+  border: 'none',
+  color: color.red[5],
+  backgroundColor: 'transparent',
+  fontWeight: 'bold',
+  cursor: 'pointer',
+  fontSize: 16,
+})
+
+export const textEditTextareaWrapper = style({
+  position: 'relative',
+  width: '100%',
+  color: 'rgb(0 0 0 / 0)',
+  whiteSpace: 'pre-wrap',
+  fontSize: 20,
+  textAlign: 'center',
+  wordBreak: 'break-word',
+  wordWrap: 'break-word',
+  maxHeight: '100%',
+  overflow: 'auto',
+})
+
+export const textEditTextarea = style({
+  position: 'absolute',
+  top: 0,
+  left: 0,
+  height: '100%',
+  width: '100%',
+  border: 'none',
+  backgroundColor: 'transparent',
+  outline: 'none',
+  resize: 'none',
+  textAlign: 'center',
+  font: 'inherit',
+  letterSpacing: 'inherit',
 })
