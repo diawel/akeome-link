@@ -84,8 +84,9 @@ export const input = styleVariants({
 
 export const toggleContainer = style({
   display: 'flex',
-  gap: 8,
+  gap: 16,
   justifyContent: 'space-between',
+  flexWrap: 'wrap',
 })
 
 export const toggleGroup = style({
@@ -170,4 +171,10 @@ export const expressLabel = style({
   position: 'absolute',
   right: 4,
   top: 36,
+})
+
+export const postContainer = style({
+  padding: '48px 16px 16px',
+  display: 'flex',
+  justifyContent: 'center',
 })

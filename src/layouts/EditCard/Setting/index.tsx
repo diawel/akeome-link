@@ -11,6 +11,7 @@ import { useEditCard } from '../EditCardProvider'
 import postNumber from './post-number.svg'
 import Image from 'next/image'
 import expressLabel from './express-label.svg'
+import post from './post.svg'
 
 const creatorNameLocalStorageKey = 'creatorName'
 
@@ -167,6 +168,9 @@ const Setting = () => {
             <Image className={styles.expressLabel} src={expressLabel} alt="" />
           )}
         </div>
+      </div>
+      <div className={styles.postContainer}>
+        <Image src={post} alt="" />
       </div>
     </div>
   )
