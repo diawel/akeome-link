@@ -39,6 +39,7 @@ const EditCard = () => {
             setIsAnyFocused,
             setLayout: setCardLayout,
             setBackground: setCardBackground,
+            setUserImages,
           }}
         />
       </div>
@@ -50,6 +51,7 @@ const EditCard = () => {
           setIsAnyFocused,
           userImages,
           setUserImages,
+          cardBackground,
           setCardBackground,
           setIsLoading,
         }}

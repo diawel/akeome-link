@@ -88,6 +88,7 @@ export type CardProps = {
   edit?: {
     setLayout: (layout: CardLayout) => void
     setBackground: (background: CardBackground) => void
+    setUserImages: (userImages: UserImages) => void
     isAnyFocused: boolean
     setIsAnyFocused: (isAnyFocused: boolean) => void
   }
@@ -551,6 +552,15 @@ const Card = ({
                       event.stopPropagation()
                       edit?.setLayout(layout.slice(0, index))
                       edit?.setIsAnyFocused(false)
+
+                      const content = layout[index].content
+                      if (content.type === 'userImage') {
+                        edit?.setUserImages(
+                          userImages.filter(
+                            (userImage) => userImage.id !== content.id
+                          )
+                        )
+                      }
                     }}
                     style={{
                       transform: `scale(${

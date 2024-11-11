@@ -1,5 +1,5 @@
 import { Fragment, useEffect, useState } from 'react'
-import Card, { CardBackground } from '../../../components/Card'
+import Card, { CardBackground, UserImages } from '../../../components/Card'
 import * as styles from './index.css'
 import { useStickers } from '../../../app/StickerProvider'
 import { uploadMedia } from '../../../utils/strapi/media'
@@ -28,6 +28,7 @@ type EditProps = {
   setUserImages: (
     userImages: React.ComponentProps<typeof Card>['userImages']
   ) => void
+  cardBackground: CardBackground
   setCardBackground: (background: CardBackground) => void
   setIsLoading: (isLoading: boolean) => void
 }
@@ -39,6 +40,7 @@ const Edit = ({
   setIsAnyFocused,
   userImages,
   setUserImages,
+  cardBackground,
   setCardBackground,
   setIsLoading,
 }: EditProps) => {
@@ -74,7 +76,7 @@ const Edit = ({
 
   const handleUpload = (
     event: React.ChangeEvent<HTMLInputElement>,
-    callback: (userImage: (typeof userImages)[number]) => void
+    callback: (userImage: UserImages[number], userImages: UserImages) => void
   ) => {
     setIsLoading(true)
     const file = event.target.files?.[0]
@@ -83,16 +85,16 @@ const Edit = ({
     formData.append('files', file)
     uploadMedia(formData)
       .then((media) => {
-        setUserImages(
+        callback(
+          {
+            id: media[0].id,
+            urlSet: media[0],
+          },
           userImages.concat({
             id: media[0].id,
             urlSet: media[0],
           })
         )
-        callback({
-          id: media[0].id,
-          urlSet: media[0],
-        })
         setIsLoading(false)
       })
       .catch(() => {
@@ -101,6 +103,7 @@ const Edit = ({
         )
         setIsLoading(false)
       })
+    event.target.value = ''
   }
 
   return (
@@ -117,11 +120,21 @@ const Edit = ({
                   type="file"
                   accept="image/*"
                   onChange={(event) => {
-                    handleUpload(event, (userImage) => {
+                    handleUpload(event, (userImage, userImages) => {
                       setCardBackground({
                         type: 'userImage',
                         id: userImage.id,
                       })
+
+                      if (cardBackground.type === 'userImage') {
+                        setUserImages(
+                          userImages.filter(
+                            (userImage) => userImage.id !== cardBackground.id
+                          )
+                        )
+                      } else {
+                        setUserImages(userImages)
+                      }
                     })
                   }}
                 />
@@ -132,12 +145,22 @@ const Edit = ({
                 <input
                   className={styles.controlInput}
                   type="color"
-                  onChange={(event) =>
+                  onChange={(event) => {
                     setCardBackground({
                       type: 'solid',
                       color: event.target.value,
                     })
-                  }
+
+                    if (cardBackground.type === 'userImage') {
+                      setUserImages(
+                        userImages.filter(
+                          (userImage) => userImage.id !== cardBackground.id
+                        )
+                      )
+                    } else {
+                      setUserImages(userImages)
+                    }
+                  }}
                 />
               </label>
             </div>
@@ -163,6 +186,7 @@ const Edit = ({
                           },
                         })
                       )
+                      setUserImages(userImages)
                       setIsAnyFocused(true)
                     })
                   }}
