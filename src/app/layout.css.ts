@@ -18,10 +18,10 @@ export const display = style({
 
   '@media': {
     'screen and (min-width: 480px)': {
-      width: '360px',
+      width: '395px',
       padding: '48px 8px',
       borderRadius: '36px',
-      maxHeight: '660px',
+      maxHeight: '760px',
     },
   },
 })
