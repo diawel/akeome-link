@@ -1,4 +1,4 @@
-import { style } from '@vanilla-extract/css'
+import { style, styleVariants } from '@vanilla-extract/css'
 import { color } from '../../../../utils/styleSchema'
 
 export const control = style({
@@ -16,7 +16,7 @@ export const returnButton = style({
   color: color.gray[5],
 })
 
-export const primaryButton = style({
+const primaryButtonBase = style({
   padding: '10px 24px',
   backgroundColor: color.red[5],
   color: color.gray[100],
@@ -26,4 +26,15 @@ export const primaryButton = style({
   fontSize: 16,
   fontWeight: 'bold',
   minWidth: 120,
+})
+
+export const primaryButton = styleVariants({
+  default: [primaryButtonBase],
+  disabled: [
+    primaryButtonBase,
+    {
+      pointerEvents: 'none',
+      opacity: 0.5,
+    },
+  ],
 })

@@ -8,6 +8,9 @@ import { extractPersonName } from '../../../utils/goolab'
 import * as styles from './index.css'
 import Meta from './Meta'
 import { useEditCard } from '../EditCardProvider'
+import postNumber from './post-number.svg'
+import Image from 'next/image'
+import expressLabel from './express-label.svg'
 
 const creatorNameLocalStorageKey = 'creatorName'
 
@@ -58,14 +61,8 @@ const Setting = () => {
   const router = useRouter()
 
   const save = () => {
-    if (!title) {
-      alert('タイトルを入力してください')
-      return
-    }
-    if (!creatorName) {
-      alert('作者名を入力してください')
-      return
-    }
+    if (!title) return
+    if (!creatorName) return
 
     setIsLoading(true)
     localStorage.setItem(creatorNameLocalStorageKey, creatorName)
@@ -85,36 +82,92 @@ const Setting = () => {
 
   return (
     <div className={styles.screen}>
-      <Meta onComplete={save} />
-      <input
-        value={creatorName ?? ''}
-        onChange={(event) => setCreatorName(event.target.value)}
-        placeholder="作者名"
-        disabled={creatorName === undefined}
-      />
-      <input
-        value={title ?? ''}
-        onChange={(event) => setTitle(event.target.value)}
-        placeholder="タイトル"
-        disabled={title === undefined}
-      />
-      <label>
-        <input
-          type="checkbox"
-          checked={deliveredAt <= new Date()}
-          onChange={(event) => {
-            if (event.target.checked) {
-              setDeliveredAt(new Date())
-            } else {
-              setDeliveredAt(calcDeliveredAt())
-            }
-          }}
-        />
-        速達
-      </label>
-      <button onClick={save} disabled={isLoading}>
-        保存
-      </button>
+      <Meta onComplete={save} disabled={!title || !creatorName || isLoading} />
+      <div className={styles.cardContainer}>
+        <div className={styles.card}>
+          <div className={styles.postNumberContainer}>
+            <Image src={postNumber} alt="" />
+          </div>
+          <div className={styles.inputContainer}>
+            <div className={styles.titleGroup}>
+              <div className={styles.title}>タイトル</div>
+              <div className={styles.error}>
+                {title === undefined || title
+                  ? ''
+                  : 'タイトルを入力してください'}
+              </div>
+            </div>
+            <input
+              className={
+                styles.input[title === undefined || title ? 'default' : 'error']
+              }
+              value={title ?? ''}
+              onChange={(event) => setTitle(event.target.value)}
+              disabled={title === undefined}
+            />
+          </div>
+          <div className={styles.inputContainer}>
+            <div className={styles.titleGroup}>
+              <div className={styles.title}>差出人</div>
+              <div className={styles.error}>
+                {creatorName === undefined || creatorName
+                  ? ''
+                  : '差出人を入力してください'}
+              </div>
+            </div>
+            <input
+              className={
+                styles.input[
+                  creatorName === undefined || creatorName ? 'default' : 'error'
+                ]
+              }
+              value={creatorName ?? ''}
+              onChange={(event) => setCreatorName(event.target.value)}
+              disabled={creatorName === undefined}
+            />
+          </div>
+          <div className={styles.toggleContainer}>
+            <div className={styles.toggleGroup}>
+              <div className={styles.title}>速達</div>
+              <label
+                className={
+                  styles.toggle[deliveredAt <= new Date() ? 'on' : 'off']
+                }
+              >
+                <input
+                  className={styles.checkbox}
+                  type="checkbox"
+                  checked={deliveredAt <= new Date()}
+                  onChange={(event) => {
+                    if (event.target.checked) {
+                      setDeliveredAt(new Date())
+                    } else {
+                      setDeliveredAt(calcDeliveredAt())
+                    }
+                  }}
+                />
+              </label>
+            </div>
+            <div className={styles.deliveredAtGroup}>
+              <div className={styles.subTitle}>配達予定日</div>
+              <div className={styles.deliveredAt}>
+                {deliveredAt <= new Date() ? (
+                  'いますぐ'
+                ) : (
+                  <>
+                    {deliveredAt.getFullYear()}年{deliveredAt.getMonth() + 1}月
+                    {deliveredAt.getDate()}日 {deliveredAt.getHours()}:
+                    {deliveredAt.getMinutes().toString().padStart(2, '0')}
+                  </>
+                )}
+              </div>
+            </div>
+          </div>
+          {deliveredAt <= new Date() && (
+            <Image className={styles.expressLabel} src={expressLabel} alt="" />
+          )}
+        </div>
+      </div>
     </div>
   )
 }
