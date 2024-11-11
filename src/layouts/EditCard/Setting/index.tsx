@@ -77,7 +77,7 @@ const Setting = () => {
       userImages,
       deliveredAt,
     }).then((response) => {
-      router.push(`/create/detail/${response.data.id}`)
+      router.replace(`/share/${response.data.id}`)
     })
   }
 
