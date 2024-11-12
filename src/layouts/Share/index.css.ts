@@ -56,13 +56,13 @@ export const copyButton = style({
   alignItems: 'center',
   justifyContent: 'center',
   backgroundColor: color.red[5],
-  marginTop: '8px',
-  padding: '10px 12px',
+  padding: '12px 23px',
   cursor: 'pointer',
   color: color.red[5],
   fontSize: '14px',
   fontWeight: 'bold',
   border: 'none',
+  width: '65px',
 })
 
 export const linkInput = style({
