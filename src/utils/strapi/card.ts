@@ -23,7 +23,7 @@ export type CardAttributes = {
   createdAt: string
   updatedAt: string
   publishedAt: string
-  userImages: { data: StrapiRecord<MediaAttributes>[] }
+  userImages: { data: StrapiRecord<MediaAttributes>[] | null }
   creator: { data: StrapiRecord<UserAttributes> }
   shareId: string
   deliveredAt: string
@@ -41,6 +41,7 @@ export const getCreatedCard = async (id: number) => {
         process.env.NEXT_PUBLIC_STRAPI_BACKEND_URL
       }/api/cards/${id}?${stringify({
         populate: ['creator', 'userImages'],
+        publicationState: 'preview',
         filter: {
           creator: {
             id: {
@@ -133,6 +134,7 @@ export const getCreatedCards = async () => {
     const strapiResponse = await fetch(
       `${process.env.NEXT_PUBLIC_STRAPI_BACKEND_URL}/api/cards?${stringify({
         populate: ['creator', 'userImages'],
+        publicationState: 'preview',
         filters: {
           creator: {
             id: {
@@ -171,6 +173,7 @@ export const addCard = async ({
   userImages,
   view,
   deliveredAt,
+  isDraft,
 }: {
   title: string
   creatorName: string
@@ -182,6 +185,7 @@ export const addCard = async ({
     background: CardBackground
   }
   deliveredAt: Date
+  isDraft?: boolean
 }) => {
   const session = await getServerSession(authOptions)
 
@@ -206,6 +210,7 @@ export const addCard = async ({
             creator: session.user.strapiUserId,
             userImages: userImages.map((userImage) => userImage.id),
             deliveredAt: deliveredAt.toISOString(),
+            ...(isDraft ? { publishedAt: null } : {}),
           },
         }),
       }
