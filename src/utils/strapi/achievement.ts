@@ -11,12 +11,12 @@ export type AchievementAttributes = {
 }
 
 export const getUserAchievmetns = async () => {
-  try {
-    const session = await getServerSession(authOptions)
-    if (!session) {
-      return undefined
-    }
+  const session = await getServerSession(authOptions)
+  if (!session) {
+    return undefined
+  }
 
+  try {
     const strapiResponse = await fetch(
       `${
         process.env.NEXT_PUBLIC_STRAPI_BACKEND_URL
@@ -50,12 +50,12 @@ export const getUserAchievmetns = async () => {
 }
 
 export const addAchievement = async (achievementKey: string) => {
-  try {
-    const session = await getServerSession(authOptions)
-    if (!session) {
-      return undefined
-    }
+  const session = await getServerSession(authOptions)
+  if (!session) {
+    return undefined
+  }
 
+  try {
     const strapiResponse = await fetch(
       `${process.env.NEXT_PUBLIC_STRAPI_BACKEND_URL}/api/achievements`,
       {
