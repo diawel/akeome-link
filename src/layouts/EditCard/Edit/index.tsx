@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useState } from 'react'
+import { Fragment, use, useEffect, useState } from 'react'
 import { UserImages } from '../../../components/Card'
 import * as styles from './index.css'
 import { useStickers } from '../../../app/StickerProvider'
@@ -59,10 +59,11 @@ const Edit = ({ isAnyFocused, setIsAnyFocused, setIsLoading }: EditProps) => {
       window.removeEventListener('click', handleClick)
     }
   }, [error])
+  console.log(userImages)
 
   const handleUpload = (
     event: React.ChangeEvent<HTMLInputElement>,
-    callback: (userImage: UserImages[number], userImages: UserImages) => void
+    callback: (userImage: UserImages[number]) => void
   ) => {
     setIsLoading(true)
     const file = event.target.files?.[0]
@@ -71,16 +72,10 @@ const Edit = ({ isAnyFocused, setIsAnyFocused, setIsLoading }: EditProps) => {
     formData.append('files', file)
     uploadMedia(formData)
       .then((media) => {
-        callback(
-          {
-            id: media[0].id,
-            urlSet: media[0],
-          },
-          userImages.concat({
-            id: media[0].id,
-            urlSet: media[0],
-          })
-        )
+        callback({
+          id: media[0].id,
+          urlSet: media[0],
+        })
         setIsLoading(false)
       })
       .catch(() => {
@@ -106,7 +101,7 @@ const Edit = ({ isAnyFocused, setIsAnyFocused, setIsLoading }: EditProps) => {
                   type="file"
                   accept="image/*"
                   onChange={(event) => {
-                    handleUpload(event, (userImage, userImages) => {
+                    handleUpload(event, (userImage) => {
                       setCardBackground({
                         type: 'userImage',
                         id: userImage.id,
@@ -114,12 +109,14 @@ const Edit = ({ isAnyFocused, setIsAnyFocused, setIsLoading }: EditProps) => {
 
                       if (cardBackground.type === 'userImage') {
                         setUserImages(
-                          userImages.filter(
-                            (userImage) => userImage.id !== cardBackground.id
-                          )
+                          userImages
+                            .filter(
+                              (userImage) => userImage.id !== cardBackground.id
+                            )
+                            .concat(userImage)
                         )
                       } else {
-                        setUserImages(userImages)
+                        setUserImages(userImages.concat(userImage))
                       }
                     })
                   }}
@@ -159,7 +156,7 @@ const Edit = ({ isAnyFocused, setIsAnyFocused, setIsLoading }: EditProps) => {
                   type="file"
                   accept="image/*"
                   onChange={(event) => {
-                    handleUpload(event, (userImage, userImages) => {
+                    handleUpload(event, (userImage) => {
                       setUserImages(userImages)
                       setCardLayout(
                         cardLayout.concat({
@@ -170,7 +167,7 @@ const Edit = ({ isAnyFocused, setIsAnyFocused, setIsLoading }: EditProps) => {
                           },
                         })
                       )
-                      setUserImages(userImages)
+                      setUserImages(userImages.concat(userImage))
                       setIsAnyFocused(true)
                     })
                   }}
