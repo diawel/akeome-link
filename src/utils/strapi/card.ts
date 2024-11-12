@@ -174,19 +174,33 @@ export const addCard = async ({
   view,
   deliveredAt,
   isDraft,
-}: {
-  title: string
-  creatorName: string
-  userImages: {
-    id: number
-  }[]
-  view: {
-    layout: CardLayout
-    background: CardBackground
-  }
-  deliveredAt: Date
-  isDraft?: boolean
-}) => {
+}:
+  | {
+      title?: string
+      creatorName?: string
+      userImages: {
+        id: number
+      }[]
+      view: {
+        layout: CardLayout
+        background: CardBackground
+      }
+      deliveredAt?: Date
+      isDraft: true
+    }
+  | {
+      title: string
+      creatorName: string
+      userImages: {
+        id: number
+      }[]
+      view: {
+        layout: CardLayout
+        background: CardBackground
+      }
+      deliveredAt: Date
+      isDraft?: false
+    }) => {
   const session = await getServerSession(authOptions)
 
   if (!session) {
@@ -209,7 +223,7 @@ export const addCard = async ({
             view,
             creator: session.user.strapiUserId,
             userImages: userImages.map((userImage) => userImage.id),
-            deliveredAt: deliveredAt.toISOString(),
+            deliveredAt: deliveredAt?.toISOString(),
             ...(isDraft ? { publishedAt: null } : {}),
           },
         }),
@@ -235,20 +249,35 @@ export const updateCard = async ({
   deliveredAt,
   isDraft,
   existingId,
-}: {
-  title: string
-  creatorName: string
-  userImages: {
-    id: number
-  }[]
-  view: {
-    layout: CardLayout
-    background: CardBackground
-  }
-  deliveredAt: Date
-  isDraft?: boolean
-  existingId: number
-}) => {
+}:
+  | {
+      title?: string
+      creatorName?: string
+      userImages: {
+        id: number
+      }[]
+      view: {
+        layout: CardLayout
+        background: CardBackground
+      }
+      deliveredAt?: Date
+      isDraft: true
+      existingId: number
+    }
+  | {
+      title: string
+      creatorName: string
+      userImages: {
+        id: number
+      }[]
+      view: {
+        layout: CardLayout
+        background: CardBackground
+      }
+      deliveredAt: Date
+      isDraft?: false
+      existingId: number
+    }) => {
   const existingCard = await getCreatedCard(existingId)
 
   if (!existingCard) {
@@ -270,7 +299,7 @@ export const updateCard = async ({
             creatorName,
             view,
             userImages: userImages.map((userImage) => userImage.id),
-            deliveredAt: deliveredAt.toISOString(),
+            deliveredAt: deliveredAt?.toISOString(),
             ...(isDraft ? { publishedAt: null } : {}),
           },
         }),
