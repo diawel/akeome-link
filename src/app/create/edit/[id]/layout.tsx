@@ -26,6 +26,7 @@ const Layout = async ({
             urlSet: userImage.attributes,
           })) ?? [],
       }}
+      existingId={params.id}
     >
       {children}
     </EditCardProvider>
