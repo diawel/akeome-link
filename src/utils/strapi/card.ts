@@ -221,7 +221,67 @@ export const addCard = async ({
     }
 
     const card: StrapiApiResponse<CardAttributes> = await strapiResponse.json()
+    return card
+  } catch (error) {
+    throw error
+  }
+}
 
+export const updateCard = async ({
+  title,
+  creatorName,
+  userImages,
+  view,
+  deliveredAt,
+  isDraft,
+  existingId,
+}: {
+  title: string
+  creatorName: string
+  userImages: {
+    id: number
+  }[]
+  view: {
+    layout: CardLayout
+    background: CardBackground
+  }
+  deliveredAt: Date
+  isDraft?: boolean
+  existingId: number
+}) => {
+  const existingCard = await getCreatedCard(existingId)
+
+  if (!existingCard) {
+    throw new Error('Card not found')
+  }
+
+  try {
+    const strapiResponse = await fetch(
+      `${process.env.NEXT_PUBLIC_STRAPI_BACKEND_URL}/api/cards/${existingId}`,
+      {
+        method: 'PUT',
+        headers: {
+          Authorization: `Bearer ${process.env.STRAPI_API_TOKEN}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          data: {
+            title,
+            creatorName,
+            view,
+            userImages: userImages.map((userImage) => userImage.id),
+            deliveredAt: deliveredAt.toISOString(),
+            ...(isDraft ? { publishedAt: null } : {}),
+          },
+        }),
+      }
+    )
+
+    if (!strapiResponse.ok) {
+      throw new Error(`Failed to update card: ${strapiResponse.statusText}`)
+    }
+
+    const card: StrapiApiResponse<CardAttributes> = await strapiResponse.json()
     return card
   } catch (error) {
     throw error
