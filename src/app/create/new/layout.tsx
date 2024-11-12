@@ -1,4 +1,4 @@
-import { EditCardProvider } from '../../../../layouts/EditCard/EditCardProvider'
+import { EditCardProvider } from '../../../layouts/EditCard/EditCardProvider'
 
 const Layout = async ({
   children,
