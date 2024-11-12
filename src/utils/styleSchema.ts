@@ -6,6 +6,7 @@ export const color = {
     5: '#2e2e2e',
   },
   red: {
+    90: '#fff5f5',
     50: '#e26969',
     5: '#cc0000',
   },

@@ -1,15 +1,15 @@
 import Link from 'next/link'
 import * as styles from './index.css'
+import ReturnButton from '../../../components/ReturnButton'
+import { color } from '../../../utils/styleSchema'
 
-type MetaProps = {
-  onComplete: () => void
-}
-
-const Meta = ({ onComplete }: MetaProps) => {
+const Meta = () => {
   return (
     <div className={styles.control}>
-      <Link href="/create/list">戻る</Link>
-      <button onClick={onComplete}>次へ</button>
+      <ReturnButton href="/create/list" color={color.gray[5]} />
+      <Link className={styles.primaryButton} href="/create/new/setting">
+        次へ
+      </Link>
     </div>
   )
 }

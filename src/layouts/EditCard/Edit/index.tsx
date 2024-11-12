@@ -1,90 +1,178 @@
-import { useEffect, useState } from 'react'
-import Card from '../../../components/Card'
+import { Fragment, useEffect, useState } from 'react'
+import { UserImages } from '../../../components/Card'
 import * as styles from './index.css'
-import { FaImage, FaNoteSticky } from 'react-icons/fa6'
 import { useStickers } from '../../../app/StickerProvider'
 import { uploadMedia } from '../../../utils/strapi/media'
 import { getImageUrl } from '../../../utils/strapi/strapiImage'
 import randomLabel from './random-label.svg'
 import Image from 'next/image'
+import {
+  FaAlignCenter,
+  FaAlignLeft,
+  FaAlignRight,
+  FaImage,
+  FaPalette,
+  FaPen,
+  FaPlus,
+  FaTriangleExclamation,
+} from 'react-icons/fa6'
+import { useEditCard } from '../EditCardProvider'
 
 type EditProps = {
-  cardLayout: React.ComponentProps<typeof Card>['layout']
-  setCardLayout: (
-    cardLayout: React.ComponentProps<typeof Card>['layout']
-  ) => void
   isAnyFocused: boolean
   setIsAnyFocused: (isAnyFocused: boolean) => void
-  userImages: React.ComponentProps<typeof Card>['userImages']
-  setUserImages: (
-    userImages: React.ComponentProps<typeof Card>['userImages']
-  ) => void
   setIsLoading: (isLoading: boolean) => void
 }
 
-const Edit = ({
-  cardLayout,
-  setCardLayout,
-  isAnyFocused,
-  setIsAnyFocused,
-  userImages,
-  setUserImages,
-  setIsLoading,
-}: EditProps) => {
+const Edit = ({ isAnyFocused, setIsAnyFocused, setIsLoading }: EditProps) => {
+  const {
+    cardLayoutState: [cardLayout, setCardLayout],
+    cardBackgroundState: [cardBackground, setCardBackground],
+    userImagesState: [userImages, setUserImages],
+  } = useEditCard()
   const stickers = useStickers()
-  const [activeTab, setActiveTab] = useState<'userImage' | 'sticker' | 'text'>(
-    'userImage'
-  )
+  const [activeTab, setActiveTab] = useState<
+    'background' | 'userImage' | 'sticker' | 'text'
+  >('background')
   const focusedContent = isAnyFocused
     ? cardLayout[cardLayout.length - 1].content
     : null
   useEffect(() => {
-    if (focusedContent)
-      setActiveTab(cardLayout[cardLayout.length - 1].content.type)
-  }, [cardLayout, focusedContent])
+    if (focusedContent) {
+      setActiveTab(focusedContent.type)
+    }
+  }, [activeTab, cardLayout, focusedContent])
+  const [isTextEditing, setIsTextEditing] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+
+  useEffect(() => {
+    if (!error) return
+    const timer = setTimeout(() => {
+      setError(null)
+    }, 5000)
+    const handleClick = () => {
+      setError(null)
+    }
+    window.addEventListener('click', handleClick)
+    return () => {
+      clearTimeout(timer)
+      window.removeEventListener('click', handleClick)
+    }
+  }, [error])
+
+  const handleUpload = (
+    event: React.ChangeEvent<HTMLInputElement>,
+    callback: (userImage: UserImages[number]) => void
+  ) => {
+    setIsLoading(true)
+    const file = event.target.files?.[0]
+    if (!file) return
+    const formData = new FormData()
+    formData.append('files', file)
+    uploadMedia(formData)
+      .then((media) => {
+        callback({
+          id: media[0].id,
+          urlSet: media[0],
+        })
+        setIsLoading(false)
+      })
+      .catch(() => {
+        setError(
+          `画像のアップロードに失敗しました。\n画像サイズの上限は${process.env.NEXT_PUBLIC_MAX_UPLOAD_SIZE_TEXT}です。`
+        )
+        setIsLoading(false)
+      })
+    event.target.value = ''
+  }
 
   return (
     <>
       <div className={styles.controlContainer}>
-        {activeTab == 'userImage' ? (
+        {activeTab == 'background' ? (
           <div className={styles.control}>
-            <input
-              type="file"
-              accept="image/*"
-              onChange={(event) => {
-                setIsLoading(true)
-                const file = event.target.files?.[0]
-                if (!file) return
-                const formData = new FormData()
-                formData.append('files', file)
-                uploadMedia(formData)
-                  .then((media) => {
-                    setUserImages(
-                      userImages.concat({
-                        id: media[0].id,
-                        urlSet: media[0],
+            <div className={styles.controlGrid}>
+              <label className={styles.controlButton}>
+                <FaImage size={20} />
+                写真を選択
+                <input
+                  className={styles.controlInput}
+                  type="file"
+                  accept="image/*"
+                  onChange={(event) => {
+                    handleUpload(event, (userImage) => {
+                      setCardBackground({
+                        type: 'userImage',
+                        id: userImage.id,
                       })
-                    )
-                    setCardLayout(
-                      cardLayout.concat({
-                        container: { x: 200, y: 291, scale: 1, rotate: 0 },
-                        content: {
-                          type: 'userImage',
-                          id: media[0].id,
-                        },
-                      })
-                    )
-                    setIsAnyFocused(true)
-                    setIsLoading(false)
-                  })
-                  .catch(() => {
-                    alert(
-                      `画像のアップロードに失敗しました。画像サイズの上限は${process.env.NEXT_PUBLIC_MAX_UPLOAD_SIZE_TEXT}です。`
-                    )
-                    setIsLoading(false)
-                  })
-              }}
-            />
+
+                      if (cardBackground.type === 'userImage') {
+                        setUserImages(
+                          userImages
+                            .filter(
+                              (userImage) => userImage.id !== cardBackground.id
+                            )
+                            .concat(userImage)
+                        )
+                      } else {
+                        setUserImages(userImages.concat(userImage))
+                      }
+                    })
+                  }}
+                />
+              </label>
+              <label className={styles.controlButton}>
+                <FaPalette size={20} />
+                カラー
+                <input
+                  className={styles.controlInput}
+                  type="color"
+                  onChange={(event) => {
+                    setCardBackground({
+                      type: 'solid',
+                      color: event.target.value,
+                    })
+                    if (cardBackground.type === 'userImage') {
+                      setUserImages(
+                        userImages.filter(
+                          (userImage) => userImage.id !== cardBackground.id
+                        )
+                      )
+                    }
+                  }}
+                />
+              </label>
+            </div>
+          </div>
+        ) : activeTab == 'userImage' ? (
+          <div className={styles.control}>
+            <div className={styles.controlGrid}>
+              <label className={styles.controlButton}>
+                <FaPlus size={20} />
+                追加
+                <input
+                  className={styles.controlInput}
+                  type="file"
+                  accept="image/*"
+                  onChange={(event) => {
+                    handleUpload(event, (userImage) => {
+                      setUserImages(userImages)
+                      setCardLayout(
+                        cardLayout.concat({
+                          container: { x: 200, y: 291, scale: 1, rotate: 0 },
+                          content: {
+                            type: 'userImage',
+                            id: userImage.id,
+                          },
+                        })
+                      )
+                      setUserImages(userImages.concat(userImage))
+                      setIsAnyFocused(true)
+                    })
+                  }}
+                />
+              </label>
+            </div>
           </div>
         ) : activeTab == 'sticker' ? (
           <div className={styles.control}>
@@ -112,6 +200,9 @@ const Edit = ({
                     sticker.attributes.image.data.attributes,
                     'thumbnail'
                   )}
+                  style={{
+                    aspectRatio: `${sticker.attributes.image.data.attributes.width}/${sticker.attributes.image.data.attributes.height}`,
+                  }}
                   alt=""
                 />
                 {sticker.attributes.randomVariants.data?.length && (
@@ -126,86 +217,113 @@ const Edit = ({
           </div>
         ) : (
           <div className={styles.control}>
-            <button
-              onClick={() => {
-                setCardLayout([
-                  ...cardLayout,
-                  {
-                    container: { x: 200, y: 291, scale: 1, rotate: 0 },
-                    content: {
-                      type: 'text',
-                      text: 'テキストを入力',
-                      color: '#000',
-                      align: 'center',
+            <div className={styles.controlGrid}>
+              <button
+                className={styles.controlButton}
+                onClick={() => {
+                  setCardLayout([
+                    ...cardLayout,
+                    {
+                      container: { x: 200, y: 291, scale: 1, rotate: 0 },
+                      content: {
+                        type: 'text',
+                        text: 'テキストを入力',
+                        color: '#000',
+                        align: 'center',
+                      },
                     },
-                  },
-                ])
-                setIsAnyFocused(true)
-              }}
-            >
-              追加
-            </button>
-            {focusedContent?.type === 'text' && (
-              <>
-                <input
-                  type="color"
-                  value={focusedContent.color}
-                  onChange={(event) => {
-                    setCardLayout(
-                      cardLayout.slice(0, -1).concat({
-                        ...cardLayout[cardLayout.length - 1],
-                        content: {
-                          ...focusedContent,
-                          color: event.target.value,
-                        },
-                      })
-                    )
-                  }}
-                />
-                <button
-                  onClick={() => {
-                    setCardLayout(
-                      cardLayout.slice(0, -1).concat({
-                        ...cardLayout[cardLayout.length - 1],
-                        content: {
-                          ...focusedContent,
-                          align:
-                            focusedContent.align == 'left'
-                              ? 'center'
-                              : focusedContent.align == 'center'
-                              ? 'right'
-                              : 'left',
-                        },
-                      })
-                    )
-                  }}
-                >
-                  {focusedContent.align == 'left'
-                    ? '左揃え'
-                    : focusedContent.align == 'center'
-                    ? '中央揃え'
-                    : '右揃え'}
-                </button>
-                <textarea
-                  value={focusedContent.text}
-                  onChange={(event) => {
-                    setCardLayout(
-                      cardLayout.slice(0, -1).concat({
-                        ...cardLayout[cardLayout.length - 1],
-                        content: {
-                          ...focusedContent,
-                          text: event.target.value,
-                        },
-                      })
-                    )
-                  }}
-                />
-              </>
-            )}
+                  ])
+                  setIsAnyFocused(true)
+                }}
+              >
+                <FaPlus size={20} />
+                追加
+              </button>
+              {focusedContent?.type === 'text' && (
+                <>
+                  <button
+                    className={styles.controlButton}
+                    onClick={() => {
+                      setIsTextEditing(true)
+                    }}
+                  >
+                    <FaPen size={20} />
+                    編集
+                  </button>
+                  <label className={styles.controlButton}>
+                    <FaPalette size={20} />
+                    カラー
+                    <input
+                      className={styles.controlInput}
+                      type="color"
+                      value={focusedContent.color}
+                      onChange={(event) => {
+                        setCardLayout(
+                          cardLayout.slice(0, -1).concat({
+                            ...cardLayout[cardLayout.length - 1],
+                            content: {
+                              ...focusedContent,
+                              color: event.target.value,
+                            },
+                          })
+                        )
+                      }}
+                    />
+                  </label>
+                  <button
+                    className={styles.controlButton}
+                    onClick={() => {
+                      setCardLayout(
+                        cardLayout.slice(0, -1).concat({
+                          ...cardLayout[cardLayout.length - 1],
+                          content: {
+                            ...focusedContent,
+                            align:
+                              focusedContent.align == 'left'
+                                ? 'center'
+                                : focusedContent.align == 'center'
+                                ? 'right'
+                                : 'left',
+                          },
+                        })
+                      )
+                    }}
+                  >
+                    {focusedContent.align == 'left' ? (
+                      <>
+                        <FaAlignLeft size={20} />
+                        左揃え
+                      </>
+                    ) : focusedContent.align == 'center' ? (
+                      <>
+                        <FaAlignCenter size={20} />
+                        中央揃え
+                      </>
+                    ) : (
+                      <>
+                        <FaAlignRight size={20} />
+                        右揃え
+                      </>
+                    )}
+                  </button>
+                </>
+              )}
+            </div>
           </div>
         )}
       </div>
       <div className={styles.nav}>
+        <button
+          className={
+            styles.navButton[activeTab == 'background' ? 'active' : 'default']
+          }
+          onClick={() => {
+            setActiveTab('background')
+            setIsAnyFocused(false)
+          }}
+        >
+          背景
+        </button>
         <button
           className={
             styles.navButton[activeTab == 'userImage' ? 'active' : 'default']
@@ -217,7 +335,6 @@ const Edit = ({
             }
           }}
         >
-          <FaImage className={styles.navButtonIcon} />
           写真
         </button>
         <button
@@ -231,8 +348,7 @@ const Edit = ({
             }
           }}
         >
-          <FaNoteSticky className={styles.navButtonIcon} />
-          スタンプ
+          ステッカー
         </button>
         <button
           className={
@@ -245,18 +361,53 @@ const Edit = ({
             }
           }}
         >
-          <svg
-            width="26"
-            height="26"
-            viewBox="0 0 26 26"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path d="M3.42 16.14L1.88 20.26C1.74 20.66 1.44 20.82 1.1 20.82C0.96 20.82 0.84 20.8 0.7 20.76C0.3 20.66 0 20.32 0 19.94C0 19.82 0.0199999 19.72 0.0599999 19.6L5.5 5.94C5.76 5.26 6.26 5 6.88 5C7.52 5 8.04 5.26 8.3 5.94L13.74 19.64C13.8 19.76 13.82 19.86 13.82 19.98C13.82 20.38 13.5 20.68 13.1 20.78C12.98 20.82 12.86 20.84 12.74 20.84C12.38 20.84 12.06 20.66 11.92 20.28L10.34 16.14H3.42ZM4.02 14.46H9.74L7.52 8.64C7.3 8.06 7.08 7.42 6.9 6.74C6.72 7.42 6.52 8.06 6.28 8.66L4.02 14.46Z" />
-            <path d="M23.8652 13.6201V12.7601C23.8652 11.4401 23.1452 10.8601 21.5652 10.8601C20.1052 10.8601 19.3852 11.4201 19.0452 12.3401C18.9052 12.7201 18.6052 12.8601 18.2652 12.8601C18.1052 12.8601 17.9452 12.8401 17.8052 12.7801C17.4252 12.6601 17.1452 12.3801 17.1452 12.0201C17.1452 11.9401 17.1652 11.8601 17.1852 11.7801C17.3852 11.1601 17.9052 10.5801 18.3652 10.2201C19.0652 9.68009 19.9652 9.34009 21.5852 9.34009C24.2652 9.34009 25.5852 10.4001 25.5852 12.7601V18.2201C25.5852 18.9201 25.6852 19.6001 25.8052 19.9801C25.8252 20.0401 25.8452 20.1201 25.8452 20.1801C25.8452 20.5001 25.5452 20.7801 25.0452 20.8201C24.9852 20.8201 24.9252 20.8201 24.8652 20.8201C24.4652 20.8201 24.1052 20.7001 24.0252 20.3401C23.9652 20.1001 23.9252 19.7401 23.9052 19.3401C23.1452 20.2001 22.0852 20.9801 20.1052 20.9801C17.9052 20.9801 16.5652 19.7401 16.5652 17.6801C16.5652 15.8001 17.6852 14.6001 19.5852 14.0801C20.6852 13.7801 21.7252 13.6601 23.8652 13.6201ZM23.8652 16.4001V15.0601C21.5252 15.1201 20.4252 15.3201 19.6252 15.7201C18.8252 16.1201 18.4052 16.7401 18.4052 17.7001C18.4052 18.7401 19.2052 19.4401 20.4052 19.4401C21.6652 19.4401 22.7052 18.8201 23.3452 18.0201C23.7252 17.5401 23.8652 17.1601 23.8652 16.4001Z" />
-          </svg>
           テキスト
         </button>
       </div>
+      {isTextEditing && focusedContent?.type === 'text' && (
+        <div className={styles.textEditWindow}>
+          <div className={styles.textEditButtonContainer}>
+            <button
+              className={styles.textEditButton}
+              onClick={() => {
+                setIsTextEditing(false)
+              }}
+            >
+              完了
+            </button>
+          </div>
+          <div className={styles.textEditTextareaWrapper}>
+            {focusedContent.text}
+            {'\u200b'}
+            <textarea
+              className={styles.textEditTextarea}
+              value={focusedContent.text}
+              onChange={(event) => {
+                setCardLayout(
+                  cardLayout.slice(0, -1).concat({
+                    ...cardLayout[cardLayout.length - 1],
+                    content: {
+                      ...focusedContent,
+                      text: event.target.value,
+                    },
+                  })
+                )
+              }}
+            />
+          </div>
+        </div>
+      )}
+      {error !== null && (
+        <div className={styles.errorContainer}>
+          <FaTriangleExclamation size={20} />
+          {error.split('\n').map((line, index) => (
+            <Fragment key={index}>
+              {line}
+              <br />
+            </Fragment>
+          ))}
+        </div>
+      )}
     </>
   )
 }

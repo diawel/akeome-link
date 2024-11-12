@@ -88,6 +88,7 @@ export type CardProps = {
   edit?: {
     setLayout: (layout: CardLayout) => void
     setBackground: (background: CardBackground) => void
+    setUserImages: (userImages: UserImages) => void
     isAnyFocused: boolean
     setIsAnyFocused: (isAnyFocused: boolean) => void
   }
@@ -139,6 +140,7 @@ const Card = ({
       y: number
     }
     initialScale: number
+    initialRotate: number
     type: 'move' | 'rotate' | 'scale'
   } | null>(null)
 
@@ -147,7 +149,13 @@ const Card = ({
     if (!dragState) return
     const hundleMove = (x: number, y: number) => {
       if (!cardRef.current) return
-      const { startPosition, initialPosition, initialScale, type } = dragState
+      const {
+        startPosition,
+        initialPosition,
+        initialScale,
+        initialRotate,
+        type,
+      } = dragState
       const { left, top, width, height } =
         cardRef.current.getBoundingClientRect()
       const actualPosition = {
@@ -175,13 +183,20 @@ const Card = ({
             ) *
               180) /
               Math.PI +
-            -45
+            -(
+              Math.atan2(
+                startPosition.y - initialPosition.y,
+                startPosition.x - initialPosition.x
+              ) * 180
+            ) /
+              Math.PI +
+            initialRotate
           edit.setLayout(
             layout.slice(0, -1).concat({
               ...layout[layout.length - 1],
               container: {
                 ...layout[layout.length - 1].container,
-                rotate: angle,
+                rotate: (angle + 360) % 360,
               },
             })
           )
@@ -493,6 +508,7 @@ const Card = ({
                     y: target.container.y,
                   },
                   initialScale: target.container.scale,
+                  initialRotate: target.container.rotate,
                   type,
                 })
               }
@@ -536,6 +552,15 @@ const Card = ({
                       event.stopPropagation()
                       edit?.setLayout(layout.slice(0, index))
                       edit?.setIsAnyFocused(false)
+
+                      const content = layout[index].content
+                      if (content.type === 'userImage') {
+                        edit?.setUserImages(
+                          userImages.filter(
+                            (userImage) => userImage.id !== content.id
+                          )
+                        )
+                      }
                     }}
                     style={{
                       transform: `scale(${
