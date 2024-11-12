@@ -9,7 +9,6 @@ export const postContainer = style({
 
 export const post = style({
   width: '100%',
-  height: '288px',
 })
 
 export const card = style({
@@ -27,7 +26,6 @@ export const linkBoxContainer = style({
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
-  paddingTop: '39px',
 })
 
 export const linkBoxContent = style({
