@@ -29,6 +29,22 @@ export type CardAttributes = {
   deliveredAt: string
 }
 
+export type DraftCardAttributes = {
+  title?: string
+  creatorName?: string
+  view: {
+    background: CardBackground
+    layout: CardLayout
+  }
+  createdAt: string
+  updatedAt: string
+  publishedAt: null
+  userImages: { data: StrapiRecord<MediaAttributes>[] | null }
+  creator: { data: StrapiRecord<UserAttributes> }
+  shareId: string
+  deliveredAt?: string
+}
+
 export const getCreatedCard = async (id: number) => {
   try {
     const session = await getServerSession(authOptions)
@@ -61,7 +77,8 @@ export const getCreatedCard = async (id: number) => {
       return undefined
     }
 
-    const card: StrapiApiResponse<CardAttributes> = await strapiResponse.json()
+    const card: StrapiApiResponse<CardAttributes | DraftCardAttributes> =
+      await strapiResponse.json()
     if (card.data.attributes.creator.data.id !== session.user.strapiUserId) {
       return undefined
     }
@@ -159,7 +176,7 @@ export const getCreatedCards = async () => {
       throw new Error(strapiError.error.message)
     }
 
-    const cards: StrapiApiListResponse<CardAttributes> =
+    const cards: StrapiApiListResponse<CardAttributes | DraftCardAttributes> =
       await strapiResponse.json()
     return cards
   } catch (error) {
@@ -234,6 +251,11 @@ export const addCard = async ({
       throw new Error(`Failed to add card: ${strapiResponse.statusText}`)
     }
 
+    if (isDraft) {
+      const card: StrapiApiResponse<DraftCardAttributes> =
+        await strapiResponse.json()
+      return card
+    }
     const card: StrapiApiResponse<CardAttributes> = await strapiResponse.json()
     return card
   } catch (error) {
@@ -298,6 +320,7 @@ export const updateCard = async ({
             title,
             creatorName,
             view,
+            creator: existingCard.data.attributes.creator.data.id,
             userImages: userImages.map((userImage) => userImage.id),
             deliveredAt: deliveredAt?.toISOString(),
             publishedAt: isDraft ? null : new Date().toISOString(),
@@ -310,6 +333,11 @@ export const updateCard = async ({
       throw new Error(`Failed to update card: ${strapiResponse.statusText}`)
     }
 
+    if (isDraft) {
+      const card: StrapiApiResponse<DraftCardAttributes> =
+        await strapiResponse.json()
+      return card
+    }
     const card: StrapiApiResponse<CardAttributes> = await strapiResponse.json()
     return card
   } catch (error) {

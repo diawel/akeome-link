@@ -9,7 +9,12 @@ import {
   useState,
 } from 'react'
 import { CardBackground, CardLayout, UserImages } from '../../components/Card'
-import { addCard, CardAttributes, updateCard } from '../../utils/strapi/card'
+import {
+  addCard,
+  CardAttributes,
+  DraftCardAttributes,
+  updateCard,
+} from '../../utils/strapi/card'
 import { StrapiApiResponse } from '../../utils/strapi'
 
 const EditCardContext = createContext<
@@ -24,7 +29,7 @@ const EditCardContext = createContext<
         title: string,
         creatorName: string,
         deliveredAt: Date
-      ) => Promise<StrapiApiResponse<CardAttributes>>
+      ) => Promise<StrapiApiResponse<CardAttributes | DraftCardAttributes>>
     }
   | undefined
 >(undefined)
