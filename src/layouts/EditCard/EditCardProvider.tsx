@@ -25,15 +25,31 @@ export const useEditCard = () => {
 
 type EditCardProviderProps = {
   children: React.ReactNode
+  defaultCard?: {
+    view: {
+      layout: CardLayout
+      background: CardBackground
+    }
+    userImages: UserImages
+  }
 }
 
-export const EditCardProvider = ({ children }: EditCardProviderProps) => {
-  const [cardLayout, setCardLayout] = useState<CardLayout>([])
-  const [cardBackground, setCardBackground] = useState<CardBackground>({
-    type: 'solid',
-    color: '#ffffff',
-  })
-  const [userImages, setUserImages] = useState<UserImages>([])
+export const EditCardProvider = ({
+  children,
+  defaultCard,
+}: EditCardProviderProps) => {
+  const [cardLayout, setCardLayout] = useState<CardLayout>(
+    defaultCard?.view.layout ?? []
+  )
+  const [cardBackground, setCardBackground] = useState<CardBackground>(
+    defaultCard?.view.background ?? {
+      type: 'solid',
+      color: '#ffffff',
+    }
+  )
+  const [userImages, setUserImages] = useState<UserImages>(
+    defaultCard?.userImages ?? []
+  )
 
   return (
     <EditCardContext.Provider
