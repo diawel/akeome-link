@@ -9,14 +9,6 @@ export const control = style({
   paddingBottom: 0,
 })
 
-export const returnButtonContainer = style({
-  padding: 4,
-})
-
-export const returnButton = style({
-  color: color.gray[5],
-})
-
 export const primaryButton = style({
   padding: '10px 24px',
   backgroundColor: color.red[5],

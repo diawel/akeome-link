@@ -1,6 +1,6 @@
-import Link from 'next/link'
 import * as styles from './index.css'
-import { FaChevronLeft } from 'react-icons/fa6'
+import ReturnButton from '../../../../components/ReturnButton'
+import { color } from '../../../../utils/styleSchema'
 
 type MetaProps = {
   onComplete: () => void
@@ -10,9 +10,7 @@ type MetaProps = {
 const Meta = ({ onComplete, disabled }: MetaProps) => {
   return (
     <div className={styles.control}>
-      <Link className={styles.returnButtonContainer} href="/create/new">
-        <FaChevronLeft className={styles.returnButton} size={24} />
-      </Link>
+      <ReturnButton href="/create/new" color={color.gray[5]} />
       <button
         className={styles.primaryButton[disabled ? 'disabled' : 'default']}
         onClick={onComplete}
