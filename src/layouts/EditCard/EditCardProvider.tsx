@@ -2,9 +2,9 @@
 
 import {
   createContext,
+  useCallback,
   useContext,
   useEffect,
-  useMemo,
   useRef,
   useState,
 } from 'react'
@@ -69,45 +69,45 @@ export const EditCardProvider = ({
   const isSavingRef = useRef(false)
   const isModifiedRef = useRef(false)
 
-  const saveDraft = useMemo(() => {
-    return (toSave: (typeof toSaveRef)['current']) => {
-      if (!toSave) return
-      console.log('saving')
+  const saveDraft = useCallback((toSave: (typeof toSaveRef)['current']) => {
+    if (!toSave) return
+    console.log('saving')
 
-      isSavingRef.current = true
-      ;(cardIdRef.current === undefined
-        ? addCard({
-            userImages: toSave.userImages,
-            view: {
-              layout: toSave.cardLayout,
-              background: toSave.cardBackground,
-            },
-            isDraft: true,
-          })
-        : updateCard({
-            userImages: toSave.userImages,
-            view: {
-              layout: toSave.cardLayout,
-              background: toSave.cardBackground,
-            },
-            isDraft: true,
-            existingId: cardIdRef.current,
-          })
-      )
-        .then((card) => {
-          console.log('saved')
-          cardIdRef.current = card.data.id
-          history.replaceState(null, '', `/create/edit/${card.data.id}`)
+    isSavingRef.current = true
+    ;(cardIdRef.current === undefined
+      ? addCard({
+          userImages: toSave.userImages,
+          view: {
+            layout: toSave.cardLayout,
+            background: toSave.cardBackground,
+          },
+          isDraft: true,
+        })
+      : updateCard({
+          userImages: toSave.userImages,
+          view: {
+            layout: toSave.cardLayout,
+            background: toSave.cardBackground,
+          },
+          isDraft: true,
+          existingId: cardIdRef.current,
+        })
+    )
+      .then((card) => {
+        console.log('saved')
+        cardIdRef.current = card.data.id
+        history.replaceState(null, '', `/create/edit/${card.data.id}`)
+        setTimeout(() => {
           if (toSave === toSaveRef.current) {
             isSavingRef.current = false
           } else {
             saveDraft(toSaveRef.current)
           }
-        })
-        .catch(() => {
-          isSavingRef.current = false
-        })
-    }
+        }, 1000)
+      })
+      .catch(() => {
+        isSavingRef.current = false
+      })
   }, [])
 
   useEffect(() => {
