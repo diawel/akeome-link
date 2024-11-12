@@ -10,7 +10,7 @@ type MetaProps = {
 const Meta = ({ onComplete, disabled }: MetaProps) => {
   return (
     <div className={styles.control}>
-      <ReturnButton href="/create/new" color={color.gray[5]} />
+      <ReturnButton href="./" color={color.gray[5]} />
       <button
         className={styles.primaryButton[disabled ? 'disabled' : 'default']}
         onClick={onComplete}
