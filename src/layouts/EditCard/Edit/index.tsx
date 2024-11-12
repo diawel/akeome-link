@@ -136,15 +136,12 @@ const Edit = ({ isAnyFocused, setIsAnyFocused, setIsLoading }: EditProps) => {
                       type: 'solid',
                       color: event.target.value,
                     })
-
                     if (cardBackground.type === 'userImage') {
                       setUserImages(
                         userImages.filter(
                           (userImage) => userImage.id !== cardBackground.id
                         )
                       )
-                    } else {
-                      setUserImages(userImages)
                     }
                   }}
                 />
@@ -162,7 +159,8 @@ const Edit = ({ isAnyFocused, setIsAnyFocused, setIsLoading }: EditProps) => {
                   type="file"
                   accept="image/*"
                   onChange={(event) => {
-                    handleUpload(event, (userImage) => {
+                    handleUpload(event, (userImage, userImages) => {
+                      setUserImages(userImages)
                       setCardLayout(
                         cardLayout.concat({
                           container: { x: 200, y: 291, scale: 1, rotate: 0 },
