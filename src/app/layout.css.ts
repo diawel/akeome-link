@@ -27,13 +27,19 @@ export const display = style({
 })
 
 export const inner = style({
+  position: 'relative',
   height: '100%',
-  overflowY: 'auto',
-  backgroundColor: '#f5f5f5',
 
   '@media': {
     'screen and (min-width: 480px)': {
       border: '1px solid #eeeeee',
     },
   },
+})
+
+export const content = style({
+  height: '100%',
+  overflowY: 'auto',
+  backgroundColor: '#f5f5f5',
+  contain: 'paint',
 })
