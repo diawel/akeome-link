@@ -8,6 +8,7 @@ import downloadIcon from './icon-download.svg'
 import Image from 'next/image'
 import * as styles from './index.css'
 import copyIcon from './icon-copy.svg'
+import copiedIcon from './icon-copied.svg'
 import Link from 'next/link'
 import { mediaRecordsToUrlSet } from '../../utils/strapi/strapiImage'
 import { StrapiRecord } from '../../utils/strapi'
@@ -22,6 +23,14 @@ type ShareProps = {
 const Share = ({ cardRecord }: ShareProps) => {
   const [renderedImage, setRenderedImage] = useState<Blob | null>(null)
   const [shareUrl, setShareUrl] = useState('')
+  const [copied, setCopied] = useState(false)
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(shareUrl);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
   useEffect(() => {
     setShareUrl(
       new URL(`/link/${cardRecord.attributes.shareId}`, window.location.href)
@@ -55,12 +64,9 @@ const Share = ({ cardRecord }: ShareProps) => {
             />
             <button
               className={styles.copyButton}
-              onClick={() => {
-                navigator.clipboard.writeText(shareUrl)
-                alert('コピーしました')
-              }}
+              onClick={handleCopy}
             >
-              <Image src={copyIcon} alt="copyIcon"></Image>
+              <Image src={copied ? copiedIcon : copyIcon} alt="copyIcon"></Image>
             </button>
           </div>
         </div>
