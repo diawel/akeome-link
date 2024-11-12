@@ -1,4 +1,4 @@
-import { Fragment, use, useEffect, useState } from 'react'
+import { Fragment, useEffect, useState } from 'react'
 import { UserImages } from '../../../components/Card'
 import * as styles from './index.css'
 import { useStickers } from '../../../app/StickerProvider'
@@ -59,7 +59,6 @@ const Edit = ({ isAnyFocused, setIsAnyFocused, setIsLoading }: EditProps) => {
       window.removeEventListener('click', handleClick)
     }
   }, [error])
-  console.log(userImages)
 
   const handleUpload = (
     event: React.ChangeEvent<HTMLInputElement>,
