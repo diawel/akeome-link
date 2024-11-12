@@ -9,7 +9,8 @@ import {
   useState,
 } from 'react'
 import { CardBackground, CardLayout, UserImages } from '../../components/Card'
-import { addCard, updateCard } from '../../utils/strapi/card'
+import { addCard, CardAttributes, updateCard } from '../../utils/strapi/card'
+import { StrapiApiResponse } from '../../utils/strapi'
 
 const EditCardContext = createContext<
   | {
@@ -19,6 +20,11 @@ const EditCardContext = createContext<
         (cardBackground: CardBackground) => void
       ]
       userImagesState: [UserImages, (userImages: UserImages) => void]
+      saveCard: (
+        title: string,
+        creatorName: string,
+        deliveredAt: Date
+      ) => Promise<StrapiApiResponse<CardAttributes>>
     }
   | undefined
 >(undefined)
@@ -123,6 +129,37 @@ export const EditCardProvider = ({
     saveDraft(toSaveRef.current)
   }, [cardBackground, cardLayout, saveDraft, userImages])
 
+  const saveCard = useCallback(
+    async (title: string, creatorName: string, deliveredAt: Date) => {
+      console.log(cardIdRef.current)
+      if (cardIdRef.current === undefined) {
+        return await addCard({
+          title,
+          creatorName,
+          view: {
+            layout: cardLayout,
+            background: cardBackground,
+          },
+          userImages,
+          deliveredAt,
+        })
+      }
+      return await updateCard({
+        title,
+        creatorName,
+        view: {
+          layout: cardLayout,
+          background: cardBackground,
+        },
+        userImages,
+        deliveredAt,
+        existingId: cardIdRef.current,
+        isDraft: false,
+      })
+    },
+    [cardBackground, cardLayout, userImages]
+  )
+
   return (
     <EditCardContext.Provider
       value={{
@@ -147,6 +184,7 @@ export const EditCardProvider = ({
             isModifiedRef.current = true
           },
         ],
+        saveCard,
       }}
     >
       {children}

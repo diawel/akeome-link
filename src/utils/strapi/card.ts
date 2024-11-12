@@ -300,7 +300,7 @@ export const updateCard = async ({
             view,
             userImages: userImages.map((userImage) => userImage.id),
             deliveredAt: deliveredAt?.toISOString(),
-            ...(isDraft ? { publishedAt: null } : {}),
+            publishedAt: isDraft ? null : new Date().toISOString(),
           },
         }),
       }
