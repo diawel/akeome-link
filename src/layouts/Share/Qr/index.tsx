@@ -28,10 +28,8 @@ const Qr = ({ creatorName, id }: QrProps) => {
     <>
       <div className={styles.backgroundImage}>
         <div className={styles.textOverlay}>
-          <div className={styles.returnButtonSpace}>
-            <div className={styles.returnButton}>
-              <ReturnButton href="/create/list" color={color.gray[100]} />
-            </div>
+          <div className={styles.returnButton}>
+            <ReturnButton href="/create/list" color={color.gray[100]} />
           </div>
           <div>
             <Image src={akeomeLinkLogo} alt='akeomeLinkLogo' />
