@@ -94,7 +94,7 @@ export const getReceivedCard = async (id: number) => {
   }
 }
 
-export const getReceivedCards = async () => {
+export const getReceivedCards = async (page?: number) => {
   const session = await getServerSession(authOptions)
 
   if (!session) {
@@ -116,6 +116,9 @@ export const getReceivedCards = async () => {
         },
         sort: {
           0: 'updatedAt:desc',
+        },
+        pagination: {
+          page: page ?? 1,
         },
       })}`,
       {
