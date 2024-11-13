@@ -1,15 +1,24 @@
-import { redirect } from 'next/navigation'
+import { notFound } from 'next/navigation'
 import Detail from '../../../../layouts/Detail'
 import { getCreatedCard } from '../../../../utils/strapi/card'
+import Link from 'next/link'
 
 const Page = async ({ params }: { params: { id: number } }) => {
   const cardResponse = await getCreatedCard(params.id)
 
   if (!cardResponse) {
-    redirect('/create/list')
+    notFound()
   }
 
-  return <Detail cardRecord={cardResponse.data} />
+  const cardAttributes = cardResponse.data.attributes
+  if (cardAttributes.publishedAt === null) {
+    return (
+      <div>
+        下書き表示<Link href={`/create/edit/${params.id}`}>編集</Link>
+      </div>
+    )
+  }
+  return <Detail cardAttributes={cardAttributes} />
 }
 
 export default Page
