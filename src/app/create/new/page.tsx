@@ -1,17 +1,28 @@
 import { getServerSession } from 'next-auth'
-import EditCard from '../../../layouts/EditCard'
 import { authOptions } from '../../api/auth/[...nextauth]/authOptions'
 import { redirect } from 'next/navigation'
-import { countReceivedRecords } from '../../../utils/strapi/receivedCard'
+import { addCard } from '../../../utils/strapi/card'
 
 const Page = async () => {
   const session = await getServerSession(authOptions)
-  if (!session) redirect('/')
+  if (!session)
+    redirect(
+      `/api/auth/signin?callbackUrl=${encodeURIComponent('/create/new')}`
+    )
 
-  const receivedRecordsCount = await countReceivedRecords()
-  console.log(receivedRecordsCount)
+  const newCard = await addCard({
+    isDraft: true,
+    view: {
+      layout: [],
+      background: {
+        type: 'solid',
+        color: '#ffffff',
+      },
+    },
+    userImages: [],
+  })
 
-  return <EditCard />
+  redirect(`/create/edit/${newCard.data.id}`)
 }
 
 export default Page
