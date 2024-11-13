@@ -89,7 +89,7 @@ export const linkInput = style({
 })
 
 export const xContainer = style({
-  width: '74px',
+  width: '72px',
   height: '56px',
   display: 'flex',
   justifyContent: 'center',
@@ -97,10 +97,11 @@ export const xContainer = style({
   backgroundColor: 'white',
   borderRadius: '8px',
   cursor: 'pointer',
+  padding: '18px 26px'
 })
 
 export const lineContainer = style({
-  width: '74px',
+  width: '72px',
   height: '56px',
   display: 'flex',
   justifyContent: 'center',
@@ -108,10 +109,23 @@ export const lineContainer = style({
   backgroundColor: 'white',
   borderRadius: '8px',
   cursor: 'pointer',
+  padding: '13px 21px'
+})
+
+export const qrContainer = style({
+  width: '72px',
+  height: '56px',
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  backgroundColor: 'white',
+  borderRadius: '8px',
+  cursor: 'pointer',
+  padding: '8px 24px 3px 23px'
 })
 
 export const downloadContainer = style({
-  width: '145px',
+  width: '72px',
   height: '56px',
   backgroundColor: 'white',
   borderRadius: '8px',
@@ -140,8 +154,8 @@ export const iconButtonContainer = style({
   paddingTop: '25px',
 })
 
-export const buttonSpace = style({
-  padding: '0 15px',
+export const buttonRightSpace = style({
+  paddingRight: '13px',
 })
 
 export const buttonContainer = style({
@@ -149,6 +163,7 @@ export const buttonContainer = style({
   justifyContent: 'center',
   alignItems: 'center',
   paddingTop: '32px',
+  marginBottom: '52px',
   cursor: 'pointer',
 })
 
