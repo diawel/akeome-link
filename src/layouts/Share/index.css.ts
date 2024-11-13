@@ -66,7 +66,7 @@ export const copyButton = style({
   width: '65px',
 })
 
-export const copiedPopUp = style({
+export const copiedPopup = style({
   position: 'relative',
   paddingLeft: '235px',
 });

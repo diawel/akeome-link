@@ -10,7 +10,7 @@ import Image from 'next/image'
 import * as styles from './index.css'
 import copyIcon from './icon-copy.svg'
 import copiedIcon from './icon-copied.svg'
-import copiedPopUp from './copied-pop-up.svg'
+import copiedPopup from './copied-pop-up.svg'
 import Link from 'next/link'
 import { mediaRecordsToUrlSet } from '../../utils/strapi/strapiImage'
 import { StrapiRecord } from '../../utils/strapi'
@@ -57,8 +57,8 @@ const Share = ({ cardRecord }: ShareProps) => {
         </div>
         <div className={styles.linkBoxContainer}>
           <div>
-            <div className={`${styles.copiedPopUp} ${copied ? '' : styles.hidden}`}>
-              <Image src={copiedPopUp} alt="copiedPopup" />
+            <div className={`${styles.copiedPopup} ${copied ? '' : styles.hidden}`}>
+              <Image src={copiedPopup} alt="copiedPopup" />
             </div>
             <div className={styles.linkBoxContent}>
               <input
