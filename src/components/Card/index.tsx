@@ -372,6 +372,7 @@ const Card = ({
                     if (!sticker) return null
                     if (
                       randomVariants !== 'hidden' &&
+                      randomSeed !== undefined &&
                       sticker.attributes.randomVariants.data
                     ) {
                       const variant = random.nextInt(
@@ -424,9 +425,7 @@ const Card = ({
                           <div
                             className={
                               styles.layeredStickerContainer[
-                                cardScale && randomSeed !== undefined
-                                  ? randomVariants
-                                  : 'hidden'
+                                cardScale ? randomVariants : 'hidden'
                               ]
                             }
                           >
