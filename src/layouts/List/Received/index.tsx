@@ -2,22 +2,28 @@
 
 import Link from 'next/link'
 import { StrapiApiListResponse } from '../../../utils/strapi'
-import { SecureReceivedCardAttributes } from '../../../utils/strapi/receivedCard'
+import {
+  getReceivedCards,
+  SecureReceivedCardAttributes,
+} from '../../../utils/strapi/receivedCard'
 import * as styles from './index.css'
 import { useState } from 'react'
 import Card from '../../../components/Card'
 import { mediaRecordsToUrlSet } from '../../../utils/strapi/strapiImage'
+import ListLoader from '../../../components/ListLoader'
 
 type ReceivedProps = {
   initialReceivedCards: StrapiApiListResponse<SecureReceivedCardAttributes>
 }
 
 const Received = ({ initialReceivedCards }: ReceivedProps) => {
-  const [receivedCards, setReceivedCards] = useState(initialReceivedCards)
+  const [receivedCards, setReceivedCards] = useState(initialReceivedCards.data)
+  const [latestMeta, setLatestMeta] = useState(initialReceivedCards.meta)
+
   return (
     <div className={styles.container}>
       <div className={styles.cardContainer}>
-        {receivedCards.data.map((receivedCard, index) => {
+        {receivedCards.map((receivedCard, index) => {
           if (
             !receivedCard.attributes.card ||
             !receivedCard.attributes.card.data
@@ -53,6 +59,18 @@ const Received = ({ initialReceivedCards }: ReceivedProps) => {
             </div>
           )
         })}
+        <ListLoader
+          loadMore={async () => {
+            const nextPageReceivedCards = await getReceivedCards(
+              latestMeta.pagination.page + 1
+            )
+            if (nextPageReceivedCards) {
+              setReceivedCards(receivedCards.concat(nextPageReceivedCards.data))
+              setLatestMeta(nextPageReceivedCards.meta)
+            }
+          }}
+          offset={20}
+        />
       </div>
     </div>
   )
