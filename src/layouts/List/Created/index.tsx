@@ -2,22 +2,29 @@
 
 import Link from 'next/link'
 import { StrapiApiListResponse } from '../../../utils/strapi'
-import { CardAttributes, DraftCardAttributes } from '../../../utils/strapi/card'
+import {
+  CardAttributes,
+  DraftCardAttributes,
+  getCreatedCards,
+} from '../../../utils/strapi/card'
 import * as styles from './index.css'
 import { FaPen, FaPlus } from 'react-icons/fa6'
 import { mediaRecordsToUrlSet } from '../../../utils/strapi/strapiImage'
 import Card from '../../../components/Card'
 import { useState } from 'react'
+import ListLoader from '../../../components/ListLoader'
 
 type CreatedProps = {
   initialCards: StrapiApiListResponse<CardAttributes | DraftCardAttributes>
 }
 
 const Created = ({ initialCards }: CreatedProps) => {
-  const [cards, setCards] = useState(initialCards)
+  const [cards, setCards] = useState(initialCards.data)
+  const [latestMeta, setLatestMeta] = useState(initialCards.meta)
+
   return (
     <div className={styles.container}>
-      {cards.data.length > 0 ? (
+      {cards.length > 0 ? (
         <div className={styles.cardContainer}>
           <Link href="/create/new" className={styles.cardLink}>
             <div className={styles.newCardButtonSizeInner}>
@@ -32,7 +39,7 @@ const Created = ({ initialCards }: CreatedProps) => {
             </div>
           </Link>
 
-          {cards.data.map((card, index) => (
+          {cards.map((card, index) => (
             <div className={styles.content} key={index}>
               <Link
                 href={`/create/detail/${card.id}`}
@@ -61,6 +68,20 @@ const Created = ({ initialCards }: CreatedProps) => {
               </Link>
             </div>
           ))}
+          {latestMeta.pagination.pageCount > latestMeta.pagination.page && (
+            <ListLoader
+              loadMore={async () => {
+                const nextPageCards = await getCreatedCards(
+                  latestMeta.pagination.page + 1
+                )
+                if (nextPageCards) {
+                  setCards(cards.concat(nextPageCards.data))
+                  setLatestMeta(nextPageCards.meta)
+                }
+              }}
+              offset={20}
+            />
+          )}
         </div>
       ) : (
         <Link href="/create/new" className={styles.cardLink}>
