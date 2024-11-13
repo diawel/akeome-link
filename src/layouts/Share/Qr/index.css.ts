@@ -1,5 +1,8 @@
 import { style } from '@vanilla-extract/css'
 
+const smallScreen = '@media (max-width: 479px)';
+const largeScreen = '@media (min-width: 480px)';
+
 export const backgroundImage = style({
   position: 'relative',
   width: '100%',
@@ -62,12 +65,12 @@ export const discriptionText = style({
 })
 
 export const returnButtonSpace = style({
-  
+  // padding: '10px'
 })
 
 export const returnButton = style({
   position: 'absolute',
 
-  top: '-80px',
-  left: '-45px',
+  top: '-55px',
+  left: '-50px',
 })
