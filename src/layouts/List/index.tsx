@@ -1,6 +1,6 @@
 import * as styles from './index.css'
 import Header from './Header'
-import { FaPlus } from 'react-icons/fa6'
+import { FaPen, FaPlus } from 'react-icons/fa6'
 import Card from '../../components/Card'
 import { getCreatedCards } from '../../utils/strapi/card'
 import { redirect } from 'next/navigation'
@@ -53,9 +53,16 @@ const List = async ({ tab }: ListProps) => {
                         maxFormat="small"
                       />
                     </div>
-                    <div className={styles.cardTitle}>
-                      {card.attributes.title}
-                    </div>
+                    {card.attributes.publishedAt === null ? (
+                      <div className={styles.draftCardTitle}>
+                        <FaPen size={16} />
+                        下書き
+                      </div>
+                    ) : (
+                      <div className={styles.cardTitle}>
+                        {card.attributes.title}
+                      </div>
+                    )}
                   </Link>
                 </div>
               ))}
