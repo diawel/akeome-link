@@ -61,9 +61,9 @@ const Received = ({ initialReceivedCards }: ReceivedProps) => {
         })}
         <ListLoader
           loadMore={async () => {
-            const nextPageReceivedCards = await getReceivedCards(
-              latestMeta.pagination.page + 1
-            )
+            const nextPageReceivedCards = await getReceivedCards({
+              page: latestMeta.pagination.page + 1,
+            })
             if (nextPageReceivedCards) {
               setReceivedCards(receivedCards.concat(nextPageReceivedCards.data))
               setLatestMeta(nextPageReceivedCards.meta)

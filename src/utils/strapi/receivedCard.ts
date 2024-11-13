@@ -94,7 +94,7 @@ export const getReceivedCard = async (id: number) => {
   }
 }
 
-export const getReceivedCards = async (page?: number) => {
+export const getReceivedCards = async ({ page }: { page?: number } = {}) => {
   const session = await getServerSession(authOptions)
 
   if (!session) {
