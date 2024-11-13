@@ -19,6 +19,7 @@ export const card = style({
   transform: 'translate(-50%, -50%)',
   zIndex: 1,
   width: '282px',
+  boxShadow: '0.1px 0.1px 2px rgba(0, 0, 0, 0.3)',
 })
 
 export const linkBoxContainer = style({
