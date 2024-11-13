@@ -83,7 +83,7 @@ export const EditCardProvider = ({
   const [isSyncing, setIsSyncing] = useState(false)
 
   useEffect(() => {
-    const lastSaved = searchParams.get('lastSaved')
+    const lastSaved = history.state?.lastSaved
     if (lastSaved && Number(lastSaved) < firstRenderRef.current) {
       getCreatedCard(existingId).then((existingCard) => {
         if (
@@ -122,7 +122,12 @@ export const EditCardProvider = ({
       })
         .then(() => {
           if (initialPathname === location.pathname) {
-            router.replace(`${initialPathname}?lastSaved=${Date.now()}`)
+            history.replaceState(
+              {
+                lastSaved: Date.now(),
+              },
+              ''
+            )
           }
           if (!toSaveRef.current || toSave === toSaveRef.current) {
             isSavingRef.current = false
@@ -138,7 +143,7 @@ export const EditCardProvider = ({
           isSavingRef.current = false
         })
     },
-    [existingId, router, setIsSyncing]
+    [existingId]
   )
 
   useEffect(() => {
