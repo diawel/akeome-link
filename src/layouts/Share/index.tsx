@@ -101,9 +101,9 @@ const Share = ({ cardRecord }: ShareProps) => {
             <div className={styles.buttonRightSpace}>
               <Link
                 className={styles.qrContainer}
-                href={`https://social-plugins.line.me/lineit/share?url=${encodeURIComponent(
-                  shareUrl
-                )}&text=年賀状が届いています`}
+                href={{
+                  pathname: `/share/${cardRecord.attributes.shareId}/qr`,
+                }}
               >
                 <Image src={qrIcon} alt="lineIcon"></Image>
               </Link>
