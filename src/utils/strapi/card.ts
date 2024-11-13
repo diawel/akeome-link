@@ -164,7 +164,6 @@ export const getCreatedCards = async (page?: number) => {
         },
         pagination: {
           page: page ?? 1,
-          pageSize: 5,
         },
       })}`,
       {
