@@ -16,12 +16,7 @@ import {
   updateCard,
 } from '../../utils/strapi/card'
 import { StrapiApiResponse } from '../../utils/strapi'
-import {
-  redirect,
-  usePathname,
-  useRouter,
-  useSearchParams,
-} from 'next/navigation'
+import { redirect, useRouter, useSearchParams } from 'next/navigation'
 
 const EditCardContext = createContext<
   | {
@@ -36,6 +31,7 @@ const EditCardContext = createContext<
         creatorName: string,
         deliveredAt: Date
       ) => Promise<StrapiApiResponse<CardAttributes | DraftCardAttributes>>
+      isSyncing: boolean
     }
   | undefined
 >(undefined)
@@ -82,9 +78,9 @@ export const EditCardProvider = ({
   const isSavingRef = useRef(false)
   const isModifiedRef = useRef(false)
   const router = useRouter()
-  const pathname = usePathname()
   const searchParams = useSearchParams()
   const firstRenderRef = useRef(Date.now())
+  const [isSyncing, setIsSyncing] = useState(false)
 
   useEffect(() => {
     const lastSaved = searchParams.get('lastSaved')
@@ -104,15 +100,15 @@ export const EditCardProvider = ({
             urlSet: userImage.attributes,
           })) ?? []
         )
-        router.replace(pathname)
+        router.replace(location.pathname)
       })
     }
-  }, [existingId, pathname, router, searchParams])
+  }, [existingId, router, searchParams])
 
   const saveDraft = useCallback(
-    (toSave: (typeof toSaveRef)['current']) => {
+    (toSave: (typeof toSaveRef)['current'], initialPathname: string) => {
       if (!toSave) return
-      console.log('saving')
+      setIsSyncing(true)
 
       isSavingRef.current = true
       updateCard({
@@ -125,21 +121,24 @@ export const EditCardProvider = ({
         existingId,
       })
         .then(() => {
-          console.log('saved')
-          router.push(`${pathname}?lastSaved=${Date.now()}`)
-          setTimeout(() => {
-            if (toSave === toSaveRef.current) {
-              isSavingRef.current = false
-            } else {
-              saveDraft(toSaveRef.current)
-            }
-          }, 1000)
+          if (initialPathname === location.pathname) {
+            router.replace(`${initialPathname}?lastSaved=${Date.now()}`)
+          }
+          if (!toSaveRef.current || toSave === toSaveRef.current) {
+            isSavingRef.current = false
+            setIsSyncing(false)
+          } else {
+            setTimeout(
+              () => saveDraft(toSaveRef.current, initialPathname),
+              1000
+            )
+          }
         })
         .catch(() => {
           isSavingRef.current = false
         })
     },
-    [existingId, pathname, router]
+    [existingId, router, setIsSyncing]
   )
 
   useEffect(() => {
@@ -152,7 +151,7 @@ export const EditCardProvider = ({
     }
 
     if (isSavingRef.current) return
-    saveDraft(toSaveRef.current)
+    saveDraft(toSaveRef.current, location.pathname)
   }, [cardBackground, cardLayout, saveDraft, userImages])
 
   const saveCard = useCallback(
@@ -198,6 +197,7 @@ export const EditCardProvider = ({
           },
         ],
         saveCard,
+        isSyncing,
       }}
     >
       {children}
