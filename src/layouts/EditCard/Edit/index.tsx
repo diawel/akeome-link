@@ -176,44 +176,46 @@ const Edit = ({ isAnyFocused, setIsAnyFocused, setIsLoading }: EditProps) => {
           </div>
         ) : activeTab == 'sticker' ? (
           <div className={styles.control}>
-            {stickers.map((sticker) => (
-              <button
-                key={sticker.id}
-                className={styles.stickerButton}
-                onClick={() => {
-                  setCardLayout([
-                    ...cardLayout,
-                    {
-                      container: { x: 200, y: 291, scale: 1, rotate: 0 },
-                      content: {
-                        type: 'sticker',
-                        stickerId: sticker.id,
+            {stickers
+              .filter((sticker) => sticker.attributes.current)
+              .map((sticker) => (
+                <button
+                  key={sticker.id}
+                  className={styles.stickerButton}
+                  onClick={() => {
+                    setCardLayout([
+                      ...cardLayout,
+                      {
+                        container: { x: 200, y: 291, scale: 1, rotate: 0 },
+                        content: {
+                          type: 'sticker',
+                          stickerId: sticker.id,
+                        },
                       },
-                    },
-                  ])
-                  setIsAnyFocused(true)
-                }}
-              >
-                <img
-                  className={styles.sticker}
-                  src={getImageUrl(
-                    sticker.attributes.image.data.attributes,
-                    'thumbnail'
-                  )}
-                  style={{
-                    aspectRatio: `${sticker.attributes.image.data.attributes.width}/${sticker.attributes.image.data.attributes.height}`,
+                    ])
+                    setIsAnyFocused(true)
                   }}
-                  alt=""
-                />
-                {sticker.attributes.randomVariants.data?.length && (
-                  <Image
-                    className={styles.stickerLabel}
-                    src={randomLabel}
-                    alt="おみくじ対応"
+                >
+                  <img
+                    className={styles.sticker}
+                    src={getImageUrl(
+                      sticker.attributes.image.data.attributes,
+                      'thumbnail'
+                    )}
+                    style={{
+                      aspectRatio: `${sticker.attributes.image.data.attributes.width}/${sticker.attributes.image.data.attributes.height}`,
+                    }}
+                    alt=""
                   />
-                )}
-              </button>
-            ))}
+                  {sticker.attributes.randomVariants.data?.length && (
+                    <Image
+                      className={styles.stickerLabel}
+                      src={randomLabel}
+                      alt="おみくじ対応"
+                    />
+                  )}
+                </button>
+              ))}
           </div>
         ) : (
           <div className={styles.control}>

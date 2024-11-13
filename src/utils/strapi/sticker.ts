@@ -7,13 +7,14 @@ import { MediaAttributes } from './media'
 export type StickerAttributes = {
   createdAt: string
   updatedAt: string
-  publishedAt: string
+  publishedAt: string | null
   image: {
     data: StrapiRecord<MediaAttributes>
   }
   randomVariants: {
     data: StrapiRecord<MediaAttributes>[] | null
   }
+  current: boolean
 }
 
 export const getStickers = async () => {
