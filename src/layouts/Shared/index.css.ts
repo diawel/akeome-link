@@ -57,6 +57,7 @@ export const primaryButton = style({
   fontWeight: 'bold',
   cursor: 'pointer',
   border: 'none',
+  fontSize: 16,
 })
 
 const seconradyButtonBase = style({
