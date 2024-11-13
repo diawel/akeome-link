@@ -47,6 +47,10 @@ const recordFilter = (record: StrapiRecord<ReceivedCardAttributes>) => ({
   },
 })
 
+export type SecureReceivedCardAttributes = ReturnType<
+  typeof recordFilter
+>['attributes']
+
 export const getReceivedCard = async (id: number) => {
   const session = await getServerSession(authOptions)
 
@@ -133,6 +137,7 @@ export const getReceivedCards = async () => {
       data: receivedCards.data.map((receivedCard) =>
         recordFilter(receivedCard)
       ),
+      meta: receivedCards.meta,
     }
   } catch (error) {
     throw error
