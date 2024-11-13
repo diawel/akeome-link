@@ -61,10 +61,6 @@ export const discriptionText = style({
   alignItems: 'center',
 })
 
-export const returnButtonSpace = style({
-  // padding: '10px'
-})
-
 export const returnButton = style({
   position: 'absolute',
 
