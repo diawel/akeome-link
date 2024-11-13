@@ -281,7 +281,10 @@ export const addUniqueReceivedCard = async ({
   }
 }
 
-export const getReservedCards = async ({ page }: { page?: number } = {}) => {
+export const getReservedCards = async ({
+  page,
+  filter,
+}: { page?: number; filter?: 'delivered' | 'undelivered' } = {}) => {
   const session = await getServerSession(authOptions)
 
   if (!session) {
@@ -304,6 +307,21 @@ export const getReservedCards = async ({ page }: { page?: number } = {}) => {
           publishedAt: {
             $null: true,
           },
+          ...(filter && filter === 'delivered'
+            ? {
+                card: {
+                  deliveredAt: {
+                    $lt: new Date().toISOString(),
+                  },
+                },
+              }
+            : {
+                card: {
+                  deliveredAt: {
+                    $gte: new Date().toISOString(),
+                  },
+                },
+              }),
         },
         sort: {
           0: 'updatedAt:desc',
