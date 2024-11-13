@@ -66,16 +66,13 @@ export const EditCardProvider = ({
   existingId,
 }: EditCardProviderProps) => {
   const [cardLayout, setCardLayout] = useState<CardLayout>(
-    defaultCard?.view.layout ?? []
+    defaultCard.view.layout
   )
   const [cardBackground, setCardBackground] = useState<CardBackground>(
-    defaultCard?.view.background ?? {
-      type: 'solid',
-      color: '#ffffff',
-    }
+    defaultCard.view.background
   )
   const [userImages, setUserImages] = useState<UserImages>(
-    defaultCard?.userImages ?? []
+    defaultCard.userImages
   )
   const toSaveRef = useRef<{
     cardLayout: CardLayout
