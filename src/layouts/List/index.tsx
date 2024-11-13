@@ -16,10 +16,10 @@ const List = async ({ tab }: ListProps) => {
       redirect('/')
     }
     return (
-      <div>
+      <>
         <Header activeTab={tab} />
         <Created initialCards={cards} />
-      </div>
+      </>
     )
   }
   if (tab === 'received') {
@@ -30,10 +30,10 @@ const List = async ({ tab }: ListProps) => {
       )
     }
     return (
-      <div>
+      <>
         <Header activeTab={tab} />
         <Received initialReceivedCards={receivedCards} />
-      </div>
+      </>
     )
   }
 }
