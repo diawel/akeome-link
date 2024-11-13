@@ -71,9 +71,9 @@ const Created = ({ initialCards }: CreatedProps) => {
           {latestMeta.pagination.pageCount > latestMeta.pagination.page && (
             <ListLoader
               loadMore={async () => {
-                const nextPageCards = await getCreatedCards(
-                  latestMeta.pagination.page + 1
-                )
+                const nextPageCards = await getCreatedCards({
+                  page: latestMeta.pagination.page + 1,
+                })
                 if (nextPageCards) {
                   setCards(cards.concat(nextPageCards.data))
                   setLatestMeta(nextPageCards.meta)

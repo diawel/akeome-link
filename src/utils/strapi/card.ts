@@ -140,7 +140,7 @@ export const getSharedCard = async (shareId: string) => {
   }
 }
 
-export const getCreatedCards = async (page?: number) => {
+export const getCreatedCards = async ({ page }: { page?: number } = {}) => {
   const session = await getServerSession(authOptions)
 
   if (!session) {
