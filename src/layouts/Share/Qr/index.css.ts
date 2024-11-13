@@ -1,8 +1,5 @@
 import { style } from '@vanilla-extract/css'
 
-const smallScreen = '@media (max-width: 479px)';
-const largeScreen = '@media (min-width: 480px)';
-
 export const backgroundImage = style({
   position: 'relative',
   width: '100%',
