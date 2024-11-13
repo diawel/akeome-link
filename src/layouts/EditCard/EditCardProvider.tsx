@@ -10,12 +10,18 @@ import {
 } from 'react'
 import { CardBackground, CardLayout, UserImages } from '../../components/Card'
 import {
-  addCard,
   CardAttributes,
   DraftCardAttributes,
+  getCreatedCard,
   updateCard,
 } from '../../utils/strapi/card'
 import { StrapiApiResponse } from '../../utils/strapi'
+import {
+  redirect,
+  usePathname,
+  useRouter,
+  useSearchParams,
+} from 'next/navigation'
 
 const EditCardContext = createContext<
   | {
@@ -44,14 +50,14 @@ export const useEditCard = () => {
 
 type EditCardProviderProps = {
   children: React.ReactNode
-  defaultCard?: {
+  defaultCard: {
     view: {
       layout: CardLayout
       background: CardBackground
     }
     userImages: UserImages
   }
-  existingId?: number
+  existingId: number
 }
 
 export const EditCardProvider = ({
@@ -71,7 +77,6 @@ export const EditCardProvider = ({
   const [userImages, setUserImages] = useState<UserImages>(
     defaultCard?.userImages ?? []
   )
-  const cardIdRef = useRef(existingId)
   const toSaveRef = useRef<{
     cardLayout: CardLayout
     cardBackground: CardBackground
@@ -79,47 +84,66 @@ export const EditCardProvider = ({
   } | null>(null)
   const isSavingRef = useRef(false)
   const isModifiedRef = useRef(false)
+  const router = useRouter()
+  const pathname = usePathname()
+  const searchParams = useSearchParams()
+  const firstRenderRef = useRef(Date.now())
 
-  const saveDraft = useCallback((toSave: (typeof toSaveRef)['current']) => {
-    if (!toSave) return
-    console.log('saving')
+  useEffect(() => {
+    const lastSaved = searchParams.get('lastSaved')
+    if (lastSaved && Number(lastSaved) < firstRenderRef.current) {
+      getCreatedCard(existingId).then((existingCard) => {
+        if (
+          !existingCard ||
+          existingCard.data.attributes.publishedAt !== null
+        ) {
+          redirect('/create/new')
+        }
+        setCardLayout(existingCard.data.attributes.view.layout)
+        setCardBackground(existingCard.data.attributes.view.background)
+        setUserImages(
+          existingCard.data.attributes.userImages.data?.map((userImage) => ({
+            id: userImage.id,
+            urlSet: userImage.attributes,
+          })) ?? []
+        )
+        router.replace(pathname)
+      })
+    }
+  }, [existingId, pathname, router, searchParams])
 
-    isSavingRef.current = true
-    ;(cardIdRef.current === undefined
-      ? addCard({
-          userImages: toSave.userImages,
-          view: {
-            layout: toSave.cardLayout,
-            background: toSave.cardBackground,
-          },
-          isDraft: true,
-        })
-      : updateCard({
-          userImages: toSave.userImages,
-          view: {
-            layout: toSave.cardLayout,
-            background: toSave.cardBackground,
-          },
-          isDraft: true,
-          existingId: cardIdRef.current,
-        })
-    )
-      .then((card) => {
-        console.log('saved')
-        cardIdRef.current = card.data.id
-        history.replaceState(null, '', `/create/edit/${card.data.id}`)
-        setTimeout(() => {
-          if (toSave === toSaveRef.current) {
-            isSavingRef.current = false
-          } else {
-            saveDraft(toSaveRef.current)
-          }
-        }, 1000)
+  const saveDraft = useCallback(
+    (toSave: (typeof toSaveRef)['current']) => {
+      if (!toSave) return
+      console.log('saving')
+
+      isSavingRef.current = true
+      updateCard({
+        userImages: toSave.userImages,
+        view: {
+          layout: toSave.cardLayout,
+          background: toSave.cardBackground,
+        },
+        isDraft: true,
+        existingId,
       })
-      .catch(() => {
-        isSavingRef.current = false
-      })
-  }, [])
+        .then(() => {
+          console.log('saved')
+          router.push(`${pathname}?lastSaved=${Date.now()}`)
+          setTimeout(() => {
+            if (toSave === toSaveRef.current) {
+              isSavingRef.current = false
+            } else {
+              saveDraft(toSaveRef.current)
+            }
+          }, 1000)
+        })
+        .catch(() => {
+          isSavingRef.current = false
+        })
+    },
+    [existingId, pathname, router]
+  )
 
   useEffect(() => {
     if (!isModifiedRef.current) return
@@ -136,19 +160,6 @@ export const EditCardProvider = ({
 
   const saveCard = useCallback(
     async (title: string, creatorName: string, deliveredAt: Date) => {
-      console.log(cardIdRef.current)
-      if (cardIdRef.current === undefined) {
-        return await addCard({
-          title,
-          creatorName,
-          view: {
-            layout: cardLayout,
-            background: cardBackground,
-          },
-          userImages,
-          deliveredAt,
-        })
-      }
       return await updateCard({
         title,
         creatorName,
@@ -158,11 +169,11 @@ export const EditCardProvider = ({
         },
         userImages,
         deliveredAt,
-        existingId: cardIdRef.current,
+        existingId,
         isDraft: false,
       })
     },
-    [cardBackground, cardLayout, userImages]
+    [cardBackground, cardLayout, existingId, userImages]
   )
 
   return (
