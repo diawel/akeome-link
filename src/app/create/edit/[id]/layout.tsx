@@ -3,6 +3,7 @@ import { EditCardProvider } from '../../../../layouts/EditCard/EditCardProvider'
 import { getCreatedCard } from '../../../../utils/strapi/card'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '../../../api/auth/[...nextauth]/authOptions'
+import { mediaRecordsToUrlSet } from '../../../../utils/strapi/strapiImage'
 
 const Layout = async ({
   children,
@@ -31,11 +32,9 @@ const Layout = async ({
     <EditCardProvider
       defaultCard={{
         view: existingCard.data.attributes.view,
-        userImages:
-          existingCard.data.attributes.userImages.data?.map((userImage) => ({
-            id: userImage.id,
-            urlSet: userImage.attributes,
-          })) ?? [],
+        userImages: mediaRecordsToUrlSet(
+          existingCard.data.attributes.userImages.data
+        ),
       }}
       existingId={params.id}
     >

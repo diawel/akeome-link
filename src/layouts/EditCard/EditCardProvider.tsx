@@ -17,6 +17,7 @@ import {
 } from '../../utils/strapi/card'
 import { StrapiApiResponse } from '../../utils/strapi'
 import { redirect, useRouter, useSearchParams } from 'next/navigation'
+import { mediaRecordsToUrlSet } from '../../utils/strapi/strapiImage'
 
 const EditCardContext = createContext<
   | {
@@ -95,10 +96,7 @@ export const EditCardProvider = ({
         setCardLayout(existingCard.data.attributes.view.layout)
         setCardBackground(existingCard.data.attributes.view.background)
         setUserImages(
-          existingCard.data.attributes.userImages.data?.map((userImage) => ({
-            id: userImage.id,
-            urlSet: userImage.attributes,
-          })) ?? []
+          mediaRecordsToUrlSet(existingCard.data.attributes.userImages.data)
         )
         router.replace(location.pathname)
       })
