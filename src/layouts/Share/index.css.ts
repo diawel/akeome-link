@@ -13,7 +13,7 @@ export const post = style({
 
 export const card = style({
   position: 'absolute',
-  marginTop: '180px',
+  marginTop: '170px',
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
