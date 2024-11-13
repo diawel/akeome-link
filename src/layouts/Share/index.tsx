@@ -4,6 +4,7 @@ import Card from '../../components/Card'
 import postImage from './post.svg'
 import xIcon from './icon-x.svg'
 import lineIcon from './icon-line.svg'
+import qrIcon from './icon-qr.svg'
 import downloadIcon from './icon-download.svg'
 import Image from 'next/image'
 import * as styles from './index.css'
@@ -77,6 +78,7 @@ const Share = ({ cardRecord }: ShareProps) => {
         </div>
         <div>
           <div className={styles.iconButtonContainer}>
+          <div className={styles.buttonRightSpace}>
             <Link
               className={styles.xContainer}
               href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(
@@ -85,7 +87,8 @@ const Share = ({ cardRecord }: ShareProps) => {
             >
               <Image src={xIcon} alt="xIcon"></Image>
             </Link>
-            <div className={styles.buttonSpace}>
+            </div>
+            <div className={styles.buttonRightSpace}>
               <Link
                 className={styles.lineContainer}
                 href={`https://social-plugins.line.me/lineit/share?url=${encodeURIComponent(
@@ -93,6 +96,16 @@ const Share = ({ cardRecord }: ShareProps) => {
                 )}&text=年賀状が届いています`}
               >
                 <Image src={lineIcon} alt="lineIcon"></Image>
+              </Link>
+            </div>
+            <div className={styles.buttonRightSpace}>
+              <Link
+                className={styles.qrContainer}
+                href={`https://social-plugins.line.me/lineit/share?url=${encodeURIComponent(
+                  shareUrl
+                )}&text=年賀状が届いています`}
+              >
+                <Image src={qrIcon} alt="lineIcon"></Image>
               </Link>
             </div>
             <button
@@ -115,7 +128,6 @@ const Share = ({ cardRecord }: ShareProps) => {
             >
               <div className={styles.downloadContent}>
                 <Image src={downloadIcon} alt="downLoadIcon"></Image>
-                <div className={styles.downloadText}>画像として保存</div>
               </div>
             </button>
           </div>
