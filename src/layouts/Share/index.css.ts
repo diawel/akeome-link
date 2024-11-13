@@ -19,20 +19,19 @@ export const card = style({
   transform: 'translate(-50%, -50%)',
   zIndex: 1,
   width: '282px',
-  padding: '16px',
 })
 
 export const linkBoxContainer = style({
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
+  marginTop: '220px',
 })
 
 export const linkBoxContent = style({
   display: 'flex',
   alignItems: 'center',
   border: `1px solid ${color.red[5]}`,
-  marginTop: '220px',
   borderRadius: '8px',
   overflow: 'hidden',
   backgroundColor: color.gray[100],
@@ -52,6 +51,7 @@ export const linkText = style({
 })
 
 export const copyButton = style({
+  position: 'relative',
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
@@ -64,6 +64,15 @@ export const copyButton = style({
   border: 'none',
   width: '65px',
 })
+
+export const copiedPopUp = style({
+  position: 'relative',
+  paddingLeft: '235px',
+});
+
+export const hidden = style({
+  opacity: 0,
+});
 
 export const linkInput = style({
   flex: 1,
