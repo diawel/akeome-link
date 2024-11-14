@@ -47,6 +47,10 @@ const recordFilter = (record: StrapiRecord<ReceivedCardAttributes>) => ({
   },
 })
 
+export type SecureReceivedCardAttributes = ReturnType<
+  typeof recordFilter
+>['attributes']
+
 export const getReceivedCard = async (id: number) => {
   const session = await getServerSession(authOptions)
 
@@ -90,7 +94,7 @@ export const getReceivedCard = async (id: number) => {
   }
 }
 
-export const getReceivedCards = async () => {
+export const getReceivedCards = async ({ page }: { page?: number } = {}) => {
   const session = await getServerSession(authOptions)
 
   if (!session) {
@@ -113,6 +117,9 @@ export const getReceivedCards = async () => {
         sort: {
           0: 'updatedAt:desc',
         },
+        pagination: {
+          page: page ?? 1,
+        },
       })}`,
       {
         cache: 'no-cache',
@@ -133,6 +140,7 @@ export const getReceivedCards = async () => {
       data: receivedCards.data.map((receivedCard) =>
         recordFilter(receivedCard)
       ),
+      meta: receivedCards.meta,
     }
   } catch (error) {
     throw error
@@ -273,7 +281,10 @@ export const addUniqueReceivedCard = async ({
   }
 }
 
-export const getReservedCards = async () => {
+export const getReservedCards = async ({
+  page,
+  filter,
+}: { page?: number; filter?: 'delivered' | 'undelivered' } = {}) => {
   const session = await getServerSession(authOptions)
 
   if (!session) {
@@ -296,9 +307,27 @@ export const getReservedCards = async () => {
           publishedAt: {
             $null: true,
           },
+          ...(filter && filter === 'delivered'
+            ? {
+                card: {
+                  deliveredAt: {
+                    $lt: new Date().toISOString(),
+                  },
+                },
+              }
+            : {
+                card: {
+                  deliveredAt: {
+                    $gte: new Date().toISOString(),
+                  },
+                },
+              }),
         },
         sort: {
           0: 'updatedAt:desc',
+        },
+        pagination: {
+          page: page ?? 1,
         },
       })}`,
       {
