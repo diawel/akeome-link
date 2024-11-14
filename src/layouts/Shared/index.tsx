@@ -9,7 +9,10 @@ import Link from 'next/link'
 import Renderer from '../../components/Card/Renderer'
 import { useEffect, useState } from 'react'
 import Print from '../../components/Print'
-import { addUniqueReceivedCard } from '../../utils/strapi/receivedCard'
+import {
+  addUniqueReceivedCard,
+  ReceivedCardAttributes,
+} from '../../utils/strapi/receivedCard'
 import { putLocalReceivedCard } from '../../utils/db'
 import { signIn } from 'next-auth/react'
 import { CardAttributes } from '../../utils/strapi/card'
@@ -19,8 +22,9 @@ import emptyCard from './empty-card.svg'
 type SharedProps = {
   cardCreatorId: number
   strapiUserId: number | undefined
-  isAlreadyReceived: boolean
-  isAlreadyReserved: boolean
+  existingReceivedCard?: StrapiRecord<
+    Pick<ReceivedCardAttributes, 'randomSeed' | 'publishedAt'>
+  >
 } & (
   | {
       cardRecord: StrapiRecord<
@@ -38,14 +42,21 @@ const Shared = ({
   cardCreatorId,
   strapiUserId,
   isDelivered,
-  isAlreadyReceived,
-  isAlreadyReserved,
+  existingReceivedCard,
 }: SharedProps) => {
   const [renderedImage, setRenderedImage] = useState<Blob | null>(null)
   const [isPrintModalOpen, setIsPrintModalOpen] = useState(false)
-  const [randomSeed, setSeed] = useState<number | undefined>(undefined)
-  const [isReceived, setIsReceived] = useState(isAlreadyReceived)
-  const [isReserved, setIsReserved] = useState(isAlreadyReserved)
+  const [randomSeed, setSeed] = useState<number | undefined>(
+    existingReceivedCard?.attributes.randomSeed
+  )
+  const [isReceived, setIsReceived] = useState(
+    existingReceivedCard !== undefined &&
+      existingReceivedCard.attributes.publishedAt !== null
+  )
+  const [isReserved, setIsReserved] = useState(
+    existingReceivedCard !== undefined &&
+      existingReceivedCard.attributes.publishedAt === null
+  )
 
   useEffect(() => {
     if (strapiUserId == cardCreatorId) {
