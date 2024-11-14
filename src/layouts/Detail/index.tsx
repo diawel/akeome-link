@@ -4,7 +4,7 @@ import Card from '../../components/Card'
 import * as styles from './index.css'
 import Link from 'next/link'
 import { mediaRecordsToUrlSet } from '../../utils/strapi/strapiImage'
-import { CardAttributes, DraftCardAttributes } from '../../utils/strapi/card'
+import { CardAttributes, deleteCreatedCard, DraftCardAttributes } from '../../utils/strapi/card'
 import ReturnButton from '../../components/ReturnButton'
 import { color } from '../../utils/styleSchema'
 import { StrapiRecord } from '../../utils/strapi'
@@ -46,17 +46,20 @@ const Detail = ({ cardRecord }: DetailProps) => {
           </Link> 
           <div className={styles.buttonContainer}>
             <div className={styles.buttonSpace}>
-              <Link href={`/create/new/${cardRecord.id}`}>
+              <Link className={styles.link} href={`/create/new/${cardRecord.id}`}>
                 <button className={styles.copyAndEditButton}>
                   <div className={styles.buttonText}>コピーして編集</div>
                 </button>
               </Link> 
             </div>
-            <button
-              className={styles.deleteButton}
-            >
-              <div className={styles.buttonText}>削除</div>
-            </button>
+            <Link className={styles.link} href='/create/list'>
+              <button
+                className={styles.deleteButton}
+                onClick={() => deleteCreatedCard(cardRecord.id)}
+              >
+                <div className={styles.buttonText}>削除</div>
+              </button>
+            </Link>
           </div>
         </div>
       </div>
