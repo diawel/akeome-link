@@ -455,3 +455,31 @@ export const countReceivedRecords = async () => {
     throw error
   }
 }
+
+export const receiveAllReservedCards = async (): Promise<number> => {
+  const reservedCards = await getReservedCards({
+    filter: 'delivered',
+  })
+
+  if (!reservedCards) {
+    return 0
+  }
+
+  if (reservedCards.data.length === 0) {
+    return 0
+  }
+
+  await Promise.all(
+    reservedCards.data.map((receivedCard) => {
+      if (!receivedCard.attributes.card.data) {
+        return
+      }
+      return addUniqueReceivedCard({
+        shareId: receivedCard.attributes.card.data.attributes.shareId,
+        randomSeed: receivedCard.attributes.randomSeed,
+      })
+    })
+  )
+
+  return (await receiveAllReservedCards()) + reservedCards.data.length
+}
