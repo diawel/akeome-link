@@ -126,3 +126,16 @@ export const newCardButtonText = style({
 export const cardLink = style({
   textDecoration: 'none',
 })
+
+export const noCardContainer = style({
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+})
+
+export const noCardMessage = style({
+  fontSize: '16px',
+  fontWeight: 'bold',
+  color: color.red[5],
+  padding: '90px 0px 45px 0px'
+})
