@@ -30,12 +30,12 @@ export type CardAttributes = {
 }
 
 export const getCreatedCard = async (id: number) => {
-  try {
-    const session = await getServerSession(authOptions)
-    if (!session) {
-      return undefined
-    }
+  const session = await getServerSession(authOptions)
+  if (!session) {
+    return undefined
+  }
 
+  try {
     const strapiResponse = await fetch(
       `${
         process.env.NEXT_PUBLIC_STRAPI_BACKEND_URL
