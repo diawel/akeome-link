@@ -3,6 +3,7 @@ import { getReservedCards } from '../../utils/strapi/receivedCard'
 import Header from './Header'
 import Delivered from './Delivered'
 import * as styles from './index.css'
+import Undelivered from './Undelivered'
 
 type PostProps = {
   tab: 'delivered' | 'undelivered'
@@ -38,6 +39,7 @@ const Post = async ({ tab }: PostProps) => {
       <div className={styles.container}>
         <div className={styles.screen}>
           <Header activeTab={tab} />
+          <Undelivered initialReservedCard={receivedCards} />
         </div>
       </div>
     )
