@@ -62,20 +62,22 @@ const Received = ({ initialReceivedCards }: ReceivedProps) => {
               </div>
             )
           })}
-          <ListLoader
-            loadMore={async () => {
-              const nextPageReceivedCards = await getReceivedCards({
-                page: latestMeta.pagination.page + 1,
-              })
-              if (nextPageReceivedCards) {
-                setReceivedCards(
-                  receivedCards.concat(nextPageReceivedCards.data)
-                )
-                setLatestMeta(nextPageReceivedCards.meta)
-              }
-            }}
-            offset={20}
-          />
+          {latestMeta.pagination.pageCount > latestMeta.pagination.page && (
+            <ListLoader
+              loadMore={async () => {
+                const nextPageReceivedCards = await getReceivedCards({
+                  page: latestMeta.pagination.page + 1,
+                })
+                if (nextPageReceivedCards) {
+                  setReceivedCards(
+                    receivedCards.concat(nextPageReceivedCards.data)
+                  )
+                  setLatestMeta(nextPageReceivedCards.meta)
+                }
+              }}
+              offset={20}
+            />
+          )}
         </div>
       ) : (
         <>
