@@ -79,10 +79,10 @@ const Shared = ({
       })
       setSeed(localReceivedCard?.randomSeed)
     } else {
-      // const receivedCard = await addUniqueReceivedCard({
-      //   shareId: cardRecord.attributes.shareId,
-      // })
-      // setSeed(receivedCard?.data.attributes.randomSeed)
+      const receivedCard = await addUniqueReceivedCard({
+        shareId: cardRecord.attributes.shareId,
+      })
+      setSeed(receivedCard?.data.attributes.randomSeed)
       setSeed(10000000 + Math.floor(Math.random() * 90000000))
     }
   }
@@ -146,7 +146,13 @@ const Shared = ({
                 <button className={styles.cardStage} onClick={receive}>
                   <div
                     className={
-                      styles.cardContainer[isReceived ? 'received' : 'default']
+                      styles.cardContainer[
+                        existingReceivedCard
+                          ? 'alreadyReceived'
+                          : isReceived
+                          ? 'received'
+                          : 'default'
+                      ]
                     }
                   >
                     <Card
@@ -229,15 +235,17 @@ const Shared = ({
                       <FaPrint />
                       印刷
                     </button>
-                    <Renderer
-                      layout={cardRecord.attributes.view.layout}
-                      background={cardRecord.attributes.view.background}
-                      userImages={mediaRecordsToUrlSet(
-                        cardRecord.attributes.userImages.data
-                      )}
-                      onRender={(image) => setRenderedImage(image)}
-                      randomSeed={randomSeed}
-                    />
+                    {randomSeed !== undefined && (
+                      <Renderer
+                        layout={cardRecord.attributes.view.layout}
+                        background={cardRecord.attributes.view.background}
+                        userImages={mediaRecordsToUrlSet(
+                          cardRecord.attributes.userImages.data
+                        )}
+                        onRender={(image) => setRenderedImage(image)}
+                        randomSeed={randomSeed}
+                      />
+                    )}
                   </>
                 )}
             </div>

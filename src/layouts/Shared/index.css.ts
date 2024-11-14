@@ -180,12 +180,12 @@ export const title = style({
   fontWeight: 'bold',
   color: color.gray[5],
   textAlign: 'center',
-  animation: `${fadeIn} 0.3s 2.1s backwards`,
   transition: 'color 0.3s 1s',
 
   selectors: {
     [`${container.newArrival} &`]: {
       color: color.gray[100],
+      animation: `${fadeIn} 0.3s 2.1s backwards`,
     },
   },
 })
@@ -273,6 +273,13 @@ export const cardContainer = styleVariants({
       animationPlayState: 'running',
     },
   ],
+  alreadyReceived: [
+    cardContainerBase,
+    {
+      animationPlayState: 'paused',
+      animationDelay: '-1s',
+    },
+  ],
 })
 
 export const emptyCard = style({
@@ -283,6 +290,7 @@ export const emptyCard = style({
   left: 0,
   objectFit: 'cover',
   transform: 'translateZ(-1px) rotateY(180deg)',
+  backfaceVisibility: 'hidden',
 })
 
 export const control = style({
