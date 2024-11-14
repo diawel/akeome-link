@@ -83,11 +83,10 @@ const Shared = ({
       })
       setSeed(localReceivedCard?.randomSeed)
     } else {
-      // const receivedCard = await addUniqueReceivedCard({
-      //   shareId: cardRecord.attributes.shareId,
-      // })
-      // setSeed(receivedCard?.data.attributes.randomSeed)
-      setSeed(10000000 + Math.floor(Math.random() * 90000000))
+      const receivedCard = await addUniqueReceivedCard({
+        shareId: cardRecord.attributes.shareId,
+      })
+      setSeed(receivedCard?.data.attributes.randomSeed)
     }
   }
 
