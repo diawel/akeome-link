@@ -213,17 +213,17 @@ export const addUniqueReceivedCard = async ({
       return undefined
     }
 
-    const existingReceivedCards = await getReceivedCardByCardId(card.data.id)
+    const existingReceivedCard = await getReceivedCardByCardId(card.data.id)
     const shouldUpdate =
       !isReserve &&
-      existingReceivedCards?.data.attributes.publishedAt === null &&
+      existingReceivedCard?.data.attributes.publishedAt === null &&
       new Date(card.data.attributes.deliveredAt) < new Date()
-    if (existingReceivedCards && !shouldUpdate) {
-      return existingReceivedCards
+    if (existingReceivedCard && !shouldUpdate) {
+      return existingReceivedCard
     }
     const strapiResponse = shouldUpdate
       ? await fetch(
-          `${process.env.NEXT_PUBLIC_STRAPI_BACKEND_URL}/api/received-cards/${existingReceivedCards.data.id}`,
+          `${process.env.NEXT_PUBLIC_STRAPI_BACKEND_URL}/api/received-cards/${existingReceivedCard.data.id}`,
           {
             method: 'PUT',
             headers: {
@@ -234,7 +234,7 @@ export const addUniqueReceivedCard = async ({
               data: {
                 card: card.data.id,
                 receiver: session.user.strapiUserId,
-                randomSeed: existingReceivedCards.data.attributes.randomSeed,
+                randomSeed: existingReceivedCard.data.attributes.randomSeed,
                 publishedAt: new Date().toISOString(),
               },
             }),

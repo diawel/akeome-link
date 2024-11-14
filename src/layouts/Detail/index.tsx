@@ -10,24 +10,22 @@ import * as styles from './index.css'
 import copyIcon from './icon-copy.svg'
 import Link from 'next/link'
 import { mediaRecordsToUrlSet } from '../../utils/strapi/strapiImage'
-import { StrapiRecord } from '../../utils/strapi'
 import Renderer from '../../components/Card/Renderer'
 import { useEffect, useState } from 'react'
 import { CardAttributes } from '../../utils/strapi/card'
 
 type DetailProps = {
-  cardRecord: StrapiRecord<CardAttributes>
+  cardAttributes: CardAttributes
 }
 
-const Detail = ({ cardRecord }: DetailProps) => {
+const Detail = ({ cardAttributes }: DetailProps) => {
   const [renderedImage, setRenderedImage] = useState<Blob | null>(null)
   const [shareUrl, setShareUrl] = useState('')
   useEffect(() => {
     setShareUrl(
-      new URL(`/link/${cardRecord.attributes.shareId}`, window.location.href)
-        .href
+      new URL(`/link/${cardAttributes.shareId}`, window.location.href).href
     )
-  }, [cardRecord.attributes.shareId])
+  }, [cardAttributes.shareId])
   return (
     <>
       <div>
@@ -35,11 +33,9 @@ const Detail = ({ cardRecord }: DetailProps) => {
           <Image className={styles.post} src={postImage} alt="postImage" />
           <div className={styles.card}>
             <Card
-              layout={cardRecord.attributes.view.layout}
-              background={cardRecord.attributes.view.background}
-              userImages={mediaRecordsToUrlSet(
-                cardRecord.attributes.userImages.data
-              )}
+              layout={cardAttributes.view.layout}
+              background={cardAttributes.view.background}
+              userImages={mediaRecordsToUrlSet(cardAttributes.userImages.data)}
               randomVariants="hidden"
             />
           </div>
@@ -118,9 +114,9 @@ const Detail = ({ cardRecord }: DetailProps) => {
         </div>
       </div>
       <Renderer
-        layout={cardRecord.attributes.view.layout}
-        background={cardRecord.attributes.view.background}
-        userImages={mediaRecordsToUrlSet(cardRecord.attributes.userImages.data)}
+        layout={cardAttributes.view.layout}
+        background={cardAttributes.view.background}
+        userImages={mediaRecordsToUrlSet(cardAttributes.userImages.data)}
         onRender={setRenderedImage}
       />
     </>

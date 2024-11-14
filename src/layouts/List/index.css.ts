@@ -70,6 +70,19 @@ export const cardTitle = style({
   whiteSpace: 'nowrap',
 })
 
+export const draftCardTitle = style({
+  fontSize: '16px',
+  fontWeight: 'bold',
+  marginTop: '12px',
+  marginBottom: '12px',
+  color: `${color.gray[40]}`,
+  whiteSpace: 'nowrap',
+  display: 'flex',
+  gap: 6,
+  alignItems: 'center',
+  justifyContent: 'center',
+})
+
 export const newCardButtonSizeInner = style({
   width: '100%',
   height: 'auto',

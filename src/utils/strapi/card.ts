@@ -23,10 +23,26 @@ export type CardAttributes = {
   createdAt: string
   updatedAt: string
   publishedAt: string
-  userImages: { data: StrapiRecord<MediaAttributes>[] }
+  userImages: { data: StrapiRecord<MediaAttributes>[] | null }
   creator: { data: StrapiRecord<UserAttributes> }
   shareId: string
   deliveredAt: string
+}
+
+export type DraftCardAttributes = {
+  title?: string
+  creatorName?: string
+  view: {
+    background: CardBackground
+    layout: CardLayout
+  }
+  createdAt: string
+  updatedAt: string
+  publishedAt: null
+  userImages: { data: StrapiRecord<MediaAttributes>[] | null }
+  creator: { data: StrapiRecord<UserAttributes> }
+  shareId: string
+  deliveredAt?: string
 }
 
 export const getCreatedCard = async (id: number) => {
@@ -41,6 +57,7 @@ export const getCreatedCard = async (id: number) => {
         process.env.NEXT_PUBLIC_STRAPI_BACKEND_URL
       }/api/cards/${id}?${stringify({
         populate: ['creator', 'userImages'],
+        publicationState: 'preview',
         filter: {
           creator: {
             id: {
@@ -60,7 +77,8 @@ export const getCreatedCard = async (id: number) => {
       return undefined
     }
 
-    const card: StrapiApiResponse<CardAttributes> = await strapiResponse.json()
+    const card: StrapiApiResponse<CardAttributes | DraftCardAttributes> =
+      await strapiResponse.json()
     if (card.data.attributes.creator.data.id !== session.user.strapiUserId) {
       return undefined
     }
@@ -133,6 +151,7 @@ export const getCreatedCards = async () => {
     const strapiResponse = await fetch(
       `${process.env.NEXT_PUBLIC_STRAPI_BACKEND_URL}/api/cards?${stringify({
         populate: ['creator', 'userImages'],
+        publicationState: 'preview',
         filters: {
           creator: {
             id: {
@@ -157,7 +176,7 @@ export const getCreatedCards = async () => {
       throw new Error(strapiError.error.message)
     }
 
-    const cards: StrapiApiListResponse<CardAttributes> =
+    const cards: StrapiApiListResponse<CardAttributes | DraftCardAttributes> =
       await strapiResponse.json()
     return cards
   } catch (error) {
@@ -171,18 +190,34 @@ export const addCard = async ({
   userImages,
   view,
   deliveredAt,
-}: {
-  title: string
-  creatorName: string
-  userImages: {
-    id: number
-  }[]
-  view: {
-    layout: CardLayout
-    background: CardBackground
-  }
-  deliveredAt: Date
-}) => {
+  isDraft,
+}:
+  | {
+      title?: string
+      creatorName?: string
+      userImages: {
+        id: number
+      }[]
+      view: {
+        layout: CardLayout
+        background: CardBackground
+      }
+      deliveredAt?: Date
+      isDraft: true
+    }
+  | {
+      title: string
+      creatorName: string
+      userImages: {
+        id: number
+      }[]
+      view: {
+        layout: CardLayout
+        background: CardBackground
+      }
+      deliveredAt: Date
+      isDraft?: false
+    }) => {
   const session = await getServerSession(authOptions)
 
   if (!session) {
@@ -205,7 +240,8 @@ export const addCard = async ({
             view,
             creator: session.user.strapiUserId,
             userImages: userImages.map((userImage) => userImage.id),
-            deliveredAt: deliveredAt.toISOString(),
+            deliveredAt: deliveredAt?.toISOString(),
+            ...(isDraft ? { publishedAt: null } : {}),
           },
         }),
       }
@@ -215,8 +251,94 @@ export const addCard = async ({
       throw new Error(`Failed to add card: ${strapiResponse.statusText}`)
     }
 
+    if (isDraft) {
+      const card: StrapiApiResponse<DraftCardAttributes> =
+        await strapiResponse.json()
+      return card
+    }
     const card: StrapiApiResponse<CardAttributes> = await strapiResponse.json()
+    return card
+  } catch (error) {
+    throw error
+  }
+}
 
+export const updateCard = async ({
+  title,
+  creatorName,
+  userImages,
+  view,
+  deliveredAt,
+  isDraft,
+  existingId,
+}:
+  | {
+      title?: string
+      creatorName?: string
+      userImages: {
+        id: number
+      }[]
+      view: {
+        layout: CardLayout
+        background: CardBackground
+      }
+      deliveredAt?: Date
+      isDraft: true
+      existingId: number
+    }
+  | {
+      title: string
+      creatorName: string
+      userImages: {
+        id: number
+      }[]
+      view: {
+        layout: CardLayout
+        background: CardBackground
+      }
+      deliveredAt: Date
+      isDraft?: false
+      existingId: number
+    }) => {
+  const existingCard = await getCreatedCard(existingId)
+
+  if (!existingCard) {
+    throw new Error('Card not found')
+  }
+
+  try {
+    const strapiResponse = await fetch(
+      `${process.env.NEXT_PUBLIC_STRAPI_BACKEND_URL}/api/cards/${existingId}`,
+      {
+        method: 'PUT',
+        headers: {
+          Authorization: `Bearer ${process.env.STRAPI_API_TOKEN}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          data: {
+            title,
+            creatorName,
+            view,
+            creator: existingCard.data.attributes.creator.data.id,
+            userImages: userImages.map((userImage) => userImage.id),
+            deliveredAt: deliveredAt?.toISOString(),
+            publishedAt: isDraft ? null : new Date().toISOString(),
+          },
+        }),
+      }
+    )
+
+    if (!strapiResponse.ok) {
+      throw new Error(`Failed to update card: ${strapiResponse.statusText}`)
+    }
+
+    if (isDraft) {
+      const card: StrapiApiResponse<DraftCardAttributes> =
+        await strapiResponse.json()
+      return card
+    }
+    const card: StrapiApiResponse<CardAttributes> = await strapiResponse.json()
     return card
   } catch (error) {
     throw error

@@ -3,7 +3,6 @@
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
-import { addCard } from '../../../utils/strapi/card'
 import { extractPersonName } from '../../../utils/goolab'
 import * as styles from './index.css'
 import Meta from './Meta'
@@ -26,8 +25,7 @@ const calcDeliveredAt = () => {
 const Setting = () => {
   const {
     cardLayoutState: [cardLayout],
-    cardBackgroundState: [cardBackground],
-    userImagesState: [userImages],
+    saveCard,
   } = useEditCard()
   const { data: session } = useSession({ required: true })
   const [creatorName, setCreatorName] = useState<string | undefined>(undefined)
@@ -67,16 +65,7 @@ const Setting = () => {
 
     setIsLoading(true)
     localStorage.setItem(creatorNameLocalStorageKey, creatorName)
-    addCard({
-      title,
-      creatorName,
-      view: {
-        layout: cardLayout,
-        background: cardBackground,
-      },
-      userImages,
-      deliveredAt,
-    }).then((response) => {
+    saveCard(title, creatorName, deliveredAt).then((response) => {
       router.replace(`/share/${response.data.id}`)
     })
   }
