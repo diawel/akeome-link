@@ -53,12 +53,11 @@ const Detail = ({ cardRecord }: DetailProps) => {
           </Link> 
           <div className={styles.buttonContainer}>
             <div className={styles.buttonSpace}>
-              <button
-                className={styles.copyAndEditButton}
-                // onClick={() => {}}
-              >
+            <Link href={`/create/new/${cardRecord.id}`}>
+              <button className={styles.copyAndEditButton}>
                 <div className={styles.buttonText}>コピーして編集</div>
               </button>
+            </Link> 
             </div>
             <button
               className={styles.deleteButton}
