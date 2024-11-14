@@ -28,7 +28,7 @@ const Layout = async ({
     <html lang="ja">
       <body className={styles.container}>
         <ClientSessionProvider>
-          <StickerProvider stickers={(await getStickers()).data}>
+          <StickerProvider stickers={await getStickers()}>
             <div className={styles.display}>
               <div className={styles.inner}>
                 <div className={styles.content}>{children}</div>
