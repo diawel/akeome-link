@@ -16,10 +16,10 @@ import { mediaRecordsToUrlSet } from '../../utils/strapi/strapiImage'
 import { StrapiRecord } from '../../utils/strapi'
 import Renderer from '../../components/Card/Renderer'
 import { useEffect, useState } from 'react'
-import { CardAttributes } from '../../utils/strapi/card'
+import { CardAttributes, DraftCardAttributes } from '../../utils/strapi/card'
 
 type ShareProps = {
-  cardRecord: StrapiRecord<CardAttributes>
+  cardRecord: StrapiRecord<CardAttributes | DraftCardAttributes>
 }
 
 const Share = ({ cardRecord }: ShareProps) => {
@@ -102,7 +102,7 @@ const Share = ({ cardRecord }: ShareProps) => {
               <Link
                 className={styles.qrContainer}
                 href={{
-                  pathname: `/share/${cardRecord.attributes.shareId}/qr`,
+                  pathname: `/share/${cardRecord.id}/qr`,
                 }}
               >
                 <Image src={qrIcon} alt="lineIcon"></Image>

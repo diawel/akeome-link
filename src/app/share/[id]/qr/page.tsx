@@ -1,15 +1,26 @@
 import { notFound } from 'next/navigation'
 import Qr from '../../../../layouts/Share/Qr'
-import { getSharedCard } from '../../../../utils/strapi/card'
+import { getCreatedCard } from '../../../../utils/strapi/card'
+import Link from 'next/link'
 
-const Page = async ({ params }: { params: { id: string } }) => {
-  const card = await getSharedCard(params.id)
+const Page = async ({ params }: { params: { id: number } }) => {
+  const cardResponse = await getCreatedCard(params.id)
 
-  if (!card) {
+
+  if (!cardResponse) {
     notFound()
   }
 
-  return <Qr creatorName={card.data.attributes.creatorName} id={params.id} />
+  const cardAttributes = cardResponse.data.attributes
+  if (cardAttributes.publishedAt === null) {
+    return (
+      <div>
+        下書き表示<Link href={`/create/edit/${params.id}`}>編集</Link>
+      </div>
+    )
+  }
+
+  return <Qr cardAttributes={cardAttributes} />
 }
 
 export default Page

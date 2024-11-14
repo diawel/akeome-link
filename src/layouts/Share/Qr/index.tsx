@@ -8,21 +8,20 @@ import * as styles from './index.css'
 import { color } from '../../../utils/styleSchema'
 import Image from 'next/image'
 import ReturnButton from '../../../components/ReturnButton'
+import { CardAttributes } from '../../../utils/strapi/card'
 
 type QrProps = {
-  creatorName: string
-  id: string
+  cardAttributes: CardAttributes
 }
 
-const Qr = ({ creatorName, id }: QrProps) => {
+const Qr = ({ cardAttributes }: QrProps) => {
   const [shareUrl, setShareUrl] = useState('')
 
   useEffect(() => {
     setShareUrl(
-      new URL(`/link/${id}`, window.location.href)
-        .href
+      new URL(`/link/${cardAttributes.shareId}`, window.location.href).href
     )
-  }, [id])
+  }, [cardAttributes.shareId])
 
   return (
     <>
@@ -39,7 +38,7 @@ const Qr = ({ creatorName, id }: QrProps) => {
               </div>
             </div>
             <div className={styles.creatorName}>
-              <div>{creatorName}</div>
+              <div>{cardAttributes.creatorName}</div>
             </div>
             <div className={styles.discriptionText}>から年賀状を受け取ろう！</div>
           </div>
