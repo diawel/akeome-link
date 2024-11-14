@@ -5,53 +5,52 @@ import * as styles from './index.css'
 import Link from 'next/link'
 import { mediaRecordsToUrlSet } from '../../utils/strapi/strapiImage'
 import { useEffect, useState } from 'react'
-import { CardAttributes } from '../../utils/strapi/card'
+import { CardAttributes, DraftCardAttributes } from '../../utils/strapi/card'
 import ReturnButton from '../../components/ReturnButton'
 import { color } from '../../utils/styleSchema'
+import { StrapiRecord } from '../../utils/strapi'
 
 type DetailProps = {
-  cardAttributes: CardAttributes
+  cardRecord: StrapiRecord<CardAttributes | DraftCardAttributes>
 }
 
-const Detail = ({ cardAttributes }: DetailProps) => {
+const Detail = ({ cardRecord }: DetailProps) => {
   const [shareUrl, setShareUrl] = useState('')
   useEffect(() => {
     setShareUrl(
-      new URL(`/link/${cardAttributes.shareId}`, window.location.href).href
+      new URL(`/link/${cardRecord.attributes.shareId}`, window.location.href).href
     )
-  }, [cardAttributes.shareId])
+  }, [cardRecord.attributes.shareId])
   return (
     <>
       <div>
         <div className={styles.control}>
-            <ReturnButton href="/create/list" color={color.gray[5]} />
+          <ReturnButton href="/create/list" color={color.gray[5]} />
         </div>
-
         <div className={styles.container}>
           <div className={styles.center}>
-            <div className={styles.title}>{cardAttributes.title}</div>
+            <div className={styles.title}>{cardRecord.attributes.title}</div>
           </div>
           <div className={styles.center}>
-            <div className={styles.creatorName}>{cardAttributes.creatorName}</div>
+            <div className={styles.creatorName}>{cardRecord.attributes.creatorName}</div>
           </div>
           <div className={styles.cardSpace}>
             <div className={styles.card}>
               <Card
-                layout={cardAttributes.view.layout}
-                background={cardAttributes.view.background}
+                layout={cardRecord.attributes.view.layout}
+                background={cardRecord.attributes.view.background}
                 userImages={mediaRecordsToUrlSet(
-                  cardAttributes.userImages.data
+                  cardRecord.attributes.userImages.data
                 )}
                 randomVariants="hidden"
               />
             </div>
           </div>
-          <button
-            className={styles.primaryButton}
-            // onClick={}
-          >
-            SNSで共有する
-          </button>
+          <Link href={`/share/${cardRecord.id}`}>
+            <button className={styles.primaryButton}>
+              SNSで共有する
+            </button>
+          </Link> 
           <div className={styles.buttonContainer}>
             <div className={styles.buttonSpace}>
               <button
