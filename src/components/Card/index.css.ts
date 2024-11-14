@@ -138,6 +138,7 @@ export const interactionContainer = styleVariants({
 const controlBase = style({
   border: 'none',
   backgroundColor: 'transparent',
+  cursor: 'pointer',
 
   selectors: {
     [`.${interactionContainer.default} > &`]: {

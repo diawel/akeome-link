@@ -18,6 +18,9 @@ import { signIn } from 'next-auth/react'
 import { CardAttributes } from '../../utils/strapi/card'
 import Image from 'next/image'
 import emptyCard from './empty-card.svg'
+import pattern from './pattern.svg'
+import bottomPattern from './bottom-pattern.svg'
+import cloud from './cloud.svg'
 
 type SharedProps = {
   cardCreatorId: number
@@ -101,38 +104,67 @@ const Shared = ({
 
   return (
     <>
-      <div className={styles.container}>
+      <div
+        className={
+          styles.container[
+            isDelivered && !isReceived ? 'newArrival' : 'default'
+          ]
+        }
+      >
+        <div className={styles.backgroundContainer}>
+          <div className={styles.patternContainer}>
+            <Image src={pattern} alt="" className={styles.patterm} />
+          </div>
+          <div className={styles.bottomPatternContainer}>
+            <Image
+              src={bottomPattern}
+              alt=""
+              loading="eager"
+              className={styles.bottomPattern}
+            />
+          </div>
+        </div>
         <div className={styles.screen}>
           <div className={styles.content}>
             <div className={styles.title}>
-              {strapiUserId === cardCreatorId
-                ? '共有した年賀状のプレビュー'
-                : isDelivered
-                ? isReceived
-                  ? `${cardRecord.attributes.creatorName} さんから年賀状を受け取りました`
-                  : `${cardRecord.attributes.creatorName} さんから年賀状が届いています`
-                : isReserved
-                ? `${cardRecord.attributes.creatorName} さんからの年賀状を配達中です`
-                : `${cardRecord.attributes.creatorName} さんが年賀状を出しました`}
+              {strapiUserId === cardCreatorId ? (
+                '共有した年賀状のプレビュー'
+              ) : isDelivered ? (
+                <>
+                  {cardRecord.attributes.creatorName} さんから
+                  <br />
+                  年賀状を受け取りました
+                </>
+              ) : isReserved ? (
+                `${cardRecord.attributes.creatorName} さんからの年賀状を配達中です`
+              ) : (
+                `${cardRecord.attributes.creatorName} さんが年賀状を出しました`
+              )}
             </div>
             {isDelivered ? (
-              <div className={styles.cardStage}>
-                <div
-                  className={
-                    styles.cardContainer[isReceived ? 'received' : 'default']
-                  }
-                >
-                  <Card
-                    layout={cardRecord.attributes.view.layout}
-                    background={cardRecord.attributes.view.background}
-                    userImages={mediaRecordsToUrlSet(
-                      cardRecord.attributes.userImages.data
-                    )}
-                    randomVariants="revealing"
-                    randomSeed={randomSeed}
-                  />
-                  <Image src={emptyCard} alt="" className={styles.emptyCard} />
-                </div>
+              <div className={styles.cardStageContaienr}>
+                <button className={styles.cardStage} onClick={receive}>
+                  <div
+                    className={
+                      styles.cardContainer[isReceived ? 'received' : 'default']
+                    }
+                  >
+                    <Card
+                      layout={cardRecord.attributes.view.layout}
+                      background={cardRecord.attributes.view.background}
+                      userImages={mediaRecordsToUrlSet(
+                        cardRecord.attributes.userImages.data
+                      )}
+                      randomVariants="revealing"
+                      randomSeed={randomSeed}
+                    />
+                    <Image
+                      src={emptyCard}
+                      alt=""
+                      className={styles.emptyCard}
+                    />
+                  </div>
+                </button>
               </div>
             ) : (
               <div>配達中のアニメーション</div>
@@ -143,14 +175,10 @@ const Shared = ({
                   つくった年賀状一覧へ
                 </Link>
               ) : isDelivered ? (
-                isReceived ? (
+                isReceived && (
                   <Link className={styles.primaryButton} href="/receive/list">
                     もらった年賀状一覧へ
                   </Link>
-                ) : (
-                  <button className={styles.primaryButton} onClick={receive}>
-                    受け取る
-                  </button>
                 )
               ) : isReserved ? (
                 <Link className={styles.primaryButton} href="/create/new">
@@ -215,8 +243,23 @@ const Shared = ({
             </div>
           </div>
         </div>
+        <div className={styles.overlayContainer}>
+          <div className={styles.cloudTop}>
+            <Image src={cloud} alt="" className={styles.cloud} />
+          </div>
+          <div className={styles.cloudBottom}>
+            <Image
+              src={cloud}
+              alt=""
+              className={styles.cloud}
+              style={{
+                animationDelay: '-0.8s',
+              }}
+            />
+          </div>
+        </div>
         {isPrintModalOpen && renderedImage && (
-          <div className={styles.overlayContainer}>
+          <div className={styles.popupContainer}>
             <Print
               image={renderedImage}
               onClose={() => setIsPrintModalOpen(false)}
