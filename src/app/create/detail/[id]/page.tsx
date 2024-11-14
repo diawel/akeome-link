@@ -1,5 +1,6 @@
 import { notFound } from 'next/navigation'
 import Detail from '../../../../layouts/Detail'
+import EditDetail from '../../../../layouts/EditDetail'
 import { getCreatedCard } from '../../../../utils/strapi/card'
 import Link from 'next/link'
 
@@ -14,7 +15,7 @@ const Page = async ({ params }: { params: { id: number } }) => {
   if (cardRecord.attributes.publishedAt === null) {
     return (
       <div>
-        下書き表示<Link href={`/create/edit/${params.id}`}>編集</Link>
+        <EditDetail cardRecord={cardRecord} />
       </div>
     )
   }
