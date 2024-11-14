@@ -1,6 +1,8 @@
 import { redirect } from 'next/navigation'
 import { getReservedCards } from '../../utils/strapi/receivedCard'
 import Header from './Header'
+import Delivered from './Delivered'
+import * as styles from './index.css'
 
 type PostProps = {
   tab: 'delivered' | 'undelivered'
@@ -15,9 +17,12 @@ const Post = async ({ tab }: PostProps) => {
       )
     }
     return (
-      <>
-        <Header activeTab={tab} />
-      </>
+      <div className={styles.container}>
+        <div className={styles.screen}>
+          <Header activeTab={tab} />
+          <Delivered initialReservedCard={receivedCards} />
+        </div>
+      </div>
     )
   }
   if (tab === 'undelivered') {
@@ -30,9 +35,11 @@ const Post = async ({ tab }: PostProps) => {
       )
     }
     return (
-      <>
-        <Header activeTab={tab} />
-      </>
+      <div className={styles.container}>
+        <div className={styles.screen}>
+          <Header activeTab={tab} />
+        </div>
+      </div>
     )
   }
 }

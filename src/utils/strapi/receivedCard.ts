@@ -349,6 +349,7 @@ export const getReservedCards = async ({
       data: receivedCards.data.map((receivedCard) =>
         recordFilter(receivedCard)
       ),
+      meta: receivedCards.meta,
     }
   } catch (error) {
     throw error
