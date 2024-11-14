@@ -63,7 +63,7 @@ export const discriptionText = style({
 
 export const returnButton = style({
   position: 'absolute',
-
-  top: '-55px',
-  left: '-50px',
+  display: 'flex',
+  justifyContent: 'space-between',
+  padding: '24px 16px',
 })
