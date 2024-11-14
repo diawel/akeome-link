@@ -4,7 +4,6 @@ import Card from '../../components/Card'
 import * as styles from './index.css'
 import Link from 'next/link'
 import { mediaRecordsToUrlSet } from '../../utils/strapi/strapiImage'
-import { useEffect, useState } from 'react'
 import { CardAttributes, DraftCardAttributes } from '../../utils/strapi/card'
 import ReturnButton from '../../components/ReturnButton'
 import { color } from '../../utils/styleSchema'
@@ -15,12 +14,6 @@ type DetailProps = {
 }
 
 const Detail = ({ cardRecord }: DetailProps) => {
-  const [shareUrl, setShareUrl] = useState('')
-  useEffect(() => {
-    setShareUrl(
-      new URL(`/link/${cardRecord.attributes.shareId}`, window.location.href).href
-    )
-  }, [cardRecord.attributes.shareId])
   return (
     <>
       <div>
@@ -53,11 +46,11 @@ const Detail = ({ cardRecord }: DetailProps) => {
           </Link> 
           <div className={styles.buttonContainer}>
             <div className={styles.buttonSpace}>
-            <Link href={`/create/new/${cardRecord.id}`}>
-              <button className={styles.copyAndEditButton}>
-                <div className={styles.buttonText}>コピーして編集</div>
-              </button>
-            </Link> 
+              <Link href={`/create/new/${cardRecord.id}`}>
+                <button className={styles.copyAndEditButton}>
+                  <div className={styles.buttonText}>コピーして編集</div>
+                </button>
+              </Link> 
             </div>
             <button
               className={styles.deleteButton}
