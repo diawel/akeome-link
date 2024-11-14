@@ -1,34 +1,18 @@
-'use client'
-
-import React, { useState, useEffect } from 'react'
-import { useSession, signIn } from 'next-auth/react'
 import { redirect } from 'next/navigation'
 import Top from '../layouts/Top'
-import LogoPage from '../layouts/Top/LogoPage'
+import { getServerSession } from 'next-auth'
+import { authOptions } from './api/auth/[...nextauth]/authOptions'
 
-const Login = () => {
-  const { status } = useSession()
-  const [showSplash, setShowSplash] = useState(true)
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setShowSplash(false)
-    }, 2000)
-
-    return () => clearTimeout(timer)
-  }, [])
-
-  if (status === 'authenticated') {
+const Login = async () => {
+  const session = await getServerSession(authOptions)
+  if (session) {
     redirect('/create/list')
+    return null
   }
 
   return (
     <>
-      {showSplash ? (
-        <LogoPage />
-      ) : (
-        <Top signIn={signIn} />
-      )}
+      <Top />
     </>
   )
 }
