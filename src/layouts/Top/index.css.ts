@@ -69,4 +69,22 @@ export const buttonLayout = style({
 	width: '280px',
 	height: '50px'
 })
-  
+
+export const linkText = style({
+  paddingTop: '11px'
+})
+
+export const privacy = style({
+  fontSize: '12px',
+  fontWeight: 'bold',
+  color: color.red[5],
+  textDecoration: 'none',
+  paddingRight: '12px'
+})
+
+export const terms = style({
+  fontSize: '12px',
+  fontWeight: 'bold',
+  color: color.red[5],
+  textDecoration: 'none',
+})
