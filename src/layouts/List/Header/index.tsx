@@ -1,6 +1,6 @@
 import React from 'react'
 import * as styles from './index.css'
-import akeomeLinkLogo from './akeome-link-logo.svg'
+import akeomeLinkLogo from './../../../assets/akeome-link-logo.svg'
 import postIcon from './icon-post.svg'
 import Image from 'next/image'
 import Link from 'next/link'

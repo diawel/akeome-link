@@ -140,7 +140,7 @@ export const getSharedCard = async (shareId: string) => {
   }
 }
 
-export const getCreatedCards = async () => {
+export const getCreatedCards = async ({ page }: { page?: number } = {}) => {
   const session = await getServerSession(authOptions)
 
   if (!session) {
@@ -161,6 +161,9 @@ export const getCreatedCards = async () => {
         },
         sort: {
           0: 'updatedAt:desc',
+        },
+        pagination: {
+          page: page ?? 1,
         },
       })}`,
       {
