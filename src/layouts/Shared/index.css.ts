@@ -96,7 +96,7 @@ const slideInFromRight = keyframes({
 export const cloudTop = style({
   position: 'absolute',
   top: -20,
-  right: -180,
+  right: -140,
   animation: `${slideInFromRight} 1s 1.2s ease-out backwards`,
 })
 
@@ -113,9 +113,48 @@ const slideInFromLeft = keyframes({
 
 export const cloudBottom = style({
   position: 'absolute',
-  bottom: 80,
-  left: -200,
-  animation: `${slideInFromLeft} 1s 1.2s ease-out backwards`,
+  top: 20,
+  left: -220,
+  animation: `${slideInFromLeft} 1s 1s ease-out backwards`,
+})
+
+const scaleIn = keyframes({
+  '0%': {
+    transform: 'scale(1.2)',
+    opacity: 0,
+  },
+  '100%': {
+    transform: 'scale(1)',
+    opacity: 1,
+  },
+})
+
+export const daruma = style({
+  position: 'absolute',
+  bottom: -10,
+  left: -20,
+  animation: `${scaleIn} 0.3s 1.2s ease-out backwards`,
+})
+
+export const fuji = style({
+  position: 'absolute',
+  bottom: -10,
+  right: -10,
+  animation: `${scaleIn} 0.3s 1.2s ease-out backwards`,
+})
+
+export const hana = style({
+  position: 'absolute',
+  bottom: -10,
+  left: 20,
+  animation: `${scaleIn} 0.3s 1.3s ease-out backwards`,
+})
+
+export const matsu = style({
+  position: 'absolute',
+  bottom: -20,
+  right: 25,
+  animation: `${scaleIn} 0.3s 1.4s ease-out backwards`,
 })
 
 const sway = keyframes({

@@ -21,6 +21,10 @@ import emptyCard from './empty-card.svg'
 import pattern from './pattern.svg'
 import bottomPattern from './bottom-pattern.svg'
 import cloud from './cloud.svg'
+import daruma from './daruma.svg'
+import fuji from './fuji.svg'
+import hana from './hana.svg'
+import matsu from './matsu.svg'
 
 type SharedProps = {
   cardCreatorId: number
@@ -79,10 +83,10 @@ const Shared = ({
       })
       setSeed(localReceivedCard?.randomSeed)
     } else {
-      const receivedCard = await addUniqueReceivedCard({
-        shareId: cardRecord.attributes.shareId,
-      })
-      setSeed(receivedCard?.data.attributes.randomSeed)
+      // const receivedCard = await addUniqueReceivedCard({
+      //   shareId: cardRecord.attributes.shareId,
+      // })
+      // setSeed(receivedCard?.data.attributes.randomSeed)
       setSeed(10000000 + Math.floor(Math.random() * 90000000))
     }
   }
@@ -261,9 +265,21 @@ const Shared = ({
               alt=""
               className={styles.cloud}
               style={{
-                animationDelay: '-0.8s',
+                animationDelay: '-0.4s',
               }}
             />
+          </div>
+          <div className={styles.daruma}>
+            <Image src={daruma} alt="" className={styles.daruma} />
+          </div>
+          <div className={styles.fuji}>
+            <Image src={fuji} alt="" className={styles.fuji} />
+          </div>
+          <div className={styles.hana}>
+            <Image src={hana} alt="" className={styles.hana} />
+          </div>
+          <div className={styles.matsu}>
+            <Image src={matsu} alt="" className={styles.matsu} />
           </div>
         </div>
         {isPrintModalOpen && renderedImage && (
