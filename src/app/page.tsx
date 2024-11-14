@@ -3,6 +3,7 @@
 import React from 'react'
 import { useSession, signIn } from 'next-auth/react'
 import { redirect } from 'next/navigation'
+import Top from '../layouts/Top'
 
 const Login = () => {
   const { data: session, status } = useSession()
@@ -12,14 +13,11 @@ const Login = () => {
   }
 
   return (
-    <div>
+    <>
       {!session && (
-        <div>
-          <p>ログインしていません</p>
-          <button onClick={() => signIn()}>ログイン</button>
-        </div>
+        <Top signIn={signIn} />
       )}
-    </div>
+    </>
   )
 }
 
