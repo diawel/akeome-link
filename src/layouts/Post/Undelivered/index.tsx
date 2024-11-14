@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { StrapiApiListResponse } from '../../../utils/strapi'
 import {
   getReservedCards,
