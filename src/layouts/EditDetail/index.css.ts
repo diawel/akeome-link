@@ -83,5 +83,4 @@ export const buttonContainer = style({
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
-  cursor: 'pointer',
 })

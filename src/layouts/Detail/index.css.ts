@@ -88,10 +88,13 @@ export const buttonSpace = style({
   paddingRight: '13px',
 })
 
+export const link = style({
+  textDecoration: 'none',
+})
+
 export const buttonContainer = style({
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
   paddingTop: '32px',
-  cursor: 'pointer',
 })
