@@ -11,7 +11,8 @@ export const post = style({
   width: '100%',
   height: 'auto',
   objectFit: 'cover',
-  display: 'block'
+  display: 'block',
+  marginTop: '-30px',
 })
 
 export const card = style({
@@ -29,7 +30,7 @@ export const linkBoxContainer = style({
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
-  marginTop: '220px',
+  marginTop: '200px',
 })
 
 export const linkBoxContent = style({
