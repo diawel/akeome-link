@@ -1,25 +1,19 @@
-'use client'
-
-import React from 'react'
-import { useSession, signIn } from 'next-auth/react'
 import { redirect } from 'next/navigation'
+import Top from '../layouts/Top'
+import { getServerSession } from 'next-auth'
+import { authOptions } from './api/auth/[...nextauth]/authOptions'
 
-const Login = () => {
-  const { data: session, status } = useSession()
-
-  if (status === 'authenticated') {
+const Login = async () => {
+  const session = await getServerSession(authOptions)
+  if (session) {
     redirect('/create/list')
+    return null
   }
 
   return (
-    <div>
-      {!session && (
-        <div>
-          <p>ログインしていません</p>
-          <button onClick={() => signIn()}>ログイン</button>
-        </div>
-      )}
-    </div>
+    <>
+      <Top />
+    </>
   )
 }
 
