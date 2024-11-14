@@ -1,35 +1,40 @@
 import { redirect } from 'next/navigation'
 import { getReservedCards } from '../../utils/strapi/receivedCard'
-import Link from 'next/link'
+import Header from './Header'
 
-const Post = async () => {
-  const reservedCards = await getReservedCards()
-  if (!reservedCards) redirect('/')
-  return (
-    <div>
-      <h1>Post</h1>
-      <div>
-        {reservedCards.data.map((receivedCard, index) => {
-          if (!receivedCard.attributes.card.data) return
-          const isDelivered =
-            new Date(receivedCard.attributes.card.data.attributes.deliveredAt) <
-            new Date()
-          return (
-            <Link
-              href={`/link/${receivedCard.attributes.card.data.attributes.shareId}`}
-              key={index}
-            >
-              <div>
-                {isDelivered
-                  ? `配達済み: ${receivedCard.attributes.card.data.attributes.creatorName} さん`
-                  : `配達中: ${receivedCard.attributes.card.data.attributes.creatorName} さん`}
-              </div>
-            </Link>
-          )
-        })}
-      </div>
-    </div>
-  )
+type PostProps = {
+  tab: 'delivered' | 'undelivered'
+}
+
+const Post = async ({ tab }: PostProps) => {
+  if (tab === 'delivered') {
+    const receivedCards = await getReservedCards({ filter: 'delivered' })
+    if (!receivedCards) {
+      redirect(
+        `/api/auth/signin?callbackUrl=${encodeURIComponent('/post/delivered')}`
+      )
+    }
+    return (
+      <>
+        <Header activeTab={tab} />
+      </>
+    )
+  }
+  if (tab === 'undelivered') {
+    const receivedCards = await getReservedCards({ filter: 'undelivered' })
+    if (!receivedCards) {
+      redirect(
+        `/api/auth/signin?callbackUrl=${encodeURIComponent(
+          '/post/undelivered'
+        )}`
+      )
+    }
+    return (
+      <>
+        <Header activeTab={tab} />
+      </>
+    )
+  }
 }
 
 export default Post

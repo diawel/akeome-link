@@ -25,7 +25,7 @@ const Header = async ({ activeTab }: HeaderProps) => {
             alt="akeomeLinkLogo"
           />
         </div>
-        <Link href="/post" className={styles.notificationIcon}>
+        <Link href="/post/delivered" className={styles.notificationIcon}>
           <Image src={postIcon} alt="postIcon" />
           {newArrivalCount > 0 && (
             <div className={styles.notificationCount}>{newArrivalCount}</div>
