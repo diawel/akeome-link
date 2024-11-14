@@ -9,6 +9,9 @@ export const postContainer = style({
 
 export const post = style({
   width: '100%',
+  height: 'auto',
+  objectFit: 'cover',
+  display: 'block'
 })
 
 export const card = style({
