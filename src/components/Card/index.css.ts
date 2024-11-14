@@ -109,7 +109,7 @@ export const layeredStickerContainer = styleVariants({
   revealing: [
     layeredStickerContainerBase,
     {
-      animation: `0.5s ease-out 0.5s ${reveale} forwards`,
+      animation: `0.5s ease-out ${reveale} forwards`,
     },
   ],
 })

@@ -95,6 +95,7 @@ export type CardProps = {
   proxy?: boolean
   randomVariants?: 'revealed' | 'hidden' | 'revealing'
   randomSeed?: number
+  revealDelay?: number
 }
 
 const Card = ({
@@ -106,6 +107,7 @@ const Card = ({
   proxy,
   randomVariants = 'hidden',
   randomSeed,
+  revealDelay = 0.5,
 }: CardProps) => {
   const stickers = useStickers()
   const [cardScale, setCardScale] = useState(0)
@@ -428,6 +430,9 @@ const Card = ({
                                 cardScale ? randomVariants : 'hidden'
                               ]
                             }
+                            style={{
+                              animationDelay: `${revealDelay}s`,
+                            }}
                           >
                             <img
                               style={{
