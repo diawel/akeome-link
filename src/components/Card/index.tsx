@@ -545,7 +545,7 @@ const Card = ({
                   }}
                 >
                   {content}
-                  <button
+                  <div
                     className={styles.control.remove}
                     onClick={(event) => {
                       event.stopPropagation()
@@ -568,7 +568,7 @@ const Card = ({
                     }}
                   >
                     <Image src={removeIcon} alt="消す" loading="eager" />
-                  </button>
+                  </div>
                   <Image
                     className={styles.control.rotate}
                     src={rotateIcon}
