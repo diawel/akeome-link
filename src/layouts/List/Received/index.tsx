@@ -53,6 +53,8 @@ const Received = ({ initialReceivedCards }: ReceivedProps) => {
                           .data
                       )}
                       maxFormat="small"
+                      randomVariants="revealed"
+                      randomSeed={receivedCard.attributes.randomSeed}
                     />
                   </div>
                   <div className={styles.cardTitle}>
