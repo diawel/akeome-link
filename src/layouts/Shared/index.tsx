@@ -13,6 +13,8 @@ import { addUniqueReceivedCard } from '../../utils/strapi/receivedCard'
 import { putLocalReceivedCard } from '../../utils/db'
 import { signIn } from 'next-auth/react'
 import { CardAttributes } from '../../utils/strapi/card'
+import Image from 'next/image'
+import emptyCard from './empty-card.svg'
 
 type SharedProps = {
   cardCreatorId: number
@@ -63,10 +65,11 @@ const Shared = ({
       })
       setSeed(localReceivedCard?.randomSeed)
     } else {
-      const receivedCard = await addUniqueReceivedCard({
-        shareId: cardRecord.attributes.shareId,
-      })
-      setSeed(receivedCard?.data.attributes.randomSeed)
+      // const receivedCard = await addUniqueReceivedCard({
+      //   shareId: cardRecord.attributes.shareId,
+      // })
+      // setSeed(receivedCard?.data.attributes.randomSeed)
+      setSeed(10000000 + Math.floor(Math.random() * 90000000))
     }
   }
 
@@ -102,16 +105,23 @@ const Shared = ({
                 : `${cardRecord.attributes.creatorName} さんが年賀状を出しました`}
             </div>
             {isDelivered ? (
-              <div className={styles.cardContainer}>
-                <Card
-                  layout={cardRecord.attributes.view.layout}
-                  background={cardRecord.attributes.view.background}
-                  userImages={mediaRecordsToUrlSet(
-                    cardRecord.attributes.userImages.data
-                  )}
-                  randomVariants="revealing"
-                  randomSeed={randomSeed}
-                />
+              <div className={styles.cardStage}>
+                <div
+                  className={
+                    styles.cardContainer[isReceived ? 'received' : 'default']
+                  }
+                >
+                  <Card
+                    layout={cardRecord.attributes.view.layout}
+                    background={cardRecord.attributes.view.background}
+                    userImages={mediaRecordsToUrlSet(
+                      cardRecord.attributes.userImages.data
+                    )}
+                    randomVariants="revealing"
+                    randomSeed={randomSeed}
+                  />
+                  <Image src={emptyCard} alt="" className={styles.emptyCard} />
+                </div>
               </div>
             ) : (
               <div>配達中のアニメーション</div>
