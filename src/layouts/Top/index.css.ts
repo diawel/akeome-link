@@ -18,7 +18,7 @@ const fadeOutLogo = keyframes({
 })
 
 export const logoPage = style({
-  animation: `${fadeOutLogo} 0.5s 2s forwards`,
+  animation: `${fadeOutLogo} 0.3s 2s forwards`,
   position: 'absolute',
   top: 0,
   left: 0,
