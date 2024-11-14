@@ -11,8 +11,8 @@ const Page = async ({ params }: { params: { id: number } }) => {
     notFound()
   }
 
-  const cardAttributes = cardResponse.data.attributes
-  if (cardAttributes.publishedAt === null) {
+  const cardRecord = cardResponse.data
+  if (cardRecord.attributes.publishedAt === null) {
     return (
       <div>
         下書き表示<Link href={`/create/edit/${params.id}`}>編集</Link>
@@ -20,7 +20,7 @@ const Page = async ({ params }: { params: { id: number } }) => {
     )
   }
 
-  return <Qr cardAttributes={cardAttributes} />
+  return <Qr cardRecord={cardRecord} />
 }
 
 export default Page
