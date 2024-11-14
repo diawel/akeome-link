@@ -7,6 +7,8 @@ import { redirect } from 'next/navigation'
 import Link from 'next/link'
 import { mediaRecordsToUrlSet } from '../../utils/strapi/strapiImage'
 import { getReceivedCards } from '../../utils/strapi/receivedCard'
+import Image from 'next/image'
+import emptyPost from './empty-post.svg'
 
 type ListProps = {
   tab: 'created' | 'received'
@@ -88,48 +90,58 @@ const List = async ({ tab }: ListProps) => {
       <div>
         <Header activeTab={tab} />
         <div className={styles.container}>
-          <div className={styles.cardContainer}>
-            {receivedCards.data.map((receivedCard, index) => {
-              if (
-                !receivedCard.attributes.card ||
-                !receivedCard.attributes.card.data
-              ) {
-                return null
-              }
-              return (
-                <div className={styles.content} key={index}>
-                  <Link
-                    href={`/receive/detail/${receivedCard.id}`}
-                    className={styles.cardLink}
-                  >
-                    <div className={styles.card}>
-                      <Card
-                        layout={
-                          receivedCard.attributes.card.data.attributes.view
-                            .layout
-                        }
-                        background={
-                          receivedCard.attributes.card.data.attributes.view
-                            .background
-                        }
-                        userImages={mediaRecordsToUrlSet(
-                          receivedCard.attributes.card.data.attributes
-                            .userImages.data
-                        )}
-                        maxFormat="small"
-                      />
-                    </div>
-                    <div className={styles.cardTitle}>
-                      {receivedCard.attributes.card.data.attributes.creatorName}
-                    </div>
-                  </Link>
-                </div>
-              )
-            })}
-          </div>
+          {receivedCards.data.length > 0 ? (
+            <div className={styles.cardContainer}>
+              {receivedCards.data.map((receivedCard, index) => {
+                if (
+                  !receivedCard.attributes.card ||
+                  !receivedCard.attributes.card.data
+                ) {
+                  return null;
+                }
+                return (
+                  <div className={styles.content} key={index}>
+                    <Link
+                      href={`/receive/detail/${receivedCard.id}`}
+                      className={styles.cardLink}
+                    >
+                      <div className={styles.card}>
+                        <Card
+                          layout={
+                            receivedCard.attributes.card.data.attributes.view.layout
+                          }
+                          background={
+                            receivedCard.attributes.card.data.attributes.view
+                              .background
+                          }
+                          userImages={mediaRecordsToUrlSet(
+                            receivedCard.attributes.card.data.attributes.userImages
+                              .data
+                          )}
+                          maxFormat="small"
+                        />
+                      </div>
+                      <div className={styles.cardTitle}>
+                        {receivedCard.attributes.card.data.attributes.creatorName}
+                      </div>
+                    </Link>
+                  </div>
+                );
+              })}
+            </div>
+          ) : (
+            <>
+              <div className={styles.noCardContainer}>
+                <div className={styles.noCardMessage}>友達と年賀状を共有しよう！</div>
+              </div>
+              <div className={styles.noCardContainer}>
+                <Image src={emptyPost} alt='emptyPost'></Image>
+              </div>
+            </>
+          )}
         </div>
       </div>
-    )
+    );
   }
 }
 
