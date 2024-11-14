@@ -337,7 +337,7 @@ export const control = style({
   display: 'grid',
   gridTemplateColumns: 'repeat(2, 1fr)',
   gap: 20,
-  transition: 'opacity 0.3s 1.6s',
+  transition: 'opacity 0.3s 2s',
 
   selectors: {
     [`${container.newArrival} &`]: {

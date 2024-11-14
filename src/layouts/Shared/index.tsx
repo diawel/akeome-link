@@ -167,6 +167,7 @@ const Shared = ({
                       )}
                       randomVariants="revealing"
                       randomSeed={randomSeed}
+                      revealDelay={existingReceivedCard ? undefined : 1.5}
                     />
                     <Image
                       src={emptyCard}
