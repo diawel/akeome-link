@@ -9,11 +9,11 @@ import ReturnButton from '../../components/ReturnButton'
 import { color } from '../../utils/styleSchema'
 import { StrapiRecord } from '../../utils/strapi'
 
-type DetailProps = {
+type DraftProps = {
   cardRecord: StrapiRecord<CardAttributes | DraftCardAttributes>
 }
 
-const EditDetail = ({ cardRecord }: DetailProps) => {
+const DraftDetail = ({ cardRecord }: DraftProps) => {
   return (
     <>
       <div>
@@ -62,4 +62,4 @@ const EditDetail = ({ cardRecord }: DetailProps) => {
   )
 }
 
-export default EditDetail
+export default DraftDetail

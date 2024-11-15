@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation'
 import Detail from '../../../../layouts/Detail'
-import EditDetail from '../../../../layouts/EditDetail'
+import DraftDetail from '../../../../layouts/DraftDetail'
 import { getCreatedCard } from '../../../../utils/strapi/card'
 
 const Page = async ({ params }: { params: { id: number } }) => {
@@ -14,7 +14,7 @@ const Page = async ({ params }: { params: { id: number } }) => {
   if (cardRecord.attributes.publishedAt === null) {
     return (
       <div>
-        <EditDetail cardRecord={cardRecord} />
+        <DraftDetail cardRecord={cardRecord} />
       </div>
     )
   }
