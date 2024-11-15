@@ -73,6 +73,7 @@ export const overlayContainer = style({
   height: '100%',
   opacity: 0,
   pointerEvents: 'none',
+  overflow: 'hidden',
   transition: 'opacity 0.3s',
 
   selectors: {
