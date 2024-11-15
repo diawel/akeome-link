@@ -12,11 +12,7 @@ const Page = async ({ params }: { params: { id: number } }) => {
 
   const cardRecord = cardResponse.data
   if (cardRecord.attributes.publishedAt === null) {
-    return (
-      <div>
-        <DraftDetail cardRecord={cardRecord} />
-      </div>
-    )
+    return <DraftDetail cardRecord={cardRecord} />
   }
   return <Detail cardRecord={cardRecord} />
 }
