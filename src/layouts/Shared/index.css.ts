@@ -220,6 +220,7 @@ export const title = style({
   fontWeight: 'bold',
   color: color.gray[5],
   textAlign: 'center',
+  marginInline: -40,
   transition: 'color 0.3s 1s',
 
   selectors: {

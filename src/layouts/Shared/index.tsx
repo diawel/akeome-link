@@ -138,10 +138,12 @@ const Shared = ({
                   <br />
                   年賀状を受け取りました
                 </>
-              ) : isReserved ? (
-                `${cardRecord.attributes.creatorName} さんからの年賀状を配達中です`
               ) : (
-                `${cardRecord.attributes.creatorName} さんが年賀状を出しました`
+                <>
+                  {cardRecord.attributes.creatorName} さんからの
+                  <br />
+                  年賀状は配達中です
+                </>
               )}
             </div>
             {isDelivered ? (
