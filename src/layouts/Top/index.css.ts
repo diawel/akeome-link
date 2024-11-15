@@ -9,12 +9,16 @@ export const container = style({
   height: '100%',
   backgroundColor: 'white',
   textAlign: 'center',
-  padding: '20px',
+})
+
+export const content = style({
+  paddingTop: '140px'
 })
   
 export const discription = style({
-  marginBottom: '95px',
-  fontSize: '24px',
+  paddingTop: '12px',
+  paddingBottom: '192px',
+  fontSize: '20px',
   fontWeight: 'bold',
 })
 
