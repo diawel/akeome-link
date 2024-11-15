@@ -388,7 +388,7 @@ export const bubble = style({
     [`${daliveryAnimationContainer.reserved} &`]: {
       opacity: 1,
       transform: 'translateY(0)',
-      transition: 'opacity 0.3s 1s, transform 0.3s 1s',
+      transition: 'opacity 0.3s 1.2s, transform 0.3s 1.2s',
     },
   },
 
