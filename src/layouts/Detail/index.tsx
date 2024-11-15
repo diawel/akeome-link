@@ -7,6 +7,7 @@ import { mediaRecordsToUrlSet } from '../../utils/strapi/strapiImage'
 import { CardAttributes, deleteCreatedCard } from '../../utils/strapi/card'
 import ReturnButton from '../../components/ReturnButton'
 import { color } from '../../utils/styleSchema'
+import { useRouter } from 'next/navigation';
 
 type DetailProps = {
   cardAttributes: CardAttributes
@@ -14,6 +15,8 @@ type DetailProps = {
 }
 
 const Detail = ({ cardAttributes, cardRecordId }: DetailProps) => {
+  const router = useRouter()
+
   return (
     <>
       <div>
@@ -52,14 +55,12 @@ const Detail = ({ cardAttributes, cardRecordId }: DetailProps) => {
                 </button>
               </Link> 
             </div>
-            <Link className={styles.link} href='/create/list'>
-              <button
-                className={styles.deleteButton}
-                onClick={() => deleteCreatedCard(cardRecordId)}
-              >
-                <div className={styles.buttonText}>削除</div>
-              </button>
-            </Link>
+            <button
+              className={styles.deleteButton}
+              onClick={() => deleteCreatedCard(cardRecordId).then(() => {router.push('/create/list')})}
+            >
+              <div className={styles.buttonText}>削除</div>
+            </button>
           </div>
         </div>
       </div>
