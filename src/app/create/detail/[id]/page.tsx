@@ -10,11 +10,13 @@ const Page = async ({ params }: { params: { id: number } }) => {
     notFound()
   }
 
-  const cardRecord = cardResponse.data
-  if (cardRecord.attributes.publishedAt === null) {
-    return <DraftDetail cardRecord={cardRecord} />
+  const cardAttributes = cardResponse.data.attributes
+  const cardRecordId = cardResponse.data.id
+
+  if (cardAttributes.publishedAt === null) {
+    return <DraftDetail cardAttributes={cardAttributes} cardRecordId={cardRecordId} />
   }
-  return <Detail cardRecord={cardRecord} />
+  return <Detail cardAttributes={cardAttributes} cardRecordId={cardRecordId} />
 }
 
 export default Page
