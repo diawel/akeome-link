@@ -25,6 +25,7 @@ import daruma from './daruma.svg'
 import fuji from './fuji.svg'
 import hana from './hana.svg'
 import matsu from './matsu.svg'
+import { color } from '../../utils/styleSchema'
 
 type SharedProps = {
   cardCreatorId: number
@@ -142,7 +143,8 @@ const Shared = ({
                 <>
                   {cardRecord.attributes.creatorName} さんからの
                   <br />
-                  年賀状は配達中です
+                  年賀状は<span style={{ color: color.red[5] }}>配達中</span>
+                  です
                 </>
               )}
             </div>
