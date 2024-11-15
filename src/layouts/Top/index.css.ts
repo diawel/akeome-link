@@ -11,31 +11,6 @@ export const container = style({
   textAlign: 'center',
   padding: '20px',
 })
-
-const fadeOutLogo = keyframes({
-  '0%': { opacity: 1 },
-  '100%': { opacity: 0, pointerEvents: 'none' },
-})
-
-export const logoPage = style({
-  animation: `${fadeOutLogo} 0.3s 2s forwards`,
-  position: 'absolute',
-  top: 0,
-  left: 0,
-  width: '100%',
-  height: '100%',
-})
-
-const fadeInMain = keyframes({
-  '0%': { opacity: 0, pointerEvents: 'none' },
-  '100%': { opacity: 1, pointerEvents: 'auto' },
-})
-
-export const mainContent = style({
-  animation: `${fadeInMain} 2s 2s forwards`,
-  opacity: 0,
-  pointerEvents: 'none',
-})
   
 export const discription = style({
   marginBottom: '95px',
