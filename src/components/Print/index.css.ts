@@ -118,7 +118,18 @@ export const markedList = style({
   gap: 12,
 })
 
+export const qrCodeContainer = style({
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  backgroundColor: color.gray[100],
+  borderRadius: 4,
+  padding: '8px 20px 20px',
+  fontSize: 14,
+  fontWeight: 'bold',
+})
+
 export const qrCode = style({
-  width: 200,
-  maxWidth: '100%',
+  width: '100%',
+  marginBottom: '-3%',
 })

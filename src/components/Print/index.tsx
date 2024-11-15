@@ -19,24 +19,19 @@ const Print = ({ image, onClose }: PrintProps) => {
     <div className={styles.container[isUploading ? 'loading' : 'default']}>
       {response ? (
         <>
-          <img
-            src={response.base64QrCode}
-            className={styles.qrCode}
-            alt="印刷用QRコード"
-          />
-          <dl className={styles.markedList}>
-            <dt>ユーザーコード:</dt>
-            <dd>{response.userCode}</dd>
-          </dl>
+          <div className={styles.qrCodeContainer}>
+            <img
+              src={response.base64QrCode}
+              className={styles.qrCode}
+              alt="印刷用QRコード"
+            />
+            ユーザーコード：{response.userCode}
+          </div>
           <div>
-            <dl className={styles.markedList}>
-              <dt>※</dt>
-              <dd>期限は8日間です</dd>
-            </dl>
-            <dl className={styles.markedList}>
-              <dt>※</dt>
-              <dd>一度閉じると再表示できません</dd>
-            </dl>
+            <ul>
+              <li>期限は8日間です</li>
+              <li>一度閉じると再表示できません</li>
+            </ul>
           </div>
           <button className={styles.seconradyButton} onClick={onClose}>
             閉じる
