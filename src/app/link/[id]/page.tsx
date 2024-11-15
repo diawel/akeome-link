@@ -55,6 +55,7 @@ const Page = async ({ params }: { params: { id: string } }) => {
               attributes: {
                 shareId: card.data.attributes.shareId,
                 creatorName: card.data.attributes.creatorName,
+                deliveredAt: card.data.attributes.deliveredAt,
               },
               id: card.data.id,
             },

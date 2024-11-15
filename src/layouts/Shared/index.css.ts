@@ -466,6 +466,14 @@ export const progressBar = style({
   },
 })
 
+export const controlContainer = style({
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  gap: 10,
+  width: '100%',
+})
+
 export const control = style({
   width: '100%',
   display: 'grid',
@@ -478,6 +486,15 @@ export const control = style({
       opacity: 0,
     },
   },
+})
+
+export const deliveryDate = style({
+  fontSize: 12,
+  color: color.red[5],
+  textAlign: 'center',
+  width: '100%',
+  fontWeight: 'bold',
+  animation: `${fadeIn} 0.3s backwards`,
 })
 
 export const primaryButton = style({

@@ -43,7 +43,9 @@ type SharedProps = {
       isDelivered: true
     }
   | {
-      cardRecord: StrapiRecord<Pick<CardAttributes, 'shareId' | 'creatorName'>>
+      cardRecord: StrapiRecord<
+        Pick<CardAttributes, 'shareId' | 'creatorName' | 'deliveredAt'>
+      >
       isDelivered: false
     }
 )
@@ -107,6 +109,12 @@ const Shared = ({
     //   isReserve: true,
     // })
   }
+
+  const [deliveryDate, setDeliveryDate] = useState<Date | undefined>(undefined)
+  useEffect(() => {
+    if (isDelivered) return
+    setDeliveryDate(new Date(cardRecord.attributes.deliveredAt))
+  }, [isDelivered, cardRecord.attributes])
 
   return (
     <>
@@ -214,79 +222,89 @@ const Shared = ({
                 </div>
               </div>
             )}
-            <div className={styles.control}>
-              {strapiUserId === cardCreatorId ? (
-                <Link className={styles.primaryButton} href="/create/list">
-                  つくった年賀状一覧へ
-                </Link>
-              ) : isDelivered ? (
-                isReceived && (
-                  <Link className={styles.primaryButton} href="/receive/list">
-                    もらった年賀状一覧へ
+            <div className={styles.controlContainer}>
+              <div className={styles.control}>
+                {strapiUserId === cardCreatorId ? (
+                  <Link className={styles.primaryButton} href="/create/list">
+                    つくった年賀状一覧へ
                   </Link>
-                )
-              ) : isReserved ? (
-                <Link className={styles.primaryButton} href="/create/new">
-                  年賀状を作ってみる
-                </Link>
-              ) : (
-                <button className={styles.primaryButton} onClick={reserve}>
-                  受け取り予約する
-                </button>
-              )}
-              {isDelivered &&
-                (strapiUserId === cardCreatorId || isReceived) && (
-                  <>
-                    <button
-                      className={
-                        styles.seconradyButton[
-                          renderedImage ? 'default' : 'disabled'
-                        ]
-                      }
-                      onClick={() => {
-                        if (!renderedImage) return
-                        const url = URL.createObjectURL(renderedImage)
-                        const a = document.createElement('a')
-                        a.href = url
-                        a.setAttribute(
-                          'download',
-                          `new_year_card_${Date.now()}`
-                        )
-                        document.body.appendChild(a)
-                        a.click()
-                        URL.revokeObjectURL(url)
-                        a.remove()
-                      }}
-                    >
-                      <FaDownload />
-                      保存
-                    </button>
-                    <button
-                      className={
-                        styles.seconradyButton[
-                          renderedImage ? 'default' : 'disabled'
-                        ]
-                      }
-                      onClick={() => {
-                        setIsPrintModalOpen(true)
-                      }}
-                    >
-                      <FaPrint />
-                      印刷
-                    </button>
-                    {randomSeed !== undefined && (
-                      <Renderer
-                        layout={cardRecord.attributes.view.layout}
-                        background={cardRecord.attributes.view.background}
-                        userImages={mediaRecordsToUrlSet(
-                          cardRecord.attributes.userImages.data
-                        )}
-                        onRender={(image) => setRenderedImage(image)}
-                        randomSeed={randomSeed}
-                      />
-                    )}
-                  </>
+                ) : isDelivered ? (
+                  isReceived && (
+                    <Link className={styles.primaryButton} href="/receive/list">
+                      もらった年賀状一覧へ
+                    </Link>
+                  )
+                ) : isReserved ? (
+                  <Link className={styles.primaryButton} href="/create/new">
+                    年賀状を作ってみる
+                  </Link>
+                ) : (
+                  <button className={styles.primaryButton} onClick={reserve}>
+                    受け取り予約する
+                  </button>
                 )}
+                {isDelivered &&
+                  (strapiUserId === cardCreatorId || isReceived) && (
+                    <>
+                      <button
+                        className={
+                          styles.seconradyButton[
+                            renderedImage ? 'default' : 'disabled'
+                          ]
+                        }
+                        onClick={() => {
+                          if (!renderedImage) return
+                          const url = URL.createObjectURL(renderedImage)
+                          const a = document.createElement('a')
+                          a.href = url
+                          a.setAttribute(
+                            'download',
+                            `new_year_card_${Date.now()}`
+                          )
+                          document.body.appendChild(a)
+                          a.click()
+                          URL.revokeObjectURL(url)
+                          a.remove()
+                        }}
+                      >
+                        <FaDownload />
+                        保存
+                      </button>
+                      <button
+                        className={
+                          styles.seconradyButton[
+                            renderedImage ? 'default' : 'disabled'
+                          ]
+                        }
+                        onClick={() => {
+                          setIsPrintModalOpen(true)
+                        }}
+                      >
+                        <FaPrint />
+                        印刷
+                      </button>
+                      {randomSeed !== undefined && (
+                        <Renderer
+                          layout={cardRecord.attributes.view.layout}
+                          background={cardRecord.attributes.view.background}
+                          userImages={mediaRecordsToUrlSet(
+                            cardRecord.attributes.userImages.data
+                          )}
+                          onRender={(image) => setRenderedImage(image)}
+                          randomSeed={randomSeed}
+                        />
+                      )}
+                    </>
+                  )}
+              </div>
+              {!isDelivered && deliveryDate && (
+                <div className={styles.deliveryDate}>
+                  {deliveryDate.getMonth() + 1}月{deliveryDate.getDate()}日
+                  {deliveryDate.getHours()}:
+                  {deliveryDate.getMinutes().toString().padStart(2, '0')}{' '}
+                  から受け取ることができます
+                </div>
+              )}
             </div>
           </div>
         </div>
