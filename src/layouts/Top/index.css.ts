@@ -1,4 +1,4 @@
-import { keyframes, style } from '@vanilla-extract/css'
+import { style } from '@vanilla-extract/css'
 import { color } from '../../utils/styleSchema'
 
 export const container = style({
@@ -9,37 +9,16 @@ export const container = style({
   height: '100%',
   backgroundColor: 'white',
   textAlign: 'center',
-  padding: '20px',
 })
 
-const fadeOutLogo = keyframes({
-  '0%': { opacity: 1 },
-  '100%': { opacity: 0, pointerEvents: 'none' },
-})
-
-export const logoPage = style({
-  animation: `${fadeOutLogo} 0.3s 2s forwards`,
-  position: 'absolute',
-  top: 0,
-  left: 0,
-  width: '100%',
-  height: '100%',
-})
-
-const fadeInMain = keyframes({
-  '0%': { opacity: 0, pointerEvents: 'none' },
-  '100%': { opacity: 1, pointerEvents: 'auto' },
-})
-
-export const mainContent = style({
-  animation: `${fadeInMain} 2s 2s forwards`,
-  opacity: 0,
-  pointerEvents: 'none',
+export const content = style({
+  paddingTop: '140px'
 })
   
 export const discription = style({
-  marginBottom: '95px',
-  fontSize: '24px',
+  paddingTop: '12px',
+  paddingBottom: '192px',
+  fontSize: '20px',
   fontWeight: 'bold',
 })
 
@@ -69,4 +48,22 @@ export const buttonLayout = style({
 	width: '280px',
 	height: '50px'
 })
-  
+
+export const linkText = style({
+  paddingTop: '11px'
+})
+
+export const privacy = style({
+  fontSize: '12px',
+  fontWeight: 'bold',
+  color: color.red[5],
+  textDecoration: 'none',
+  paddingRight: '12px'
+})
+
+export const terms = style({
+  fontSize: '12px',
+  fontWeight: 'bold',
+  color: color.red[5],
+  textDecoration: 'none',
+})
