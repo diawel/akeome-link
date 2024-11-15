@@ -30,11 +30,17 @@ const Page = async ({ params }: { params: { id: string } }) => {
     <Shared
       cardCreatorId={card.data.attributes.creator.data.id}
       strapiUserId={session?.user.strapiUserId}
-      isAlreadyReceived={
-        recievedCard !== undefined &&
-        recievedCard.data.attributes.publishedAt !== null
+      existingReceivedCard={
+        recievedCard
+          ? {
+              id: recievedCard.data.id,
+              attributes: {
+                randomSeed: recievedCard.data.attributes.randomSeed,
+                publishedAt: recievedCard.data.attributes.publishedAt,
+              },
+            }
+          : undefined
       }
-      isAlreadyReserved={recievedCard !== undefined}
       {...(isDelivered
         ? {
             isDelivered: true,
