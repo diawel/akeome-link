@@ -1,10 +1,15 @@
-import { redirect } from 'next/navigation'
+import { notFound } from 'next/navigation'
 import { getReceivedCard } from '../../../../utils/strapi/receivedCard'
 import ReceivedDetail from '../../../../layouts/ReceivedDetail'
 
 const Page = async ({ params }: { params: { id: string } }) => {
   const card = await getReceivedCard(parseInt(params.id, 10))
-  if (!card?.data.attributes.card.data) redirect('/receive/list')
+  if (
+    !card?.data.attributes.card.data ||
+    card.data.attributes.publishedAt === null
+  ) {
+    notFound()
+  }
 
   return (
     <ReceivedDetail
