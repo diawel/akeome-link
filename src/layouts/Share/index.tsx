@@ -81,9 +81,9 @@ const Share = ({ cardRecord }: ShareProps) => {
           <div className={styles.buttonRightSpace}>
             <Link
               className={styles.xContainer}
-              href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(
+              href={`https://twitter.com/intent/tweet?text=年賀状が届いています%0D%0A&url=${encodeURIComponent(
                 shareUrl
-              )}&text=年賀状が届いています #あけおめリンク`}
+              )}&hashtags=JPHACKS2024`}
             >
               <Image src={xIcon} alt="xIcon"></Image>
             </Link>
