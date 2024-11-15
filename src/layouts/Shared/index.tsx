@@ -183,13 +183,15 @@ const Shared = ({
                 </button>
               </div>
             ) : (
-              <div className={styles.daliveryAnimationContainer}>
+              <div
+                className={
+                  styles.daliveryAnimationContainer[
+                    isReserved ? 'reserved' : 'default'
+                  ]
+                }
+              >
                 <div className={styles.bubbleContainer}>
-                  <div
-                    className={
-                      styles.bubble[isReserved ? 'reserved' : 'default']
-                    }
-                  >
+                  <div className={styles.bubble}>
                     <div className={styles.bubbleInner}>予約完了！</div>
                   </div>
                 </div>
@@ -197,7 +199,7 @@ const Shared = ({
                   <Image
                     src={cart}
                     alt=""
-                    className={styles.cart[isReserved ? 'reserved' : 'default']}
+                    className={styles.cart}
                     loading="eager"
                   />
                   <Image
@@ -208,11 +210,7 @@ const Shared = ({
                   />
                 </div>
                 <div className={styles.progressBarContainer}>
-                  <div
-                    className={
-                      styles.progressBar[isReserved ? 'reserved' : 'default']
-                    }
-                  />
+                  <div className={styles.progressBar} />
                 </div>
               </div>
             )}

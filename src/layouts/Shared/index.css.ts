@@ -334,7 +334,7 @@ export const emptyCard = style({
   backfaceVisibility: 'hidden',
 })
 
-export const daliveryAnimationContainer = style({
+const daliveryAnimationContainerBase = style({
   width: '100%',
   aspectRatio: '100 / 148',
   padding: 16,
@@ -344,6 +344,11 @@ export const daliveryAnimationContainer = style({
   flexDirection: 'column',
 })
 
+export const daliveryAnimationContainer = styleVariants({
+  default: [daliveryAnimationContainerBase],
+  reserved: [daliveryAnimationContainerBase],
+})
+
 export const bubbleContainer = style({
   width: '100%',
   paddingBottom: 16,
@@ -351,12 +356,23 @@ export const bubbleContainer = style({
   justifyContent: 'flex-end',
 })
 
-const bubbleBase = style({
+export const bubble = style({
   left: '75%',
   border: `2px solid ${color.gray[80]}`,
   borderRadius: 10,
   width: 'fit-content',
   transition: 'opacity 0.3s 1s, transform 0.3s 1s',
+
+  selectors: {
+    [`${daliveryAnimationContainer.default} &`]: {
+      opacity: 0,
+      transform: 'translateY(4px)',
+    },
+    [`${daliveryAnimationContainer.reserved} &`]: {
+      opacity: 1,
+      transform: 'translateY(0)',
+    },
+  },
 
   ':before': {
     content: '',
@@ -371,23 +387,6 @@ const bubbleBase = style({
     borderRadius: 2,
     backgroundColor: color.gray[100],
   },
-})
-
-export const bubble = styleVariants({
-  default: [
-    bubbleBase,
-    {
-      opacity: 0,
-      transform: 'translateY(4px)',
-    },
-  ],
-  reserved: [
-    bubbleBase,
-    {
-      opacity: 1,
-      transform: 'translateY(0)',
-    },
-  ],
 })
 
 export const bubbleInner = style({
@@ -409,22 +408,21 @@ export const cartContainer = style({
   height: 24,
 })
 
-const cartBase = style({
+export const cart = style({
   position: 'absolute',
   bottom: 0,
   height: '100%',
   width: 'auto',
   transition: 'left 1.2s 0.3s',
-})
 
-export const cart = styleVariants({
-  default: [cartBase, { left: '0%' }],
-  reserved: [
-    cartBase,
-    {
+  selectors: {
+    [`${daliveryAnimationContainer.default} &`]: {
+      left: '0%',
+    },
+    [`${daliveryAnimationContainer.reserved} &`]: {
       left: '70%',
     },
-  ],
+  },
 })
 
 const float = keyframes({
@@ -452,16 +450,20 @@ export const progressBarContainer = style({
   borderRadius: 4,
 })
 
-const progressBarBase = style({
+export const progressBar = style({
   height: '100%',
   backgroundColor: color.red[50],
   borderRadius: 'inherit',
   transition: 'width 1.2s',
-})
 
-export const progressBar = styleVariants({
-  default: [progressBarBase, { width: '25%' }],
-  reserved: [progressBarBase, { width: '100%' }],
+  selectors: {
+    [`${daliveryAnimationContainer.default} &`]: {
+      width: '25%',
+    },
+    [`${daliveryAnimationContainer.reserved} &`]: {
+      width: '100%',
+    },
+  },
 })
 
 export const control = style({
