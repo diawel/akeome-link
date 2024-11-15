@@ -138,7 +138,17 @@ const Shared = ({
             />
           </div>
         </div>
-        <div className={styles.screen}>
+        <div
+          className={
+            styles.screen[
+              isDelivered &&
+              (!existingReceivedCard ||
+                existingReceivedCard.attributes.publishedAt === null)
+                ? 'newArrival'
+                : 'default'
+            ]
+          }
+        >
           <div
             className={
               styles.content[isDelivered ? 'delivered' : 'undelivered']

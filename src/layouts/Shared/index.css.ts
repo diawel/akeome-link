@@ -174,7 +174,7 @@ export const cloud = style({
   animation: `${sway} 6s infinite`,
 })
 
-export const screen = style({
+const screenBase = style({
   position: 'absolute',
   top: 0,
   left: 0,
@@ -184,8 +184,6 @@ export const screen = style({
   backgroundColor: color.gray[90],
   paddingTop: 0, // padding-blockはSafariでトランジションが効かない
   paddingBottom: 0,
-  transition:
-    'background-color 0.3s 1s, padding-top 0.6s 0.6s, padding-bottom 0.6s 0.6s',
 
   selectors: {
     [`${container.newArrival} &`]: {
@@ -194,6 +192,17 @@ export const screen = style({
       paddingBottom: 24,
     },
   },
+})
+
+export const screen = styleVariants({
+  newArrival: [
+    screenBase,
+    {
+      transition:
+        'background-color 0.3s 1s, padding-top 0.6s 0.6s, padding-bottom 0.6s 0.6s',
+    },
+  ],
+  default: [screenBase],
 })
 
 const contentBase = style({
@@ -370,7 +379,6 @@ export const bubble = style({
   border: `2px solid ${color.gray[80]}`,
   borderRadius: 10,
   width: 'fit-content',
-  transition: 'opacity 0.3s 1s, transform 0.3s 1s',
 
   selectors: {
     [`${daliveryAnimationContainer.default} &`]: {
@@ -380,6 +388,7 @@ export const bubble = style({
     [`${daliveryAnimationContainer.reserved} &`]: {
       opacity: 1,
       transform: 'translateY(0)',
+      transition: 'opacity 0.3s 1s, transform 0.3s 1s',
     },
   },
 
@@ -503,7 +512,6 @@ const deliveryDateBase = style({
   textAlign: 'center',
   width: '100%',
   fontWeight: 'bold',
-  transition: 'opacity 0.3s',
 })
 
 export const deliveryDate = styleVariants({
@@ -511,6 +519,7 @@ export const deliveryDate = styleVariants({
     deliveryDateBase,
     {
       opacity: 1,
+      transition: 'opacity 0.3s',
     },
   ],
   hidden: [
