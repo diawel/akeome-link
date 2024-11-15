@@ -104,10 +104,10 @@ const Shared = ({
     if (isReserved) return
 
     setIsReserved(true)
-    // await addUniqueReceivedCard({
-    //   shareId: cardRecord.attributes.shareId,
-    //   isReserve: true,
-    // })
+    await addUniqueReceivedCard({
+      shareId: cardRecord.attributes.shareId,
+      isReserve: true,
+    })
   }
 
   const [deliveryDate, setDeliveryDate] = useState<Date | undefined>(undefined)
