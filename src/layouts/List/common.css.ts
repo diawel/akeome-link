@@ -70,59 +70,19 @@ export const cardTitle = style({
   whiteSpace: 'nowrap',
 })
 
-export const newCardButtonSizeInner = style({
-  width: '100%',
-  height: 'auto',
-  aspectRatio: '100 / 148',
-  position: 'relative',
-  overflow: 'hidden',
-  color: `${color.red[50]}`,
-  borderRadius: '8px',
-  borderWidth: '2px',
-  borderStyle: 'dotted',
-  cursor: 'pointer',
-})
-
-export const newCardButtonContent = style({
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  color: `${color.red[50]}`,
-  borderRadius: '8px',
-  borderWidth: '2px',
-  borderStyle: 'dotted',
-  cursor: 'pointer',
-
-  width: 400,
-  height: 592,
-  backgroundColor: '#fff',
-  position: 'absolute',
-  left: '50%',
-  top: '50%',
-  translate: '-50% -50%',
-  userSelect: 'none',
-})
-
-export const newCardButtonIcon = style({
-  fontSize: '30px',
-})
-
-export const newCardButtonTextContainer = style({
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  flex: 1,
-})
-
-export const newCardButtonText = style({
-  textAlign: 'center',
-  fontSize: '16px',
-  fontWeight: 'bold',
-  marginTop: '12px',
-  marginBottom: '12px',
-  color: `${color.red[50]}`,
-})
-
 export const cardLink = style({
   textDecoration: 'none',
+})
+
+export const noCardContainer = style({
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+})
+
+export const noCardMessage = style({
+  fontSize: '16px',
+  fontWeight: 'bold',
+  color: color.red[5],
+  padding: '90px 0px 45px 0px'
 })

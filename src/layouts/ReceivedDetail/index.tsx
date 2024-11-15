@@ -5,11 +5,12 @@ import Card from '../../components/Card'
 import { StrapiRecord } from '../../utils/strapi'
 import { mediaRecordsToUrlSet } from '../../utils/strapi/strapiImage'
 import * as styles from './index.css'
-import Link from 'next/link'
 import Renderer from '../../components/Card/Renderer'
 import { useState } from 'react'
 import Print from '../../components/Print'
 import { CardAttributes } from '../../utils/strapi/card'
+import ReturnButton from '../../components/ReturnButton'
+import { color } from  '../../utils/styleSchema'
 
 type ReceivedDetailProps = {
   cardRecord: StrapiRecord<
@@ -27,7 +28,7 @@ const ReceivedDetail = ({ cardRecord, randomSeed }: ReceivedDetailProps) => {
       <div className={styles.container}>
         <div className={styles.screen}>
           <div className={styles.metaContainer}>
-            <Link href="/receive/list">戻る</Link>
+            <ReturnButton href="/receive/list" color={color.gray[5]} />
           </div>
           <div className={styles.content}>
             <div className={styles.title}>

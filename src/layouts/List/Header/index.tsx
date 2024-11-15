@@ -1,6 +1,6 @@
 import React from 'react'
 import * as styles from './index.css'
-import akeomeLinkLogo from './akeome-link-logo.svg'
+import akeomeLinkLogo from './../../../assets/akeome-link-logo.svg'
 import postIcon from './icon-post.svg'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -25,7 +25,7 @@ const Header = async ({ activeTab }: HeaderProps) => {
             alt="akeomeLinkLogo"
           />
         </div>
-        <Link href="/post" className={styles.notificationIcon}>
+        <Link href="/post/delivered" className={styles.notificationIcon}>
           <Image src={postIcon} alt="postIcon" />
           {newArrivalCount > 0 && (
             <div className={styles.notificationCount}>{newArrivalCount}</div>

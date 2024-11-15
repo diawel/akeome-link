@@ -1,6 +1,7 @@
 import * as styles from './index.css'
 import ReturnButton from '../../../../components/ReturnButton'
 import { color } from '../../../../utils/styleSchema'
+import { useEditCard } from '../../EditCardProvider'
 
 type MetaProps = {
   onComplete: () => void
@@ -8,11 +9,14 @@ type MetaProps = {
 }
 
 const Meta = ({ onComplete, disabled }: MetaProps) => {
+  const { isSyncing } = useEditCard()
   return (
     <div className={styles.control}>
-      <ReturnButton href="/create/new" color={color.gray[5]} />
+      <ReturnButton href="./" color={color.gray[5]} />
       <button
-        className={styles.primaryButton[disabled ? 'disabled' : 'default']}
+        className={
+          styles.primaryButton[disabled || isSyncing ? 'disabled' : 'default']
+        }
         onClick={onComplete}
       >
         完成

@@ -47,6 +47,10 @@ const recordFilter = (record: StrapiRecord<ReceivedCardAttributes>) => ({
   },
 })
 
+export type SecureReceivedCardAttributes = ReturnType<
+  typeof recordFilter
+>['attributes']
+
 export const getReceivedCard = async (id: number) => {
   const session = await getServerSession(authOptions)
 
@@ -90,7 +94,7 @@ export const getReceivedCard = async (id: number) => {
   }
 }
 
-export const getReceivedCards = async () => {
+export const getReceivedCards = async ({ page }: { page?: number } = {}) => {
   const session = await getServerSession(authOptions)
 
   if (!session) {
@@ -113,6 +117,9 @@ export const getReceivedCards = async () => {
         sort: {
           0: 'updatedAt:desc',
         },
+        pagination: {
+          page: page ?? 1,
+        },
       })}`,
       {
         cache: 'no-cache',
@@ -133,6 +140,7 @@ export const getReceivedCards = async () => {
       data: receivedCards.data.map((receivedCard) =>
         recordFilter(receivedCard)
       ),
+      meta: receivedCards.meta,
     }
   } catch (error) {
     throw error
@@ -213,17 +221,17 @@ export const addUniqueReceivedCard = async ({
       return undefined
     }
 
-    const existingReceivedCards = await getReceivedCardByCardId(card.data.id)
+    const existingReceivedCard = await getReceivedCardByCardId(card.data.id)
     const shouldUpdate =
       !isReserve &&
-      existingReceivedCards?.data.attributes.publishedAt === null &&
+      existingReceivedCard?.data.attributes.publishedAt === null &&
       new Date(card.data.attributes.deliveredAt) < new Date()
-    if (existingReceivedCards && !shouldUpdate) {
-      return existingReceivedCards
+    if (existingReceivedCard && !shouldUpdate) {
+      return existingReceivedCard
     }
     const strapiResponse = shouldUpdate
       ? await fetch(
-          `${process.env.NEXT_PUBLIC_STRAPI_BACKEND_URL}/api/received-cards/${existingReceivedCards.data.id}`,
+          `${process.env.NEXT_PUBLIC_STRAPI_BACKEND_URL}/api/received-cards/${existingReceivedCard.data.id}`,
           {
             method: 'PUT',
             headers: {
@@ -234,7 +242,7 @@ export const addUniqueReceivedCard = async ({
               data: {
                 card: card.data.id,
                 receiver: session.user.strapiUserId,
-                randomSeed: existingReceivedCards.data.attributes.randomSeed,
+                randomSeed: existingReceivedCard.data.attributes.randomSeed,
                 publishedAt: new Date().toISOString(),
               },
             }),
@@ -273,7 +281,10 @@ export const addUniqueReceivedCard = async ({
   }
 }
 
-export const getReservedCards = async () => {
+export const getReservedCards = async ({
+  page,
+  filter,
+}: { page?: number; filter?: 'delivered' | 'undelivered' } = {}) => {
   const session = await getServerSession(authOptions)
 
   if (!session) {
@@ -296,9 +307,27 @@ export const getReservedCards = async () => {
           publishedAt: {
             $null: true,
           },
+          ...(filter && filter === 'delivered'
+            ? {
+                card: {
+                  deliveredAt: {
+                    $lt: new Date().toISOString(),
+                  },
+                },
+              }
+            : {
+                card: {
+                  deliveredAt: {
+                    $gte: new Date().toISOString(),
+                  },
+                },
+              }),
         },
         sort: {
           0: 'updatedAt:desc',
+        },
+        pagination: {
+          page: page ?? 1,
         },
       })}`,
       {
@@ -320,6 +349,7 @@ export const getReservedCards = async () => {
       data: receivedCards.data.map((receivedCard) =>
         recordFilter(receivedCard)
       ),
+      meta: receivedCards.meta,
     }
   } catch (error) {
     throw error
@@ -424,4 +454,32 @@ export const countReceivedRecords = async () => {
   } catch (error) {
     throw error
   }
+}
+
+export const receiveAllReservedCards = async (): Promise<number> => {
+  const reservedCards = await getReservedCards({
+    filter: 'delivered',
+  })
+
+  if (!reservedCards) {
+    return 0
+  }
+
+  if (reservedCards.data.length === 0) {
+    return 0
+  }
+
+  await Promise.all(
+    reservedCards.data.map((receivedCard) => {
+      if (!receivedCard.attributes.card.data) {
+        return
+      }
+      return addUniqueReceivedCard({
+        shareId: receivedCard.attributes.card.data.attributes.shareId,
+        randomSeed: receivedCard.attributes.randomSeed,
+      })
+    })
+  )
+
+  return (await receiveAllReservedCards()) + reservedCards.data.length
 }

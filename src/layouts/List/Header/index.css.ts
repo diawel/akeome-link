@@ -16,9 +16,13 @@ export const title = style({
   fontSize: '24px',
   fontWeight: 'bold',
   color: '#333',
+  height: 72,
 })
 
-export const icon = style({})
+export const icon = style({
+  height: 20,
+  width: 'auto',
+})
 
 export const tabContainer = style({
   display: 'flex',
@@ -60,8 +64,9 @@ export const activeTab = style({
 
 export const notificationIcon = style({
   position: 'absolute',
-  top: '22px',
-  right: '33px',
+  top: '50%',
+  right: 32,
+  transform: 'translateY(-50%)',
   display: 'flex',
   alignItems: 'center',
 })

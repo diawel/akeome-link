@@ -25,14 +25,14 @@ const Renderer = ({
   onRender,
   randomSeed,
 }: RendererProps) => {
-  const containerRef = useRef<HTMLDivElement>(null)
+  const rendererRef = useRef<HTMLDivElement>(null)
   const animationFrameRef = useRef<number | null>(null)
   const [isRendered, setIsRendered] = useState(false)
   useEffect(() => {
     if (isRendered) return
     const checkLoadingProgress = () => {
-      if (containerRef.current) {
-        const images = containerRef.current?.querySelectorAll(
+      if (rendererRef.current) {
+        const images = rendererRef.current?.querySelectorAll(
           `.${catdStyles.card} .${catdStyles.backgroundContainer} > img, .${catdStyles.card} .${catdStyles.userImageContainer} > img, .${catdStyles.card} .${catdStyles.stickerContainer} > img`
         )
         const allCompleted =
@@ -43,12 +43,12 @@ const Renderer = ({
             return image.complete
           })
         if (allCompleted) {
-          const card = containerRef.current?.querySelector<HTMLDivElement>(
+          const card = rendererRef.current?.querySelector<HTMLDivElement>(
             `.${catdStyles.card}`
           )
           if (card?.getBoundingClientRect().width) {
             // 画面内のnext/imageは全てloading=eagerにしないとハングする
-            html2canvas(containerRef.current, {}).then(
+            html2canvas(rendererRef.current, {}).then(
               (canvas: HTMLCanvasElement) => {
                 const toBlob = (quality?: number) => {
                   if (quality !== undefined && quality < 0.1) return
@@ -80,8 +80,8 @@ const Renderer = ({
     }
   }, [isRendered, onRender])
   return (
-    <>
-      <div ref={containerRef} className={styles.container}>
+    <div className={styles.container}>
+      <div ref={rendererRef} className={styles.renderer}>
         <Card
           layout={layout}
           background={background}
@@ -92,7 +92,7 @@ const Renderer = ({
           proxy
         />
       </div>
-    </>
+    </div>
   )
 }
 
