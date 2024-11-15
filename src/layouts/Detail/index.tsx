@@ -23,30 +23,34 @@ const Detail = ({ cardAttributes, cardRecordId }: DetailProps) => {
         <div className={styles.control}>
           <ReturnButton href="/create/list" color={color.gray[5]} />
         </div>
-        <div className={styles.container}>
+        <div>
           <div className={styles.center}>
             <div className={styles.title}>{cardAttributes.title}</div>
           </div>
           <div className={styles.center}>
             <div className={styles.creatorName}>{cardAttributes.creatorName}</div>
           </div>
-          <div className={styles.cardSpace}>
-            <div className={styles.card}>
-              <Card
-                layout={cardAttributes.view.layout}
-                background={cardAttributes.view.background}
-                userImages={mediaRecordsToUrlSet(
-                  cardAttributes.userImages.data
-                )}
-                randomVariants="hidden"
-              />
+          <div className={styles.center}>
+            <div className={styles.cardSpace}>
+              <div className={styles.card}>
+                <Card
+                  layout={cardAttributes.view.layout}
+                  background={cardAttributes.view.background}
+                  userImages={mediaRecordsToUrlSet(
+                    cardAttributes.userImages.data
+                  )}
+                  randomVariants="hidden"
+                />
+              </div>
             </div>
           </div>
-          <Link href={`/share/${cardRecordId}`}>
-            <button className={styles.primaryButton}>
-              SNSで共有する
-            </button>
-          </Link> 
+          <div className={styles.center}>
+            <Link href={`/share/${cardRecordId}`}>
+              <button className={styles.primaryButton}>
+                SNSで共有する
+              </button>
+            </Link> 
+          </div>
           <div className={styles.buttonContainer}>
             <div className={styles.buttonSpace}>
               <Link className={styles.link} href={`/create/new/${cardRecordId}`}>

@@ -9,13 +9,6 @@ export const control = style({
   padding: 16,
 })
 
-export const container = style({
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-})
-
 export const center = style({
   display: 'flex',
   justifyContent: 'center',
@@ -83,4 +76,5 @@ export const buttonContainer = style({
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
+  paddingBottom: '16px',
 })

@@ -23,23 +23,25 @@ const DraftDetail = ({ cardAttributes, cardRecordId }: DraftProps) => {
         <div className={styles.control}>
           <ReturnButton href="/create/list" color={color.gray[5]} />
         </div>
-        <div className={styles.container}>
+        <div>
           <div className={styles.center}>
             <div className={styles.title}>{cardAttributes.title}</div>
           </div>
           <div className={styles.center}>
             <div className={styles.creatorName}>{cardAttributes.creatorName}</div>
           </div>
-          <div className={styles.cardSpace}>
-            <div className={styles.card}>
-              <Card
-                layout={cardAttributes.view.layout}
-                background={cardAttributes.view.background}
-                userImages={mediaRecordsToUrlSet(
-                  cardAttributes.userImages.data
-                )}
-                randomVariants="hidden"
-              />
+          <div className={styles.center}>
+            <div className={styles.cardSpace}>
+              <div className={styles.card}>
+                <Card
+                  layout={cardAttributes.view.layout}
+                  background={cardAttributes.view.background}
+                  userImages={mediaRecordsToUrlSet(
+                    cardAttributes.userImages.data
+                  )}
+                  randomVariants="hidden"
+                />
+              </div>
             </div>
           </div>
           <div className={styles.buttonContainer}>
