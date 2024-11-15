@@ -35,10 +35,8 @@ const Detail = ({ cardAttributes, cardRecordId }: DetailProps) => {
           SNSで共有する
         </Link> 
         <div className={styles.buttonContainer}>
-          <Link className={styles.link} href={`/create/edit/${cardRecordId}`}>
-            <button className={styles.editButton}>
-              <div className={styles.buttonText}>つづきから編集</div>
-            </button>
+          <Link className={styles.editButton} href={`/create/new/${cardRecordId}`}>
+            コピーして編集
           </Link>
           <button
             className={styles.deleteButton}
@@ -48,7 +46,7 @@ const Detail = ({ cardAttributes, cardRecordId }: DetailProps) => {
               })
             }
           >
-            <div className={styles.buttonText}>削除</div>
+            削除
           </button>
         </div>
       </div>

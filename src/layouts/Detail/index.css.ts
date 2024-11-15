@@ -59,10 +59,6 @@ export const primaryButton = style({
   alignItems: 'center',
 })
 
-export const link = style({
-  textDecoration: 'none',
-})
-
 export const editButton = style({
   padding: 10,
   width: '100%',
@@ -73,6 +69,10 @@ export const editButton = style({
   alignItems: 'center',
   cursor: 'pointer',
   border: 'none',
+  textDecoration: 'none',
+  fontWeight: 'bold',
+  fontSize: '16px',
+  color: color.gray[5]
 })
 
 export const deleteButton = style({
@@ -86,9 +86,6 @@ export const deleteButton = style({
   alignItems: 'center',
   cursor: 'pointer',
   border: 'none',
-})
-
-export const buttonText = style({
   fontWeight: 'bold',
   fontSize: '16px',
 })
