@@ -369,8 +369,6 @@ export const deleteCreatedCard = async (id: number) => {
     if (!strapiResponse.ok) {
       throw new Error(`Failed to delete card: ${strapiResponse.statusText}`)
     }
-
-    return true
   } catch (error) {
     throw error
   }
