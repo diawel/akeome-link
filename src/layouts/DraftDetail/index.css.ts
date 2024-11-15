@@ -1,39 +1,41 @@
 import { style } from '@vanilla-extract/css'
 import { color } from '../../utils/styleSchema'
 
+export const screen = style({
+  width: '100%',
+  minHeight: '100%',
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+})
 
 export const control = style({
   display: 'flex',
   justifyContent: 'space-between',
   alignItems: 'center',
   padding: 16,
+  width: '100%',
 })
 
 export const container = style({
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-})
-
-export const center = style({
   display: 'flex',
+  width: '100%',
+  flexDirection: 'column',
   justifyContent: 'center',
   alignItems: 'center',
+  gap: 28,
+  flex: 1,
+  padding: '32px 32px 64px',
 })
 
 export const title = style({
   fontSize: '24px',
   fontWeight: 'bold',
-  paddingBottom: '4px'
+  paddingBottom: '4px',
 })
 
 export const creatorName = style({
   fontSize: '16px',
-})
-
-export const cardSpace = style({
-  padding: '28px 0px',
 })
 
 export const card = style({
@@ -41,12 +43,8 @@ export const card = style({
   boxShadow: '0.1px 0.1px 2px rgba(0, 0, 0, 0.3)',
 })
 
-export const buttonSpace = style({
-  paddingRight: '13px',
-})
-
 export const link = style({
-  textDecoration: 'none'
+  textDecoration: 'none',
 })
 
 export const editButton = style({
@@ -83,5 +81,5 @@ export const buttonContainer = style({
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
-  paddingBottom: '16px',
+  gap: 14,
 })
