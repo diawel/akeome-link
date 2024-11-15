@@ -139,7 +139,11 @@ const Shared = ({
           </div>
         </div>
         <div className={styles.screen}>
-          <div className={styles.content}>
+          <div
+            className={
+              styles.content[isDelivered ? 'delivered' : 'undelivered']
+            }
+          >
             <div className={styles.title}>
               {strapiUserId === cardCreatorId ? (
                 '共有した年賀状のプレビュー'
@@ -297,14 +301,19 @@ const Shared = ({
                     </>
                   )}
               </div>
-              {!isDelivered && deliveryDate && (
-                <div className={styles.deliveryDate}>
-                  {deliveryDate.getMonth() + 1}月{deliveryDate.getDate()}日
-                  {deliveryDate.getHours()}:
-                  {deliveryDate.getMinutes().toString().padStart(2, '0')}{' '}
-                  から受け取ることができます
-                </div>
-              )}
+              {!isDelivered &&
+                (deliveryDate ? (
+                  <div className={styles.deliveryDate.default}>
+                    {deliveryDate.getMonth() + 1}月{deliveryDate.getDate()}日
+                    {deliveryDate.getHours()}:
+                    {deliveryDate.getMinutes().toString().padStart(2, '0')}{' '}
+                    から受け取ることができます
+                  </div>
+                ) : (
+                  <div className={styles.deliveryDate.hidden}>
+                    配達日時を取得中
+                  </div>
+                ))}
             </div>
           </div>
         </div>

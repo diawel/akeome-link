@@ -196,7 +196,7 @@ export const screen = style({
   },
 })
 
-export const content = style({
+const contentBase = style({
   width: '100%',
   minHeight: '100%',
   display: 'flex',
@@ -204,6 +204,16 @@ export const content = style({
   alignItems: 'center',
   padding: 56,
   gap: 36,
+})
+
+export const content = styleVariants({
+  delivered: [contentBase],
+  undelivered: [
+    contentBase,
+    {
+      justifyContent: 'space-between',
+    },
+  ],
 })
 
 export const fadeIn = keyframes({
@@ -336,7 +346,6 @@ export const emptyCard = style({
 
 const daliveryAnimationContainerBase = style({
   width: '100%',
-  aspectRatio: '100 / 148',
   padding: 16,
   display: 'flex',
   alignItems: 'center',
@@ -488,13 +497,28 @@ export const control = style({
   },
 })
 
-export const deliveryDate = style({
+const deliveryDateBase = style({
   fontSize: 12,
   color: color.red[5],
   textAlign: 'center',
   width: '100%',
   fontWeight: 'bold',
-  animation: `${fadeIn} 0.3s backwards`,
+  transition: 'opacity 0.3s',
+})
+
+export const deliveryDate = styleVariants({
+  default: [
+    deliveryDateBase,
+    {
+      opacity: 1,
+    },
+  ],
+  hidden: [
+    deliveryDateBase,
+    {
+      opacity: 0,
+    },
+  ],
 })
 
 export const primaryButton = style({
