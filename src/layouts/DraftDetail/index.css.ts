@@ -25,7 +25,7 @@ export const container = style({
   alignItems: 'center',
   gap: 28,
   flex: 1,
-  padding: '32px 32px 64px',
+  padding: '32px 56px 64px',
 })
 
 export const title = style({
@@ -39,7 +39,7 @@ export const creatorName = style({
 })
 
 export const card = style({
-  width: '282px',
+  width: '100%',
   boxShadow: '0.1px 0.1px 2px rgba(0, 0, 0, 0.3)',
 })
 
@@ -48,8 +48,8 @@ export const link = style({
 })
 
 export const editButton = style({
-  width: '172px',
-  height: '42px',
+  padding: 10,
+  width: '100%',
   backgroundColor: 'white',
   borderRadius: '12px',
   display: 'flex',
@@ -60,8 +60,8 @@ export const editButton = style({
 })
 
 export const deleteButton = style({
-  width: '96px',
-  height: '42px',
+  padding: 10,
+  width: '100%',
   backgroundColor: 'white',
   color: color.red[5],
   borderRadius: '12px',
@@ -78,8 +78,8 @@ export const buttonText = style({
 })
 
 export const buttonContainer = style({
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
+  display: 'grid',
+  width: '100%',
+  gridTemplateColumns: '7fr 4fr',
   gap: 14,
 })
