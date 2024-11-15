@@ -174,7 +174,7 @@ export const cloud = style({
   animation: `${sway} 6s infinite`,
 })
 
-export const screen = style({
+const screenBase = style({
   position: 'absolute',
   top: 0,
   left: 0,
@@ -184,8 +184,6 @@ export const screen = style({
   backgroundColor: color.gray[90],
   paddingTop: 0, // padding-blockはSafariでトランジションが効かない
   paddingBottom: 0,
-  transition:
-    'background-color 0.3s 1s, padding-top 0.6s 0.6s, padding-bottom 0.6s 0.6s',
 
   selectors: {
     [`${container.newArrival} &`]: {
@@ -196,7 +194,18 @@ export const screen = style({
   },
 })
 
-export const content = style({
+export const screen = styleVariants({
+  newArrival: [
+    screenBase,
+    {
+      transition:
+        'background-color 0.3s 1s, padding-top 0.6s 0.6s, padding-bottom 0.6s 0.6s',
+    },
+  ],
+  default: [screenBase],
+})
+
+const contentBase = style({
   width: '100%',
   minHeight: '100%',
   display: 'flex',
@@ -204,6 +213,16 @@ export const content = style({
   alignItems: 'center',
   padding: 56,
   gap: 36,
+})
+
+export const content = styleVariants({
+  delivered: [contentBase],
+  undelivered: [
+    contentBase,
+    {
+      justifyContent: 'space-between',
+    },
+  ],
 })
 
 export const fadeIn = keyframes({
@@ -220,6 +239,7 @@ export const title = style({
   fontWeight: 'bold',
   color: color.gray[5],
   textAlign: 'center',
+  marginInline: -40,
   transition: 'color 0.3s 1s',
 
   selectors: {
@@ -333,6 +353,145 @@ export const emptyCard = style({
   backfaceVisibility: 'hidden',
 })
 
+const daliveryAnimationContainerBase = style({
+  width: '100%',
+  padding: 16,
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  flexDirection: 'column',
+})
+
+export const daliveryAnimationContainer = styleVariants({
+  default: [daliveryAnimationContainerBase],
+  reserved: [daliveryAnimationContainerBase],
+})
+
+export const bubbleContainer = style({
+  width: '100%',
+  paddingBottom: 16,
+  display: 'flex',
+  justifyContent: 'flex-end',
+})
+
+export const bubble = style({
+  left: '75%',
+  border: `2px solid ${color.gray[80]}`,
+  borderRadius: 10,
+  width: 'fit-content',
+
+  selectors: {
+    [`${daliveryAnimationContainer.default} &`]: {
+      opacity: 0,
+      transform: 'translateY(4px)',
+    },
+    [`${daliveryAnimationContainer.reserved} &`]: {
+      opacity: 1,
+      transform: 'translateY(0)',
+      transition: 'opacity 0.3s 1.2s, transform 0.3s 1.2s',
+    },
+  },
+
+  ':before': {
+    content: '',
+    position: 'absolute',
+    top: '100%',
+    left: '50%',
+    translate: '-50% -50%',
+    rotate: '45deg',
+    width: 12,
+    height: 12,
+    border: `2px solid ${color.gray[80]}`,
+    borderRadius: 2,
+    backgroundColor: color.gray[100],
+  },
+})
+
+export const bubbleInner = style({
+  backgroundColor: color.gray[100],
+  color: color.red[5],
+  padding: 10,
+  borderRadius: 8,
+  fontSize: 14,
+  fontWeight: 'bold',
+  position: 'relative',
+  width: 'fit-content',
+})
+
+export const cartContainer = style({
+  width: '100%',
+  display: 'flex',
+  justifyContent: 'flex-end',
+  position: 'relative',
+  height: 24,
+})
+
+export const cart = style({
+  position: 'absolute',
+  bottom: 0,
+  height: '100%',
+  width: 'auto',
+  transition: 'left 1.2s 0.3s',
+
+  selectors: {
+    [`${daliveryAnimationContainer.default} &`]: {
+      left: '0%',
+    },
+    [`${daliveryAnimationContainer.reserved} &`]: {
+      left: '70%',
+    },
+  },
+})
+
+const float = keyframes({
+  '0%': {
+    transform: 'translateY(-2px)',
+  },
+  '70%': {
+    transform: 'translateY(-6px)',
+  },
+  '100%': {
+    transform: 'translateY(-2px)',
+  },
+})
+
+export const pin = style({
+  height: '100%',
+  width: 'auto',
+  animation: `${float} 1.5s infinite`,
+})
+
+export const progressBarContainer = style({
+  width: '100%',
+  height: 8,
+  backgroundColor: color.gray[80],
+  borderRadius: 4,
+})
+
+export const progressBar = style({
+  height: '100%',
+  backgroundColor: color.red[50],
+  borderRadius: 'inherit',
+  transition: 'width 1.2s',
+
+  selectors: {
+    [`${daliveryAnimationContainer.default} &`]: {
+      width: '25%',
+    },
+    [`${daliveryAnimationContainer.reserved} &`]: {
+      width: '100%',
+    },
+  },
+})
+
+export const controlContainer = style({
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  gap: 10,
+  width: '100%',
+})
+
 export const control = style({
   width: '100%',
   display: 'grid',
@@ -345,6 +504,30 @@ export const control = style({
       opacity: 0,
     },
   },
+})
+
+const deliveryDateBase = style({
+  fontSize: 12,
+  color: color.red[5],
+  textAlign: 'center',
+  width: '100%',
+  fontWeight: 'bold',
+})
+
+export const deliveryDate = styleVariants({
+  default: [
+    deliveryDateBase,
+    {
+      opacity: 1,
+      transition: 'opacity 0.3s',
+    },
+  ],
+  hidden: [
+    deliveryDateBase,
+    {
+      opacity: 0,
+    },
+  ],
 })
 
 export const primaryButton = style({

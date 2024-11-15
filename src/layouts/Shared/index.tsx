@@ -25,6 +25,9 @@ import daruma from './daruma.svg'
 import fuji from './fuji.svg'
 import hana from './hana.svg'
 import matsu from './matsu.svg'
+import { color } from '../../utils/styleSchema'
+import cart from './cart.svg'
+import pin from './pin.svg'
 
 type SharedProps = {
   cardCreatorId: number
@@ -40,7 +43,9 @@ type SharedProps = {
       isDelivered: true
     }
   | {
-      cardRecord: StrapiRecord<Pick<CardAttributes, 'shareId' | 'creatorName'>>
+      cardRecord: StrapiRecord<
+        Pick<CardAttributes, 'shareId' | 'creatorName' | 'deliveredAt'>
+      >
       isDelivered: false
     }
 )
@@ -105,6 +110,12 @@ const Shared = ({
     })
   }
 
+  const [deliveryDate, setDeliveryDate] = useState<Date | undefined>(undefined)
+  useEffect(() => {
+    if (isDelivered) return
+    setDeliveryDate(new Date(cardRecord.attributes.deliveredAt))
+  }, [isDelivered, cardRecord.attributes])
+
   return (
     <>
       <div
@@ -127,8 +138,22 @@ const Shared = ({
             />
           </div>
         </div>
-        <div className={styles.screen}>
-          <div className={styles.content}>
+        <div
+          className={
+            styles.screen[
+              isDelivered &&
+              (!existingReceivedCard ||
+                existingReceivedCard.attributes.publishedAt === null)
+                ? 'newArrival'
+                : 'default'
+            ]
+          }
+        >
+          <div
+            className={
+              styles.content[isDelivered ? 'delivered' : 'undelivered']
+            }
+          >
             <div className={styles.title}>
               {strapiUserId === cardCreatorId ? (
                 '共有した年賀状のプレビュー'
@@ -138,10 +163,13 @@ const Shared = ({
                   <br />
                   年賀状を受け取りました
                 </>
-              ) : isReserved ? (
-                `${cardRecord.attributes.creatorName} さんからの年賀状を配達中です`
               ) : (
-                `${cardRecord.attributes.creatorName} さんが年賀状を出しました`
+                <>
+                  {cardRecord.attributes.creatorName} さんからの
+                  <br />
+                  年賀状は<span style={{ color: color.red[5] }}>配達中</span>
+                  です
+                </>
               )}
             </div>
             {isDelivered ? (
@@ -177,81 +205,125 @@ const Shared = ({
                 </button>
               </div>
             ) : (
-              <div>配達中のアニメーション</div>
+              <div
+                className={
+                  styles.daliveryAnimationContainer[
+                    isReserved ? 'reserved' : 'default'
+                  ]
+                }
+              >
+                <div className={styles.bubbleContainer}>
+                  <div className={styles.bubble}>
+                    <div className={styles.bubbleInner}>予約完了！</div>
+                  </div>
+                </div>
+                <div className={styles.cartContainer}>
+                  <Image
+                    src={cart}
+                    alt=""
+                    className={styles.cart}
+                    loading="eager"
+                  />
+                  <Image
+                    src={pin}
+                    alt=""
+                    className={styles.pin}
+                    loading="eager"
+                  />
+                </div>
+                <div className={styles.progressBarContainer}>
+                  <div className={styles.progressBar} />
+                </div>
+              </div>
             )}
-            <div className={styles.control}>
-              {strapiUserId === cardCreatorId ? (
-                <Link className={styles.primaryButton} href="/create/list">
-                  つくった年賀状一覧へ
-                </Link>
-              ) : isDelivered ? (
-                isReceived && (
-                  <Link className={styles.primaryButton} href="/receive/list">
-                    もらった年賀状一覧へ
+            <div className={styles.controlContainer}>
+              <div className={styles.control}>
+                {strapiUserId === cardCreatorId ? (
+                  <Link className={styles.primaryButton} href="/create/list">
+                    つくった年賀状一覧へ
                   </Link>
-                )
-              ) : isReserved ? (
-                <Link className={styles.primaryButton} href="/create/new">
-                  年賀状を作ってみる
-                </Link>
-              ) : (
-                <button className={styles.primaryButton} onClick={reserve}>
-                  受け取り予約する
-                </button>
-              )}
-              {isDelivered &&
-                (strapiUserId === cardCreatorId || isReceived) && (
-                  <>
-                    <button
-                      className={
-                        styles.seconradyButton[
-                          renderedImage ? 'default' : 'disabled'
-                        ]
-                      }
-                      onClick={() => {
-                        if (!renderedImage) return
-                        const url = URL.createObjectURL(renderedImage)
-                        const a = document.createElement('a')
-                        a.href = url
-                        a.setAttribute(
-                          'download',
-                          `new_year_card_${Date.now()}`
-                        )
-                        document.body.appendChild(a)
-                        a.click()
-                        URL.revokeObjectURL(url)
-                        a.remove()
-                      }}
-                    >
-                      <FaDownload />
-                      保存
-                    </button>
-                    <button
-                      className={
-                        styles.seconradyButton[
-                          renderedImage ? 'default' : 'disabled'
-                        ]
-                      }
-                      onClick={() => {
-                        setIsPrintModalOpen(true)
-                      }}
-                    >
-                      <FaPrint />
-                      印刷
-                    </button>
-                    {randomSeed !== undefined && (
-                      <Renderer
-                        layout={cardRecord.attributes.view.layout}
-                        background={cardRecord.attributes.view.background}
-                        userImages={mediaRecordsToUrlSet(
-                          cardRecord.attributes.userImages.data
-                        )}
-                        onRender={(image) => setRenderedImage(image)}
-                        randomSeed={randomSeed}
-                      />
-                    )}
-                  </>
+                ) : isDelivered ? (
+                  isReceived && (
+                    <Link className={styles.primaryButton} href="/receive/list">
+                      もらった年賀状一覧へ
+                    </Link>
+                  )
+                ) : isReserved ? (
+                  <Link className={styles.primaryButton} href="/create/new">
+                    年賀状を作ってみる
+                  </Link>
+                ) : (
+                  <button className={styles.primaryButton} onClick={reserve}>
+                    受け取り予約する
+                  </button>
                 )}
+                {isDelivered &&
+                  (strapiUserId === cardCreatorId || isReceived) && (
+                    <>
+                      <button
+                        className={
+                          styles.seconradyButton[
+                            renderedImage ? 'default' : 'disabled'
+                          ]
+                        }
+                        onClick={() => {
+                          if (!renderedImage) return
+                          const url = URL.createObjectURL(renderedImage)
+                          const a = document.createElement('a')
+                          a.href = url
+                          a.setAttribute(
+                            'download',
+                            `new_year_card_${Date.now()}`
+                          )
+                          document.body.appendChild(a)
+                          a.click()
+                          URL.revokeObjectURL(url)
+                          a.remove()
+                        }}
+                      >
+                        <FaDownload />
+                        保存
+                      </button>
+                      <button
+                        className={
+                          styles.seconradyButton[
+                            renderedImage ? 'default' : 'disabled'
+                          ]
+                        }
+                        onClick={() => {
+                          setIsPrintModalOpen(true)
+                        }}
+                      >
+                        <FaPrint />
+                        印刷
+                      </button>
+                      {randomSeed !== undefined && (
+                        <Renderer
+                          layout={cardRecord.attributes.view.layout}
+                          background={cardRecord.attributes.view.background}
+                          userImages={mediaRecordsToUrlSet(
+                            cardRecord.attributes.userImages.data
+                          )}
+                          onRender={(image) => setRenderedImage(image)}
+                          randomSeed={randomSeed}
+                        />
+                      )}
+                    </>
+                  )}
+              </div>
+              {!isDelivered &&
+                (deliveryDate ? (
+                  <div className={styles.deliveryDate.default}>
+                    {deliveryDate.getMonth() + 1}月{deliveryDate.getDate()}日
+                    {deliveryDate.getHours()}:
+                    {deliveryDate.getMinutes().toString().padStart(2, '0')}{' '}
+                    から受け取ることができます
+                  </div>
+                ) : (
+                  <div className={styles.deliveryDate.hidden}>
+                    配達日時を取得中
+                  </div>
+                ))}
             </div>
           </div>
         </div>
