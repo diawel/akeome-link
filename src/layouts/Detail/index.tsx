@@ -31,7 +31,7 @@ const Detail = ({ cardAttributes, cardRecordId }: DetailProps) => {
             randomVariants="hidden"
           />
         </div>
-        <Link className={styles.primaryButton} href={`/share/${cardRecordId}`}>
+        <Link className={styles.primaryButton} href={`/share/${cardRecordId}`} >
           SNSで共有する
         </Link> 
         <div className={styles.buttonContainer}>
