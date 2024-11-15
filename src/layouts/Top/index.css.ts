@@ -1,4 +1,4 @@
-import { keyframes, style } from '@vanilla-extract/css'
+import { style } from '@vanilla-extract/css'
 import { color } from '../../utils/styleSchema'
 
 export const container = style({
