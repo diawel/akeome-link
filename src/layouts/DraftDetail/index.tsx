@@ -30,34 +30,36 @@ const DraftDetail = ({ cardAttributes, cardRecordId }: DraftProps) => {
           <div className={styles.center}>
             <div className={styles.creatorName}>{cardAttributes.creatorName}</div>
           </div>
-          <div className={styles.center}>
-            <div className={styles.cardSpace}>
-              <div className={styles.card}>
-                <Card
-                  layout={cardAttributes.view.layout}
-                  background={cardAttributes.view.background}
-                  userImages={mediaRecordsToUrlSet(
-                    cardAttributes.userImages.data
-                  )}
-                  randomVariants="hidden"
-                />
+          <div className={styles.container}>
+            <div className={styles.center}>
+              <div className={styles.cardSpace}>
+                <div className={styles.card}>
+                  <Card
+                    layout={cardAttributes.view.layout}
+                    background={cardAttributes.view.background}
+                    userImages={mediaRecordsToUrlSet(
+                      cardAttributes.userImages.data
+                    )}
+                    randomVariants="hidden"
+                  />
+                </div>
               </div>
             </div>
-          </div>
-          <div className={styles.buttonContainer}>
-            <div className={styles.buttonSpace}>
-              <Link className={styles.link} href={`/create/edit/${cardRecordId}`}>
-                <button className={styles.editButton}>
-                  <div className={styles.buttonText}>つづきから編集</div>
-                </button>
-              </Link> 
+            <div className={styles.buttonContainer}>
+              <div className={styles.buttonSpace}>
+                <Link className={styles.link} href={`/create/edit/${cardRecordId}`}>
+                  <button className={styles.editButton}>
+                    <div className={styles.buttonText}>つづきから編集</div>
+                  </button>
+                </Link> 
+              </div>
+              <button
+                className={styles.deleteButton}
+                onClick={() => deleteCreatedCard(cardRecordId).then(() => {router.push('/create/list')})}
+              >
+                <div className={styles.buttonText}>削除</div>
+              </button>
             </div>
-            <button
-              className={styles.deleteButton}
-              onClick={() => deleteCreatedCard(cardRecordId).then(() => {router.push('/create/list')})}
-            >
-              <div className={styles.buttonText}>削除</div>
-            </button>
           </div>
         </div>
       </div>
