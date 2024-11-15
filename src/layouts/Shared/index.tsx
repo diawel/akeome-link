@@ -26,6 +26,8 @@ import fuji from './fuji.svg'
 import hana from './hana.svg'
 import matsu from './matsu.svg'
 import { color } from '../../utils/styleSchema'
+import cart from './cart.svg'
+import pin from './pin.svg'
 
 type SharedProps = {
   cardCreatorId: number
@@ -100,10 +102,10 @@ const Shared = ({
     if (isReserved) return
 
     setIsReserved(true)
-    await addUniqueReceivedCard({
-      shareId: cardRecord.attributes.shareId,
-      isReserve: true,
-    })
+    // await addUniqueReceivedCard({
+    //   shareId: cardRecord.attributes.shareId,
+    //   isReserve: true,
+    // })
   }
 
   return (
@@ -181,7 +183,38 @@ const Shared = ({
                 </button>
               </div>
             ) : (
-              <div>配達中のアニメーション</div>
+              <div className={styles.daliveryAnimationContainer}>
+                <div className={styles.bubbleContainer}>
+                  <div
+                    className={
+                      styles.bubble[isReserved ? 'reserved' : 'default']
+                    }
+                  >
+                    <div className={styles.bubbleInner}>予約完了！</div>
+                  </div>
+                </div>
+                <div className={styles.cartContainer}>
+                  <Image
+                    src={cart}
+                    alt=""
+                    className={styles.cart[isReserved ? 'reserved' : 'default']}
+                    loading="eager"
+                  />
+                  <Image
+                    src={pin}
+                    alt=""
+                    className={styles.pin}
+                    loading="eager"
+                  />
+                </div>
+                <div className={styles.progressBarContainer}>
+                  <div
+                    className={
+                      styles.progressBar[isReserved ? 'reserved' : 'default']
+                    }
+                  />
+                </div>
+              </div>
             )}
             <div className={styles.control}>
               {strapiUserId === cardCreatorId ? (

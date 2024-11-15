@@ -334,6 +334,136 @@ export const emptyCard = style({
   backfaceVisibility: 'hidden',
 })
 
+export const daliveryAnimationContainer = style({
+  width: '100%',
+  aspectRatio: '100 / 148',
+  padding: 16,
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  flexDirection: 'column',
+})
+
+export const bubbleContainer = style({
+  width: '100%',
+  paddingBottom: 16,
+  display: 'flex',
+  justifyContent: 'flex-end',
+})
+
+const bubbleBase = style({
+  left: '75%',
+  border: `2px solid ${color.gray[80]}`,
+  borderRadius: 10,
+  width: 'fit-content',
+  transition: 'opacity 0.3s 1s, transform 0.3s 1s',
+
+  ':before': {
+    content: '',
+    position: 'absolute',
+    top: '100%',
+    left: '50%',
+    translate: '-50% -50%',
+    rotate: '45deg',
+    width: 12,
+    height: 12,
+    border: `2px solid ${color.gray[80]}`,
+    borderRadius: 2,
+    backgroundColor: color.gray[100],
+  },
+})
+
+export const bubble = styleVariants({
+  default: [
+    bubbleBase,
+    {
+      opacity: 0,
+      transform: 'translateY(4px)',
+    },
+  ],
+  reserved: [
+    bubbleBase,
+    {
+      opacity: 1,
+      transform: 'translateY(0)',
+    },
+  ],
+})
+
+export const bubbleInner = style({
+  backgroundColor: color.gray[100],
+  color: color.red[5],
+  padding: 10,
+  borderRadius: 8,
+  fontSize: 14,
+  fontWeight: 'bold',
+  position: 'relative',
+  width: 'fit-content',
+})
+
+export const cartContainer = style({
+  width: '100%',
+  display: 'flex',
+  justifyContent: 'flex-end',
+  position: 'relative',
+  height: 24,
+})
+
+const cartBase = style({
+  position: 'absolute',
+  bottom: 0,
+  height: '100%',
+  width: 'auto',
+  transition: 'left 1.2s 0.3s',
+})
+
+export const cart = styleVariants({
+  default: [cartBase, { left: '0%' }],
+  reserved: [
+    cartBase,
+    {
+      left: '70%',
+    },
+  ],
+})
+
+const float = keyframes({
+  '0%': {
+    transform: 'translateY(-2px)',
+  },
+  '70%': {
+    transform: 'translateY(-6px)',
+  },
+  '100%': {
+    transform: 'translateY(-2px)',
+  },
+})
+
+export const pin = style({
+  height: '100%',
+  width: 'auto',
+  animation: `${float} 1.5s infinite`,
+})
+
+export const progressBarContainer = style({
+  width: '100%',
+  height: 8,
+  backgroundColor: color.gray[80],
+  borderRadius: 4,
+})
+
+const progressBarBase = style({
+  height: '100%',
+  backgroundColor: color.red[50],
+  borderRadius: 'inherit',
+  transition: 'width 1.2s',
+})
+
+export const progressBar = styleVariants({
+  default: [progressBarBase, { width: '25%' }],
+  reserved: [progressBarBase, { width: '100%' }],
+})
+
 export const control = style({
   width: '100%',
   display: 'grid',
