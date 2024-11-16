@@ -28,10 +28,10 @@ const Share = ({ cardRecord }: ShareProps) => {
   const [copied, setCopied] = useState(false)
 
   const handleCopy = () => {
-    navigator.clipboard.writeText(shareUrl);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  };
+    navigator.clipboard.writeText(shareUrl)
+    setCopied(true)
+    setTimeout(() => setCopied(false), 2000)
+  }
 
   useEffect(() => {
     setShareUrl(
@@ -43,7 +43,12 @@ const Share = ({ cardRecord }: ShareProps) => {
     <>
       <div>
         <div className={styles.postContainer}>
-          <Image className={styles.post} src={postImage} alt="postImage" />
+          <Image
+            className={styles.post}
+            src={postImage}
+            alt="postImage"
+            loading="eager"
+          />
           <div className={styles.card}>
             <Card
               layout={cardRecord.attributes.view.layout}
@@ -57,8 +62,10 @@ const Share = ({ cardRecord }: ShareProps) => {
         </div>
         <div className={styles.linkBoxContainer}>
           <div>
-            <div className={`${styles.copiedPopup} ${copied ? '' : styles.hidden}`}>
-              <Image src={copiedPopup} alt="copiedPopup" />
+            <div
+              className={`${styles.copiedPopup} ${copied ? '' : styles.hidden}`}
+            >
+              <Image src={copiedPopup} alt="copiedPopup" loading="eager" />
             </div>
             <div className={styles.linkBoxContent}>
               <input
@@ -67,27 +74,28 @@ const Share = ({ cardRecord }: ShareProps) => {
                 readOnly
                 className={styles.linkInput}
               />
-              <button
-                className={styles.copyButton}
-                onClick={handleCopy}
-              >  
-                <Image src={copied ? copiedIcon : copyIcon} alt="copyIcon"></Image>
+              <button className={styles.copyButton} onClick={handleCopy}>
+                <Image
+                  src={copied ? copiedIcon : copyIcon}
+                  alt="copyIcon"
+                  loading="eager"
+                />
               </button>
             </div>
           </div>
         </div>
         <div>
           <div className={styles.iconButtonContainer}>
-          <div className={styles.buttonRightSpace}>
-            <Link
-              className={styles.xContainer}
-              href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(
-                `年賀状が届いています #JPHACKS2024\n`
-              )}&url=${encodeURIComponent(shareUrl)}`}
-              target="_blank"
-            >
-              <Image src={xIcon} alt="xIcon"></Image>
-            </Link>
+            <div className={styles.buttonRightSpace}>
+              <Link
+                className={styles.xContainer}
+                href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(
+                  `年賀状が届いています #JPHACKS2024\n`
+                )}&url=${encodeURIComponent(shareUrl)}`}
+                target="_blank"
+              >
+                <Image src={xIcon} alt="xIcon" loading="eager" />
+              </Link>
             </div>
             <div className={styles.buttonRightSpace}>
               <Link
@@ -97,7 +105,7 @@ const Share = ({ cardRecord }: ShareProps) => {
                 )}&text=年賀状が届いています`}
                 target="_blank"
               >
-                <Image src={lineIcon} alt="lineIcon"></Image>
+                <Image src={lineIcon} alt="lineIcon" loading="eager" />
               </Link>
             </div>
             <div className={styles.buttonRightSpace}>
@@ -107,7 +115,7 @@ const Share = ({ cardRecord }: ShareProps) => {
                   pathname: `/share/${cardRecord.id}/qr`,
                 }}
               >
-                <Image src={qrIcon} alt="lineIcon"></Image>
+                <Image src={qrIcon} alt="lineIcon" loading="eager" />
               </Link>
             </div>
             <button
@@ -129,7 +137,7 @@ const Share = ({ cardRecord }: ShareProps) => {
               }}
             >
               <div className={styles.downloadContent}>
-                <Image src={downloadIcon} alt="downLoadIcon"></Image>
+                <Image src={downloadIcon} alt="downLoadIcon" loading="eager" />
               </div>
             </button>
           </div>
