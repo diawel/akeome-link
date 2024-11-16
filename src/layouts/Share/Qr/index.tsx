@@ -32,7 +32,7 @@ const Qr = ({ cardRecord }: QrProps) => {
         </div>
         <div className={styles.textOverlay}>
           <div>
-            <Image src={akeomeLinkLogo} alt='akeomeLinkLogo' />
+            <Image src={akeomeLinkLogo} alt='akeomeLinkLogo' priority />
             <div className={styles.qrCodeSpace}>
               <div className={styles.qrCode}>
                 <QRCodeCanvas value={shareUrl} size={215} />
