@@ -46,7 +46,7 @@ const growIn = keyframes({
   },
 })
 
-export const patterm = style({
+export const pattern = style({
   width: '100%',
   height: '100%',
   objectFit: 'cover',
