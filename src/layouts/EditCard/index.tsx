@@ -6,6 +6,7 @@ import * as styles from './index.css'
 import Meta from './Meta'
 import Edit from './Edit'
 import { useEditCard } from './EditCardProvider'
+import FixedPage from '../../components/DisableScroll'
 
 const EditCard = () => {
   const {
@@ -17,40 +18,42 @@ const EditCard = () => {
   const [isLoading, setIsLoading] = useState(false)
 
   return (
-    <div
-      className={styles.screen}
-      style={
-        isLoading
-          ? {
-              pointerEvents: isLoading ? 'none' : 'auto',
-              filter: isLoading ? 'brightness(0.5)' : 'none',
-            }
-          : {}
-      }
-    >
-      <Meta />
-      <div className={styles.cardWrapper}>
-        <Card
-          layout={cardLayout}
-          background={cardBackground}
-          userImages={userImages}
-          edit={{
+    <FixedPage>
+      <div
+        className={styles.screen}
+        style={
+          isLoading
+            ? {
+                pointerEvents: isLoading ? 'none' : 'auto',
+                filter: isLoading ? 'brightness(0.5)' : 'none',
+              }
+            : {}
+        }
+      >
+        <Meta />
+        <div className={styles.cardWrapper}>
+          <Card
+            layout={cardLayout}
+            background={cardBackground}
+            userImages={userImages}
+            edit={{
+              isAnyFocused,
+              setIsAnyFocused,
+              setLayout: setCardLayout,
+              setBackground: setCardBackground,
+              setUserImages,
+            }}
+          />
+        </div>
+        <Edit
+          {...{
             isAnyFocused,
             setIsAnyFocused,
-            setLayout: setCardLayout,
-            setBackground: setCardBackground,
-            setUserImages,
+            setIsLoading,
           }}
         />
       </div>
-      <Edit
-        {...{
-          isAnyFocused,
-          setIsAnyFocused,
-          setIsLoading,
-        }}
-      />
-    </div>
+    </FixedPage>
   )
 }
 
