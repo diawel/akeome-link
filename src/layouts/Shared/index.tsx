@@ -178,7 +178,8 @@ const Shared = ({
                   <div
                     className={
                       styles.cardContainer[
-                        existingReceivedCard
+                        existingReceivedCard &&
+                        existingReceivedCard.attributes.publishedAt !== null
                           ? 'alreadyReceived'
                           : isReceived
                           ? 'received'
@@ -194,7 +195,12 @@ const Shared = ({
                       )}
                       randomVariants="revealing"
                       randomSeed={randomSeed}
-                      revealDelay={existingReceivedCard ? undefined : 1.5}
+                      revealDelay={
+                        existingReceivedCard &&
+                        existingReceivedCard.attributes.publishedAt !== null
+                          ? undefined
+                          : 1.5
+                      }
                     />
                     <Image
                       src={emptyCard}
