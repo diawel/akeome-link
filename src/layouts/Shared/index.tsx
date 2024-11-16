@@ -130,7 +130,7 @@ const Shared = ({
             <Image
               src={pattern}
               alt=""
-              className={styles.patterm}
+              className={styles.pattern}
               loading="eager"
             />
           </div>
