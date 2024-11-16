@@ -12,6 +12,12 @@ export const metadata: Metadata = {
   appleWebApp: {
     title: 'あけおめリンク',
   },
+  openGraph: {
+    images: ['/icon-512x512.png'],
+  },
+  twitter: {
+    card: 'summary',
+  },
 }
 
 export const viewport: Viewport = {
