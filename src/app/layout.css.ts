@@ -1,4 +1,5 @@
 import { style } from '@vanilla-extract/css'
+import * as disabledScrollStyle from '../components/DisableScroll/index.css'
 
 export const container = style({
   display: 'flex',
@@ -42,4 +43,10 @@ export const content = style({
   overflowY: 'auto',
   backgroundColor: '#f5f5f5',
   contain: 'paint',
+
+  selectors: {
+    [`&:has(${disabledScrollStyle.fixedScreen})`]: {
+      overflowY: 'hidden',
+    },
+  },
 })
