@@ -14,7 +14,7 @@ export const generateMetadata = async ({
   return {
     title: `${card?.data.attributes.creatorName} さんから年賀状が届きました - あけおめリンク`,
     openGraph: {
-      images: [`/api/og?cardId=${params.id}`],
+      images: [`/api/og?shareId=${params.id}`],
     },
   }
 }
