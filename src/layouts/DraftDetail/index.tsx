@@ -33,7 +33,7 @@ const DraftDetail = ({ cardAttributes, cardRecordId }: DraftProps) => {
         </div>
         <div className={styles.buttonContainer}>
           <Link className={styles.editButton} href={`/create/edit/${cardRecordId}`}>
-            コピーして編集
+            続きから編集
           </Link>
           <button
             className={styles.deleteButton}
