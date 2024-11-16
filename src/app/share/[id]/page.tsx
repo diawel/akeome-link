@@ -5,7 +5,9 @@ import { getCreatedCard } from '../../../utils/strapi/card'
 const Page = async ({ params }: { params: { id: number } }) => {
   const cardResponse = await getCreatedCard(params.id)
 
-  if (!cardResponse) notFound()
+  if(!cardResponse) {
+    notFound()
+  }
   
   return <Share cardRecord={cardResponse.data} />
 }
