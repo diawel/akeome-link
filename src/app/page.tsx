@@ -7,7 +7,6 @@ const Login = async () => {
   const session = await getServerSession(authOptions)
   if (session) {
     redirect('/create/list')
-    return null
   }
 
   return (

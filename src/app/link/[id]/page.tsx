@@ -1,4 +1,4 @@
-import { redirect } from 'next/navigation'
+import { notFound } from 'next/navigation'
 import Shared from '../../../layouts/Shared'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '../../api/auth/[...nextauth]/authOptions'
@@ -21,7 +21,9 @@ export const generateMetadata = async ({
 
 const Page = async ({ params }: { params: { id: string } }) => {
   const card = await getSharedCard(params.id)
-  if (!card) redirect('/')
+  if (!card) {
+    notFound()
+  }
   const session = await getServerSession(authOptions)
   const recievedCard = await getReceivedCardByCardId(card.data.id)
   const isDelivered = new Date(card.data.attributes.deliveredAt) < new Date()
