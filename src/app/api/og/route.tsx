@@ -413,8 +413,8 @@ export const GET = async (request: Request) => {
       height: 630,
       fonts: [
         {
-          name: 'SmartFont', // フォント名
-          data: fontData, // フォントデータ
+          name: 'SmartFont',
+          data: fontData,
           style: 'normal',
         },
       ],
