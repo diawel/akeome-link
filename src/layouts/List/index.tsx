@@ -13,7 +13,9 @@ const List = async ({ tab }: ListProps) => {
   if (tab === 'created') {
     const cards = await getCreatedCards()
     if (!cards) {
-      redirect('/')
+      redirect(
+        `/api/auth/signin?callbackUrl=${encodeURIComponent('/create/list')}`
+      )
     }
     return (
       <>
