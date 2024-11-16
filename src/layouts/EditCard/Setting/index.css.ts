@@ -61,6 +61,10 @@ const inputBase = style({
   borderRadius: 4,
   fontSize: 16,
   color: color.gray[5],
+
+  ':disabled': {
+    opacity: 0.5,
+  },
 })
 
 export const input = styleVariants({
