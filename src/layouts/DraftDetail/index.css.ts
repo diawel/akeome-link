@@ -43,20 +43,8 @@ export const card = style({
   boxShadow: '0.1px 0.1px 2px rgba(0, 0, 0, 0.3)',
 })
 
-export const primaryButton = style({
-  padding: '10px 24px',
-  backgroundColor: color.red[5],
-  color: color.gray[100],
-  borderRadius: '12px',
-  cursor: 'pointer',
-  border: 'none',
+export const link = style({
   textDecoration: 'none',
-  fontSize: '16px',
-  fontWeight: 'bold',
-  width: '100%',
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
 })
 
 export const editButton = style({

@@ -4,17 +4,17 @@ import Card from '../../components/Card'
 import * as styles from './index.css'
 import Link from 'next/link'
 import { mediaRecordsToUrlSet } from '../../utils/strapi/strapiImage'
-import { CardAttributes, deleteCreatedCard } from '../../utils/strapi/card'
+import { deleteCreatedCard, DraftCardAttributes } from '../../utils/strapi/card'
 import ReturnButton from '../../components/ReturnButton'
 import { color } from '../../utils/styleSchema'
-import { useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation'
 
-type DetailProps = {
-  cardAttributes: CardAttributes
+type DraftProps = {
+  cardAttributes: DraftCardAttributes
   cardRecordId: number
 }
 
-const Detail = ({ cardAttributes, cardRecordId }: DetailProps) => {
+const DraftDetail = ({ cardAttributes, cardRecordId }: DraftProps) => {
   const router = useRouter()
 
   return (
@@ -31,11 +31,8 @@ const Detail = ({ cardAttributes, cardRecordId }: DetailProps) => {
             randomVariants="hidden"
           />
         </div>
-        <Link className={styles.primaryButton} href={`/share/${cardRecordId}`} >
-          SNSで共有する
-        </Link> 
         <div className={styles.buttonContainer}>
-          <Link className={styles.editButton} href={`/create/new/${cardRecordId}`}>
+          <Link className={styles.editButton} href={`/create/edit/${cardRecordId}`}>
             コピーして編集
           </Link>
           <button
@@ -54,4 +51,4 @@ const Detail = ({ cardAttributes, cardRecordId }: DetailProps) => {
   )
 }
 
-export default Detail
+export default DraftDetail
