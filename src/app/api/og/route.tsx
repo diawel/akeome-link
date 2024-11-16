@@ -381,7 +381,7 @@ export const GET = async (request: Request) => {
         <div
           style={{
             position: 'absolute',
-            top: '300px',
+            top: '315px',
             left: '380px',
             width: '480px',
             height: '100px',
