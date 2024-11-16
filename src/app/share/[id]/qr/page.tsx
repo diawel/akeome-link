@@ -2,10 +2,14 @@ import { notFound } from 'next/navigation'
 import Qr from '../../../../layouts/Share/Qr'
 import { getCreatedCard } from '../../../../utils/strapi/card'
 import Link from 'next/link'
+import { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: '年賀状の共有 - あけおめリンク',
+}
 
 const Page = async ({ params }: { params: { id: number } }) => {
   const cardResponse = await getCreatedCard(params.id)
-
 
   if (!cardResponse) {
     notFound()
