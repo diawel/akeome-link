@@ -95,6 +95,7 @@ export type CardProps = {
   proxy?: boolean
   randomVariants?: 'revealed' | 'hidden' | 'revealing'
   randomSeed?: number
+  revealDelay?: number
 }
 
 const Card = ({
@@ -106,6 +107,7 @@ const Card = ({
   proxy,
   randomVariants = 'hidden',
   randomSeed,
+  revealDelay = 0.5,
 }: CardProps) => {
   const stickers = useStickers()
   const [cardScale, setCardScale] = useState(0)
@@ -372,6 +374,7 @@ const Card = ({
                     if (!sticker) return null
                     if (
                       randomVariants !== 'hidden' &&
+                      randomSeed !== undefined &&
                       sticker.attributes.randomVariants.data
                     ) {
                       const variant = random.nextInt(
@@ -424,11 +427,12 @@ const Card = ({
                           <div
                             className={
                               styles.layeredStickerContainer[
-                                cardScale && randomSeed !== undefined
-                                  ? randomVariants
-                                  : 'hidden'
+                                cardScale ? randomVariants : 'hidden'
                               ]
                             }
+                            style={{
+                              animationDelay: `${revealDelay}s`,
+                            }}
                           >
                             <img
                               style={{
@@ -546,7 +550,7 @@ const Card = ({
                   }}
                 >
                   {content}
-                  <button
+                  <div
                     className={styles.control.remove}
                     onClick={(event) => {
                       event.stopPropagation()
@@ -569,7 +573,7 @@ const Card = ({
                     }}
                   >
                     <Image src={removeIcon} alt="消す" loading="eager" />
-                  </button>
+                  </div>
                   <Image
                     className={styles.control.rotate}
                     src={rotateIcon}

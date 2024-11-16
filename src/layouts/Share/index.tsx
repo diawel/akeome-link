@@ -81,9 +81,10 @@ const Share = ({ cardRecord }: ShareProps) => {
           <div className={styles.buttonRightSpace}>
             <Link
               className={styles.xContainer}
-              href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(
-                shareUrl
-              )}&text=年賀状が届いています #あけおめリンク`}
+              href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(
+                `年賀状が届いています #JPHACKS2024\n`
+              )}&url=${encodeURIComponent(shareUrl)}`}
+              target="_blank"
             >
               <Image src={xIcon} alt="xIcon"></Image>
             </Link>
@@ -94,6 +95,7 @@ const Share = ({ cardRecord }: ShareProps) => {
                 href={`https://social-plugins.line.me/lineit/share?url=${encodeURIComponent(
                   shareUrl
                 )}&text=年賀状が届いています`}
+                target="_blank"
               >
                 <Image src={lineIcon} alt="lineIcon"></Image>
               </Link>

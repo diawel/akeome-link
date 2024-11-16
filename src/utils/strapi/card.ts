@@ -347,3 +347,29 @@ export const updateCard = async ({
     throw error
   }
 }
+
+export const deleteCreatedCard = async (id: number) => {
+  const existingCard = await getCreatedCard(id)
+
+  if (!existingCard) {
+    throw new Error('Card not found')
+  }
+
+  try {
+    const strapiResponse = await fetch(
+      `${process.env.NEXT_PUBLIC_STRAPI_BACKEND_URL}/api/cards/${id}`,
+      {
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${process.env.STRAPI_API_TOKEN}`,
+        },
+      }
+    )
+
+    if (!strapiResponse.ok) {
+      throw new Error(`Failed to delete card: ${strapiResponse.statusText}`)
+    }
+  } catch (error) {
+    throw error
+  }
+}

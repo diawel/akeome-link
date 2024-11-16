@@ -109,7 +109,7 @@ export const layeredStickerContainer = styleVariants({
   revealing: [
     layeredStickerContainerBase,
     {
-      animation: `0.5s ease-out 0.5s ${reveale} forwards`,
+      animation: `0.5s ease-out ${reveale} forwards`,
     },
   ],
 })
@@ -138,6 +138,7 @@ export const interactionContainer = styleVariants({
 const controlBase = style({
   border: 'none',
   backgroundColor: 'transparent',
+  cursor: 'pointer',
 
   selectors: {
     [`.${interactionContainer.default} > &`]: {
