@@ -10,7 +10,7 @@ const Top = () => {
   return (
     <div className={styles.container}>
       <div className={styles.content}>
-        <Image src={akeomeLinkLogo} width={255} alt='akeomeLinkLogo' />
+        <Image src={akeomeLinkLogo} width={255} alt='akeomeLinkLogo' priority />
         <div className={styles.discription}>
           <div><span className={styles.redText}>SNS</span>で<span className={styles.redText}>年賀状</span>を交換</div>
         </div>

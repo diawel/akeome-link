@@ -23,6 +23,7 @@ const Header = async ({ activeTab }: HeaderProps) => {
             className={styles.icon}
             src={akeomeLinkLogo}
             alt="akeomeLinkLogo"
+            priority
           />
         </div>
         <Link href="/post/delivered" className={styles.notificationIcon}>
