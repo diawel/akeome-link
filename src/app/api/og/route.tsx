@@ -1,6 +1,8 @@
 import { ImageResponse } from 'next/og'
 import { NextResponse } from 'next/server'
 import { getSharedCard } from '../../../utils/strapi/card'
+import fs from 'fs'
+import path from 'path'
 
 export const GET = async (request: Request) => {
   const { searchParams } = new URL(request.url)
@@ -17,6 +19,8 @@ export const GET = async (request: Request) => {
   if (!card) {
     return NextResponse.json({ error: 'Card not found' }, { status: 404 })
   }
+
+  const fontData = await fs.readFileSync(path.join(process.cwd(), 'public/fonts/03SmartFontUI.ttf'))
 
   return new ImageResponse(
     (
@@ -407,6 +411,13 @@ export const GET = async (request: Request) => {
     {
       width: 1200,
       height: 630,
+      fonts: [
+        {
+          name: 'SmartFont', // フォント名
+          data: fontData, // フォントデータ
+          style: 'normal',
+        },
+      ],
     }
   )
 }
