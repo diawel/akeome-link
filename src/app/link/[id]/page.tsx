@@ -16,6 +16,9 @@ export const generateMetadata = async ({
     openGraph: {
       images: [`/api/og?shareId=${params.id}`],
     },
+    robots: {
+      index: false,
+    },
   }
 }
 
