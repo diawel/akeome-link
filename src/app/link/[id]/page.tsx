@@ -21,7 +21,9 @@ export const generateMetadata = async ({
 
 const Page = async ({ params }: { params: { id: string } }) => {
   const card = await getSharedCard(params.id)
-  if (!card) notFound()
+  if (!card) {
+    notFound()
+  }
   const session = await getServerSession(authOptions)
   const recievedCard = await getReceivedCardByCardId(card.data.id)
   const isDelivered = new Date(card.data.attributes.deliveredAt) < new Date()
