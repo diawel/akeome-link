@@ -127,7 +127,12 @@ const Shared = ({
       >
         <div className={styles.backgroundContainer}>
           <div className={styles.patternContainer}>
-            <Image src={pattern} alt="" className={styles.patterm} />
+            <Image
+              src={pattern}
+              alt=""
+              className={styles.pattern}
+              loading="eager"
+            />
           </div>
           <div className={styles.bottomPatternContainer}>
             <Image
@@ -178,7 +183,8 @@ const Shared = ({
                   <div
                     className={
                       styles.cardContainer[
-                        existingReceivedCard
+                        existingReceivedCard &&
+                        existingReceivedCard.attributes.publishedAt !== null
                           ? 'alreadyReceived'
                           : isReceived
                           ? 'received'
@@ -194,7 +200,12 @@ const Shared = ({
                       )}
                       randomVariants="revealing"
                       randomSeed={randomSeed}
-                      revealDelay={existingReceivedCard ? undefined : 1.5}
+                      revealDelay={
+                        existingReceivedCard &&
+                        existingReceivedCard.attributes.publishedAt !== null
+                          ? undefined
+                          : 1.5
+                      }
                     />
                     <Image
                       src={emptyCard}
@@ -329,7 +340,12 @@ const Shared = ({
         </div>
         <div className={styles.overlayContainer}>
           <div className={styles.cloudTop}>
-            <Image src={cloud} alt="" className={styles.cloud} />
+            <Image
+              src={cloud}
+              alt=""
+              className={styles.cloud}
+              loading="eager"
+            />
           </div>
           <div className={styles.cloudBottom}>
             <Image
@@ -339,19 +355,30 @@ const Shared = ({
               style={{
                 animationDelay: '-0.4s',
               }}
+              loading="eager"
             />
           </div>
           <div className={styles.daruma}>
-            <Image src={daruma} alt="" className={styles.daruma} />
+            <Image
+              src={daruma}
+              alt=""
+              className={styles.daruma}
+              loading="eager"
+            />
           </div>
           <div className={styles.fuji}>
-            <Image src={fuji} alt="" className={styles.fuji} />
+            <Image src={fuji} alt="" className={styles.fuji} loading="eager" />
           </div>
           <div className={styles.hana}>
-            <Image src={hana} alt="" className={styles.hana} />
+            <Image src={hana} alt="" className={styles.hana} loading="eager" />
           </div>
           <div className={styles.matsu}>
-            <Image src={matsu} alt="" className={styles.matsu} />
+            <Image
+              src={matsu}
+              alt=""
+              className={styles.matsu}
+              loading="eager"
+            />
           </div>
         </div>
         {isPrintModalOpen && renderedImage && (

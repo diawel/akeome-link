@@ -35,20 +35,17 @@ const Renderer = ({
         const images = rendererRef.current?.querySelectorAll(
           `.${catdStyles.card} .${catdStyles.backgroundContainer} > img, .${catdStyles.card} .${catdStyles.userImageContainer} > img, .${catdStyles.card} .${catdStyles.stickerContainer} > img`
         )
-        const allCompleted =
-          !images ||
-          !images.length ||
-          images?.entries().every?.(([, image]) => {
-            if (!(image instanceof HTMLImageElement)) return true
-            return image.complete
-          })
+        const allCompleted = Array.from(images).every((image) => {
+          if (!(image instanceof HTMLImageElement)) return true
+          return image.complete
+        })
         if (allCompleted) {
           const card = rendererRef.current?.querySelector<HTMLDivElement>(
             `.${catdStyles.card}`
           )
           if (card?.getBoundingClientRect().width) {
             // 画面内のnext/imageは全てloading=eagerにしないとハングする
-            html2canvas(rendererRef.current, {}).then(
+            html2canvas(rendererRef.current).then(
               (canvas: HTMLCanvasElement) => {
                 const toBlob = (quality?: number) => {
                   if (quality !== undefined && quality < 0.1) return

@@ -5,10 +5,10 @@ const containerBase = style({
   width: '100%',
   backgroundColor: color.gray[90],
   borderRadius: 12,
-  padding: 20,
+  padding: 30,
   display: 'flex',
   flexDirection: 'column',
-  gap: 20,
+  gap: 30,
   alignItems: 'center',
 })
 
@@ -23,11 +23,60 @@ export const container = styleVariants({
   ],
 })
 
-const seconradyButtonBase = style({
+export const linkText = style({
+  color: color.red[5],
+})
+
+const checkBoxBase = style({
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
-  padding: 10,
+  width: 20,
+  height: 20,
+  borderRadius: 3,
+  marginBlock: 3,
+})
+
+export const checkBox = styleVariants({
+  default: [
+    checkBoxBase,
+    {
+      border: `1px solid ${color.gray[40]}`,
+      backgroundColor: color.gray[100],
+    },
+  ],
+  checked: [
+    checkBoxBase,
+    {
+      backgroundColor: color.red[5],
+    },
+  ],
+})
+
+export const check = style({
+  selectors: {
+    [`${checkBox.default} &`]: {
+      display: 'none',
+    },
+  },
+})
+
+export const input = style({
+  display: 'none',
+})
+
+export const buttonsContainer = style({
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  gap: 16,
+})
+
+export const seconradyButton = style({
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  padding: '10px 24px',
   textDecoration: 'none',
   backgroundColor: color.gray[100],
   color: color.gray[5],
@@ -38,10 +87,25 @@ const seconradyButtonBase = style({
   cursor: 'pointer',
 })
 
-export const seconradyButton = styleVariants({
-  default: [seconradyButtonBase],
+export const primaryButtonBase = style({
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  padding: '10px 24px',
+  textDecoration: 'none',
+  backgroundColor: color.red[5],
+  color: color.gray[100],
+  borderRadius: 12,
+  fontWeight: 'bold',
+  cursor: 'pointer',
+  border: 'none',
+  fontSize: 16,
+})
+
+export const primaryButton = styleVariants({
+  default: [primaryButtonBase],
   disabled: [
-    seconradyButtonBase,
+    primaryButtonBase,
     {
       pointerEvents: 'none',
       opacity: 0.5,
@@ -51,10 +115,21 @@ export const seconradyButton = styleVariants({
 
 export const markedList = style({
   display: 'flex',
-  gap: 4,
+  gap: 12,
+})
+
+export const qrCodeContainer = style({
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  backgroundColor: color.gray[100],
+  borderRadius: 4,
+  padding: '8px 20px 20px',
+  fontSize: 14,
+  fontWeight: 'bold',
 })
 
 export const qrCode = style({
-  width: 200,
-  maxWidth: '100%',
+  width: '100%',
+  marginBottom: '-3%',
 })
