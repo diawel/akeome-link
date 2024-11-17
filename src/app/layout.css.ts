@@ -1,10 +1,6 @@
 import { style } from '@vanilla-extract/css'
 import * as disabledScrollStyle from '../components/DisableScroll/index.css'
 
-export const html = style({
-  overscrollBehaviorY: 'none',
-})
-
 export const body = style({
   display: 'flex',
   height: '100dvh',
@@ -13,7 +9,6 @@ export const body = style({
   alignItems: 'center',
   backgroundColor: '#eeeeee',
   overflow: 'hidden',
-  overscrollBehaviorY: 'none',
 })
 
 export const display = style({
@@ -48,6 +43,7 @@ export const content = style({
   overflowY: 'auto',
   backgroundColor: '#f5f5f5',
   contain: 'paint',
+  overscrollBehaviorY: 'none',
 
   selectors: {
     [`&:has(${disabledScrollStyle.fixedScreen})`]: {

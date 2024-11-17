@@ -31,7 +31,7 @@ const Layout = async ({
   children: React.ReactNode
 }>) => {
   return (
-    <html lang="ja" className={styles.html}>
+    <html lang="ja">
       <body className={styles.body}>
         <ClientSessionProvider>
           <StickerProvider stickers={await getStickers()}>
