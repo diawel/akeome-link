@@ -1,7 +1,7 @@
 import { style } from '@vanilla-extract/css'
 import * as disabledScrollStyle from '../components/DisableScroll/index.css'
 
-export const container = style({
+export const body = style({
   display: 'flex',
   height: '100dvh',
   width: '100%',
@@ -9,6 +9,7 @@ export const container = style({
   alignItems: 'center',
   backgroundColor: '#eeeeee',
   overflow: 'hidden',
+  overscrollBehaviorY: 'none',
 })
 
 export const display = style({

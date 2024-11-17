@@ -32,7 +32,7 @@ const Layout = async ({
 }>) => {
   return (
     <html lang="ja">
-      <body className={styles.container}>
+      <body className={styles.body}>
         <ClientSessionProvider>
           <StickerProvider stickers={await getStickers()}>
             <div className={styles.display}>
