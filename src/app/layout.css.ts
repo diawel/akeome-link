@@ -9,7 +9,6 @@ export const body = style({
   alignItems: 'center',
   backgroundColor: '#eeeeee',
   overflow: 'hidden',
-  overscrollBehaviorY: 'none',
 })
 
 export const display = style({
@@ -44,6 +43,7 @@ export const content = style({
   overflowY: 'auto',
   backgroundColor: '#f5f5f5',
   contain: 'paint',
+  overscrollBehaviorY: 'none',
 
   selectors: {
     [`&:has(${disabledScrollStyle.fixedScreen})`]: {
