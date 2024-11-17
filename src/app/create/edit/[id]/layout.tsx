@@ -4,6 +4,11 @@ import { getCreatedCard } from '../../../../utils/strapi/card'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '../../../api/auth/[...nextauth]/authOptions'
 import { mediaRecordsToUrlSet } from '../../../../utils/strapi/strapiImage'
+import { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: '年賀状を編集 - あけおめリンク',
+}
 
 const Layout = async ({
   children,

@@ -11,10 +11,17 @@ export const generateMetadata = async ({
   params: { id: string }
 }) => {
   const card = await getSharedCard(params.id)
+  if (!card) {
+    notFound()
+  }
+
   return {
-    title: `${card?.data.attributes.creatorName} さんから年賀状が届きました - あけおめリンク`,
+    title: `${card.data.attributes.creatorName} さんから年賀状が届きました - あけおめリンク`,
     openGraph: {
       images: [`/api/og?shareId=${params.id}`],
+    },
+    robots: {
+      index: false,
     },
   }
 }
