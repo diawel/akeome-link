@@ -20,6 +20,9 @@ export const generateMetadata = async ({
     openGraph: {
       images: [`/api/og?shareId=${params.id}`],
     },
+    twitter: {
+      card: 'summary_large_image',
+    },
     robots: {
       index: false,
     },
