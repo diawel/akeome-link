@@ -6,6 +6,7 @@ import { getStickers } from '../utils/strapi/sticker'
 import ClientSessionProvider from './ClientSessionProvider'
 import StrapiAdoper from '../utils/db/StrapiAdaper'
 import AchievementPopup from '../layouts/AchievementPopup'
+import { GoogleAnalytics } from '@next/third-parties/google'
 
 export const metadata: Metadata = {
   title: 'あけおめリンク',
@@ -45,6 +46,7 @@ const Layout = async ({
           <StrapiAdoper />
         </ClientSessionProvider>
       </body>
+      <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID ?? ''} />
     </html>
   )
 }
