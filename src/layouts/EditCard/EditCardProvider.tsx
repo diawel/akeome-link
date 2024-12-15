@@ -57,7 +57,7 @@ type EditCardProviderProps = {
   existingId: number
 }
 
-export const EditCardProvider = ({
+const EditCardProvider = ({
   children,
   defaultCard,
   existingId,
@@ -207,3 +207,5 @@ export const EditCardProvider = ({
     </EditCardContext.Provider>
   )
 }
+
+export default EditCardProvider
