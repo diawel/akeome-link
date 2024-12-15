@@ -1,5 +1,5 @@
 import * as styles from './index.css'
-import { beginningOfSentence, privacyPolicy } from './PrivacyPolicyText'
+import { beginningOfSentence, privacyPolicy } from './content'
 
 const Privacy = () => {
   return (
@@ -12,29 +12,34 @@ const Privacy = () => {
           <div>
             <ul className={styles.indentListItem}>
               {section.content.map((item, idx) => {
-                if (item.type === "default") {
-                  return <p key={idx}>{item.text}</p>;
-                } else if (item.type === "list") {
-                  const nextItem = section.content[idx + 1];
+                if (item.type === 'default') {
+                  return <p key={idx}>{item.text}</p>
+                } else if (item.type === 'list') {
+                  const nextItem = section.content[idx + 1]
                   return (
                     <li key={idx} className={styles.listItem}>
                       {item.text}
-                      {nextItem?.type === "indentList" && (
+                      {nextItem?.type === 'indentList' && (
                         <ul className={styles.indentListItem}>
                           {section.content
                             .slice(idx + 1)
-                            .filter((nestedItem) => nestedItem.type === "indentList")
+                            .filter(
+                              (nestedItem) => nestedItem.type === 'indentList'
+                            )
                             .map((nestedItem, nestedIdx) => (
-                              <li key={`${idx}-${nestedIdx}`} className="custom-li">
+                              <li
+                                key={`${idx}-${nestedIdx}`}
+                                className="custom-li"
+                              >
                                 {nestedItem.text}
                               </li>
                             ))}
                         </ul>
                       )}
                     </li>
-                  );
+                  )
                 }
-                return null;
+                return null
               })}
             </ul>
           </div>
