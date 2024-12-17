@@ -5,11 +5,13 @@ const containerBase = style({
   width: '100%',
   height: '100%',
   position: 'relative',
+  backgroundColor: color.gray[90],
 })
 
 export const container = styleVariants({
   default: [containerBase],
   newArrival: [containerBase],
+  loading: [containerBase],
 })
 
 export const backgroundContainer = style({
@@ -22,6 +24,15 @@ export const backgroundContainer = style({
   gridTemplateColumns: '100%',
   gridTemplateRows: '8fr 1fr',
   overflow: 'hidden',
+  opacity: 0,
+  transition: 'opacity 0.3s 1s',
+
+  selectors: {
+    [`${container.newArrival} &`]: {
+      opacity: 1,
+      transition: 'opacity 0.3s',
+    },
+  },
 })
 
 export const patternContainer = style({
@@ -174,35 +185,24 @@ export const cloud = style({
   animation: `${sway} 6s infinite`,
 })
 
-const screenBase = style({
+export const screen = style({
   position: 'absolute',
   top: 0,
   left: 0,
   width: '100%',
   height: '100%',
   overflow: 'auto',
-  backgroundColor: color.gray[90],
   paddingTop: 0, // padding-blockはSafariでトランジションが効かない
   paddingBottom: 0,
+  transition:
+    'background-color 0.3s 1s, padding-top 0.6s 0.6s, padding-bottom 0.6s 0.6s',
 
   selectors: {
     [`${container.newArrival} &`]: {
-      backgroundColor: `${color.gray[90]}00`,
       paddingTop: 24,
       paddingBottom: 24,
     },
   },
-})
-
-export const screen = styleVariants({
-  newArrival: [
-    screenBase,
-    {
-      transition:
-        'background-color 0.3s 1s, padding-top 0.6s 0.6s, padding-bottom 0.6s 0.6s',
-    },
-  ],
-  default: [screenBase],
 })
 
 const contentBase = style({
@@ -240,12 +240,15 @@ export const title = style({
   color: color.gray[5],
   textAlign: 'center',
   marginInline: -40,
-  transition: 'color 0.3s 1s',
+  transition: 'color 0.3s 1s, opacity 0.3s',
 
   selectors: {
     [`${container.newArrival} &`]: {
       color: color.gray[100],
       animation: `${fadeIn} 0.3s 2.1s backwards`,
+    },
+    [`${container.loading} &`]: {
+      opacity: 0,
     },
   },
 })
@@ -263,10 +266,14 @@ const slideIn = keyframes({
 
 export const cardStageContaienr = style({
   width: '100%',
+  transition: 'opacity 0.3s',
 
   selectors: {
     [`${container.newArrival} &`]: {
       animation: `${slideIn} 0.6s 1.6s ease-out backwards`,
+    },
+    [`${container.loading} &`]: {
+      opacity: 0,
     },
   },
 })
@@ -292,6 +299,9 @@ export const cardStage = style({
   selectors: {
     [`${container.newArrival} &`]: {
       animation: `${glow} 2s infinite`,
+    },
+    [`${container.loading} &`]: {
+      pointerEvents: 'none',
     },
   },
 })
@@ -331,13 +341,6 @@ export const cardContainer = styleVariants({
     cardContainerBase,
     {
       animationPlayState: 'running',
-    },
-  ],
-  alreadyReceived: [
-    cardContainerBase,
-    {
-      animationPlayState: 'paused',
-      animationDelay: '-1s',
     },
   ],
 })
@@ -490,6 +493,13 @@ export const controlContainer = style({
   alignItems: 'center',
   gap: 10,
   width: '100%',
+  transition: 'opacity 0.3s',
+
+  selectors: {
+    [`${container.loading} &`]: {
+      opacity: 0,
+    },
+  },
 })
 
 export const control = style({

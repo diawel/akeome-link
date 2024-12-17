@@ -13,7 +13,7 @@ import {
   addUniqueReceivedCard,
   ReceivedCardAttributes,
 } from '../../utils/strapi/receivedCard'
-import { putLocalReceivedCard } from '../../utils/db'
+import { getLocalReceivedCard, putLocalReceivedCard } from '../../utils/db'
 import { signIn } from 'next-auth/react'
 import { CardAttributes } from '../../utils/strapi/card'
 import Image from 'next/image'
@@ -35,6 +35,7 @@ type SharedProps = {
   existingReceivedCard?: StrapiRecord<
     Pick<ReceivedCardAttributes, 'randomSeed' | 'publishedAt'>
   >
+  shareId: string
 } & (
   | {
       cardRecord: StrapiRecord<
@@ -53,6 +54,7 @@ const Shared = ({
   cardRecord,
   cardCreatorId,
   strapiUserId,
+  shareId,
   isDelivered,
   existingReceivedCard,
 }: SharedProps) => {
@@ -65,16 +67,29 @@ const Shared = ({
       ? existingReceivedCard.attributes.randomSeed
       : undefined
   )
-  const [isReceived, setIsReceived] = useState(
+  const [isReceived, setIsReceived] = useState<boolean | undefined>(
     (existingReceivedCard !== undefined &&
       existingReceivedCard.attributes.publishedAt !== null) ||
-      strapiUserId === cardCreatorId
+      strapiUserId === cardCreatorId ||
+      undefined
   )
   const [isReserved, setIsReserved] = useState(
     existingReceivedCard !== undefined &&
       existingReceivedCard.attributes.publishedAt === null
   )
-  console.log(randomSeed)
+
+  useEffect(() => {
+    if (!isReceived) {
+      getLocalReceivedCard(shareId).then((localReceivedCard) => {
+        if (localReceivedCard) {
+          setSeed(localReceivedCard.randomSeed)
+          setIsReceived(true)
+        } else {
+          setIsReceived(false)
+        }
+      })
+    }
+  }, [isReceived, shareId])
 
   const receive = async () => {
     if (strapiUserId === cardCreatorId) return
@@ -121,7 +136,11 @@ const Shared = ({
       <div
         className={
           styles.container[
-            isDelivered && !isReceived ? 'newArrival' : 'default'
+            isReceived === undefined
+              ? 'loading'
+              : isDelivered && !isReceived
+              ? 'newArrival'
+              : 'default'
           ]
         }
       >
@@ -143,17 +162,7 @@ const Shared = ({
             />
           </div>
         </div>
-        <div
-          className={
-            styles.screen[
-              isDelivered &&
-              (!existingReceivedCard ||
-                existingReceivedCard.attributes.publishedAt === null)
-                ? 'newArrival'
-                : 'default'
-            ]
-          }
-        >
+        <div className={styles.screen}>
           <div
             className={
               styles.content[isDelivered ? 'delivered' : 'undelivered']
@@ -182,14 +191,7 @@ const Shared = ({
                 <button className={styles.cardStage} onClick={receive}>
                   <div
                     className={
-                      styles.cardContainer[
-                        existingReceivedCard &&
-                        existingReceivedCard.attributes.publishedAt !== null
-                          ? 'alreadyReceived'
-                          : isReceived
-                          ? 'received'
-                          : 'default'
-                      ]
+                      styles.cardContainer[isReceived ? 'received' : 'default']
                     }
                   >
                     <Card
