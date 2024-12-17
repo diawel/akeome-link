@@ -199,7 +199,7 @@ const Shared = ({
                       userImages={mediaRecordsToUrlSet(
                         cardRecord.attributes.userImages.data
                       )}
-                      randomVariants="revealing"
+                      randomVariants={isReceived ? 'revealing' : 'hidden'}
                       randomSeed={randomSeed}
                       revealDelay={1.5}
                     />
