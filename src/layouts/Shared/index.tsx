@@ -59,22 +59,22 @@ const Shared = ({
   const [renderedImage, setRenderedImage] = useState<Blob | null>(null)
   const [isPrintModalOpen, setIsPrintModalOpen] = useState(false)
   const [randomSeed, setSeed] = useState<number | undefined>(
-    existingReceivedCard?.attributes.randomSeed
+    strapiUserId === cardCreatorId
+      ? 10000000 + Math.floor(Math.random() * 90000000)
+      : existingReceivedCard?.attributes.publishedAt
+      ? existingReceivedCard.attributes.randomSeed
+      : undefined
   )
   const [isReceived, setIsReceived] = useState(
-    existingReceivedCard !== undefined &&
-      existingReceivedCard.attributes.publishedAt !== null
+    (existingReceivedCard !== undefined &&
+      existingReceivedCard.attributes.publishedAt !== null) ||
+      strapiUserId === cardCreatorId
   )
   const [isReserved, setIsReserved] = useState(
     existingReceivedCard !== undefined &&
       existingReceivedCard.attributes.publishedAt === null
   )
-
-  useEffect(() => {
-    if (strapiUserId == cardCreatorId) {
-      setSeed(10000000 + Math.floor(Math.random() * 90000000))
-    }
-  }, [cardCreatorId, strapiUserId])
+  console.log(randomSeed)
 
   const receive = async () => {
     if (strapiUserId === cardCreatorId) return
