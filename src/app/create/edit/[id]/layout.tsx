@@ -1,5 +1,5 @@
 import { notFound, redirect } from 'next/navigation'
-import { EditCardProvider } from '../../../../layouts/EditCard/EditCardProvider'
+import EditCardProvider from '../../../../layouts/EditCard/EditCardProvider'
 import { getCreatedCard } from '../../../../utils/strapi/card'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '../../../api/auth/[...nextauth]/authOptions'
