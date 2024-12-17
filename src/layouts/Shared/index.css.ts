@@ -327,6 +327,7 @@ const cardContainerBase = style({
   position: 'relative',
   animation: `${reveal} 1s forwards`,
   transformStyle: 'preserve-3d',
+  backfaceVisibility: 'hidden',
 })
 
 export const cardContainer = styleVariants({
