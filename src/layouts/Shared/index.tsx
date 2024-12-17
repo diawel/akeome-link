@@ -60,18 +60,9 @@ const Shared = ({
 }: SharedProps) => {
   const [renderedImage, setRenderedImage] = useState<Blob | null>(null)
   const [isPrintModalOpen, setIsPrintModalOpen] = useState(false)
-  const [randomSeed, setSeed] = useState<number | undefined>(
-    strapiUserId === cardCreatorId
-      ? 10000000 + Math.floor(Math.random() * 90000000)
-      : existingReceivedCard?.attributes.publishedAt
-      ? existingReceivedCard.attributes.randomSeed
-      : undefined
-  )
+  const [randomSeed, setSeed] = useState<number | undefined>(undefined)
   const [isReceived, setIsReceived] = useState<boolean | undefined>(
-    (existingReceivedCard !== undefined &&
-      existingReceivedCard.attributes.publishedAt !== null) ||
-      strapiUserId === cardCreatorId ||
-      undefined
+    isDelivered ? undefined : false
   )
   const [isReserved, setIsReserved] = useState(
     existingReceivedCard !== undefined &&
@@ -79,17 +70,25 @@ const Shared = ({
   )
 
   useEffect(() => {
-    if (!isReceived) {
-      getLocalReceivedCard(shareId).then((localReceivedCard) => {
-        if (localReceivedCard) {
-          setSeed(localReceivedCard.randomSeed)
-          setIsReceived(true)
-        } else {
-          setIsReceived(false)
-        }
-      })
+    if (isReceived === undefined) {
+      if (strapiUserId === cardCreatorId) {
+        setSeed(10000000 + Math.floor(Math.random() * 90000000))
+        setIsReceived(true)
+      } else if (existingReceivedCard) {
+        setSeed(existingReceivedCard.attributes.randomSeed)
+        setIsReceived(existingReceivedCard.attributes.publishedAt !== null)
+      } else {
+        getLocalReceivedCard(shareId).then((localReceivedCard) => {
+          if (localReceivedCard) {
+            setSeed(localReceivedCard.randomSeed)
+            setIsReceived(true)
+          } else {
+            setIsReceived(false)
+          }
+        })
+      }
     }
-  }, [isReceived, shareId])
+  }, [isReceived, existingReceivedCard, shareId, strapiUserId, cardCreatorId])
 
   const receive = async () => {
     if (strapiUserId === cardCreatorId) return
