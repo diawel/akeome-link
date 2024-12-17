@@ -326,7 +326,6 @@ const cardContainerBase = style({
   boxShadow: '0 4px 8px rgba(0 0 0 / 5%)',
   position: 'relative',
   animation: `${reveal} 1s forwards`,
-  backfaceVisibility: 'hidden',
   transformStyle: 'preserve-3d',
 })
 
@@ -345,15 +344,41 @@ export const cardContainer = styleVariants({
   ],
 })
 
+export const emptyCardContainer = style({
+  position: 'absolute',
+  width: '100%',
+  height: '100%',
+  top: 0,
+  left: 0,
+  transform: 'translateZ(-1px) rotateY(180deg)',
+  backfaceVisibility: 'hidden',
+})
+
 export const emptyCard = style({
   width: '100%',
   height: '100%',
-  position: 'absolute',
-  top: 0,
-  left: 0,
   objectFit: 'cover',
-  transform: 'translateZ(-1px) rotateY(180deg)',
-  backfaceVisibility: 'hidden',
+})
+
+export const emptyCardText = style({
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  color: color.gray[5],
+  fontSize: 20,
+  fontWeight: 'bold',
+  width: 'max-content',
+  maxWidth: 'calc(100% - 32px)',
+  opacity: 0,
+  transition: 'opacity 0.3s',
+
+  selectors: {
+    [`${container.newArrival} &`]: {
+      opacity: 1,
+      transition: 'opacity 0.3s 2.4s',
+    },
+  },
 })
 
 const daliveryAnimationContainerBase = style({

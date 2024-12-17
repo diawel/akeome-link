@@ -209,11 +209,16 @@ const Shared = ({
                           : 1.5
                       }
                     />
-                    <Image
-                      src={emptyCard}
-                      alt=""
-                      className={styles.emptyCard}
-                    />
+                    <div className={styles.emptyCardContainer}>
+                      <Image
+                        src={emptyCard}
+                        alt=""
+                        className={styles.emptyCard}
+                      />
+                      <div className={styles.emptyCardText}>
+                        タップしてめくる
+                      </div>
+                    </div>
                   </div>
                 </button>
               </div>
