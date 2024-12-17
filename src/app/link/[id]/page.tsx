@@ -53,6 +53,7 @@ const Page = async ({ params }: { params: { id: string } }) => {
             }
           : undefined
       }
+      shareId={params.id}
       {...(isDelivered
         ? {
             isDelivered: true,
