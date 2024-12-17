@@ -201,12 +201,7 @@ const Shared = ({
                       )}
                       randomVariants="revealing"
                       randomSeed={randomSeed}
-                      revealDelay={
-                        existingReceivedCard &&
-                        existingReceivedCard.attributes.publishedAt !== null
-                          ? undefined
-                          : 1.5
-                      }
+                      revealDelay={1.5}
                     />
                     <div className={styles.emptyCardContainer}>
                       <Image
