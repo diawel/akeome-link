@@ -4,7 +4,7 @@ import * as styles from './layout.css'
 import StickerProvider from './StickerProvider'
 import { getStickers } from '../utils/strapi/sticker'
 import ClientSessionProvider from './ClientSessionProvider'
-import StrapiAdaper from '../utils/db/StrapiAdaper'
+import StrapiAdapter from '../utils/db/StrapiAdapter'
 import AchievementPopup from '../layouts/AchievementPopup'
 import { GoogleAnalytics } from '@next/third-parties/google'
 
@@ -43,7 +43,7 @@ const Layout = async ({
               </div>
             </div>
           </StickerProvider>
-          <StrapiAdaper />
+          <StrapiAdapter />
         </ClientSessionProvider>
       </body>
       <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID ?? ''} />
