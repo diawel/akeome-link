@@ -522,7 +522,7 @@ const Card = ({
                   key={index}
                   className={
                     styles.interactionContainer[
-                      isFocused ? 'focused' : 'default'
+                      edit ? (isFocused ? 'focused' : 'default') : 'disabled'
                     ]
                   }
                   style={{
