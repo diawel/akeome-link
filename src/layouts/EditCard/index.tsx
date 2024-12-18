@@ -32,18 +32,20 @@ const EditCard = () => {
       >
         <Meta />
         <div className={styles.cardWrapper}>
-          <Card
-            layout={cardLayout}
-            background={cardBackground}
-            userImages={userImages}
-            edit={{
-              isAnyFocused,
-              setIsAnyFocused,
-              setLayout: setCardLayout,
-              setBackground: setCardBackground,
-              setUserImages,
-            }}
-          />
+          {cardLayout && cardBackground && userImages ? (
+            <Card
+              layout={cardLayout}
+              background={cardBackground}
+              userImages={userImages}
+              edit={{
+                isAnyFocused,
+                setIsAnyFocused,
+                setLayout: setCardLayout,
+                setBackground: setCardBackground,
+                setUserImages,
+              }}
+            />
+          ) : null}
         </div>
         <Edit
           {...{

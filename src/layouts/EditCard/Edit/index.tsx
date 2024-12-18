@@ -34,9 +34,10 @@ const Edit = ({ isAnyFocused, setIsAnyFocused, setIsLoading }: EditProps) => {
   const [activeTab, setActiveTab] = useState<
     'background' | 'userImage' | 'sticker' | 'text'
   >('background')
-  const focusedContent = isAnyFocused
-    ? cardLayout[cardLayout.length - 1].content
-    : null
+  const focusedContent =
+    cardLayout && isAnyFocused
+      ? cardLayout[cardLayout.length - 1].content
+      : null
   useEffect(() => {
     if (focusedContent) {
       setActiveTab(focusedContent.type)
@@ -84,6 +85,20 @@ const Edit = ({ isAnyFocused, setIsAnyFocused, setIsLoading }: EditProps) => {
         setIsLoading(false)
       })
     event.target.value = ''
+  }
+
+  if (!cardLayout || !cardBackground || !userImages) {
+    return (
+      <>
+        <div className={styles.controlContainer} />
+        <div className={styles.nav}>
+          <button className={styles.navButton.disabled}>背景</button>
+          <button className={styles.navButton.disabled}>写真</button>
+          <button className={styles.navButton.disabled}>ステッカー</button>
+          <button className={styles.navButton.disabled}>テキスト</button>
+        </div>
+      </>
+    )
   }
 
   return (

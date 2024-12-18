@@ -16,22 +16,22 @@ import {
   updateCard,
 } from '../../utils/strapi/card'
 import { StrapiApiResponse } from '../../utils/strapi'
-import { redirect, useRouter, useSearchParams } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import { mediaRecordsToUrlSet } from '../../utils/strapi/strapiImage'
 
 const EditCardContext = createContext<
   | {
-      cardLayoutState: [CardLayout, (cardLayout: CardLayout) => void]
-      cardBackgroundState: [
-        CardBackground,
-        (cardBackground: CardBackground) => void
-      ]
-      userImagesState: [UserImages, (userImages: UserImages) => void]
-      saveCard: (
-        title: string,
-        creatorName: string,
-        deliveredAt: Date
-      ) => Promise<StrapiApiResponse<CardAttributes | DraftCardAttributes>>
+      cardLayoutState: [CardLayout | null, (cardLayout: CardLayout) => void]
+      cardBackgroundState:
+        | [CardBackground | null, (cardBackground: CardBackground) => void]
+      userImagesState: [UserImages | null, (userImages: UserImages) => void]
+      saveCard:
+        | ((
+            title: string,
+            creatorName: string,
+            deliveredAt: Date
+          ) => Promise<StrapiApiResponse<CardAttributes | DraftCardAttributes>>)
+        | null
       isSyncing: boolean
     }
   | undefined
@@ -47,30 +47,15 @@ export const useEditCard = () => {
 
 type EditCardProviderProps = {
   children: React.ReactNode
-  defaultCard: {
-    view: {
-      layout: CardLayout
-      background: CardBackground
-    }
-    userImages: UserImages
-  }
   existingId: number
 }
 
-const EditCardProvider = ({
-  children,
-  defaultCard,
-  existingId,
-}: EditCardProviderProps) => {
-  const [cardLayout, setCardLayout] = useState<CardLayout>(
-    defaultCard.view.layout
+const EditCardProvider = ({ children, existingId }: EditCardProviderProps) => {
+  const [cardLayout, setCardLayout] = useState<CardLayout | null>(null)
+  const [cardBackground, setCardBackground] = useState<CardBackground | null>(
+    null
   )
-  const [cardBackground, setCardBackground] = useState<CardBackground>(
-    defaultCard.view.background
-  )
-  const [userImages, setUserImages] = useState<UserImages>(
-    defaultCard.userImages
-  )
+  const [userImages, setUserImages] = useState<UserImages | null>(null)
   const toSaveRef = useRef<{
     cardLayout: CardLayout
     cardBackground: CardBackground
@@ -79,29 +64,22 @@ const EditCardProvider = ({
   const isSavingRef = useRef(false)
   const isModifiedRef = useRef(false)
   const router = useRouter()
-  const searchParams = useSearchParams()
-  const firstRenderRef = useRef(Date.now())
   const [isSyncing, setIsSyncing] = useState(false)
 
   useEffect(() => {
-    const lastSaved = history.state?.lastSaved
-    if (lastSaved && Number(lastSaved) < firstRenderRef.current) {
-      getCreatedCard(existingId).then((existingCard) => {
-        if (
-          !existingCard ||
-          existingCard.data.attributes.publishedAt !== null
-        ) {
-          redirect('/create/new')
-        }
-        setCardLayout(existingCard.data.attributes.view.layout)
-        setCardBackground(existingCard.data.attributes.view.background)
-        setUserImages(
-          mediaRecordsToUrlSet(existingCard.data.attributes.userImages.data)
-        )
-        router.replace(location.pathname)
-      })
-    }
-  }, [existingId, router, searchParams])
+    getCreatedCard(existingId).then((existingCard) => {
+      if (!existingCard || existingCard.data.attributes.publishedAt !== null) {
+        router.replace(`/create/detail/${existingId}`)
+        return
+      }
+      setCardLayout(existingCard.data.attributes.view.layout)
+      setCardBackground(existingCard.data.attributes.view.background)
+      setUserImages(
+        mediaRecordsToUrlSet(existingCard.data.attributes.userImages.data)
+      )
+      router.replace(location.pathname)
+    })
+  }, [existingId, router])
 
   const saveDraft = useCallback(
     (toSave: (typeof toSaveRef)['current'], initialPathname: string) => {
@@ -146,6 +124,7 @@ const EditCardProvider = ({
 
   useEffect(() => {
     if (!isModifiedRef.current) return
+    if (!cardLayout || !cardBackground || !userImages) return
 
     toSaveRef.current = {
       cardLayout,
@@ -157,23 +136,23 @@ const EditCardProvider = ({
     saveDraft(toSaveRef.current, location.pathname)
   }, [cardBackground, cardLayout, saveDraft, userImages])
 
-  const saveCard = useCallback(
-    async (title: string, creatorName: string, deliveredAt: Date) => {
-      return await updateCard({
-        title,
-        creatorName,
-        view: {
-          layout: cardLayout,
-          background: cardBackground,
-        },
-        userImages,
-        deliveredAt,
-        existingId,
-        isDraft: false,
-      })
-    },
-    [cardBackground, cardLayout, existingId, userImages]
-  )
+  const saveCard =
+    cardLayout && cardBackground && userImages
+      ? async (title: string, creatorName: string, deliveredAt: Date) => {
+          return await updateCard({
+            title,
+            creatorName,
+            view: {
+              layout: cardLayout,
+              background: cardBackground,
+            },
+            userImages,
+            deliveredAt,
+            existingId,
+            isDraft: false,
+          })
+        }
+      : null
 
   return (
     <EditCardContext.Provider
