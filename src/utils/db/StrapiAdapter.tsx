@@ -5,7 +5,7 @@ import { deleteAllLocalReceivedCard, getAllLocalReceivedCard } from '.'
 import { useEffect } from 'react'
 import { addUniqueReceivedCard } from '../strapi/receivedCard'
 
-const StrapiAdaper = () => {
+const StrapiAdapter = () => {
   const session = useSession()
   useEffect(() => {
     if (session.status !== 'authenticated') return
@@ -31,4 +31,4 @@ const StrapiAdaper = () => {
   return null
 }
 
-export default StrapiAdaper
+export default StrapiAdapter
