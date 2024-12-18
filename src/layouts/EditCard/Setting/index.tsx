@@ -44,6 +44,7 @@ const Setting = () => {
 
   useEffect(() => {
     if (title !== undefined) return
+    if (!cardLayout) return
     const texts = cardLayout.flatMap((item) =>
       item.content.type === 'text' ? item.content.text : []
     )
@@ -62,17 +63,22 @@ const Setting = () => {
   const save = () => {
     if (!title) return
     if (!creatorName) return
+    if (!saveCard) return
 
     setIsLoading(true)
     localStorage.setItem(creatorNameLocalStorageKey, creatorName)
     saveCard(title, creatorName, deliveredAt).then((response) => {
+      if (!response) return
       router.replace(`/share/${response.data.id}`)
     })
   }
 
   return (
     <div className={styles.screen}>
-      <Meta onComplete={save} disabled={!title || !creatorName || isLoading} />
+      <Meta
+        onComplete={save}
+        disabled={!title || !creatorName || isLoading || !saveCard}
+      />
       <div className={styles.cardContainer}>
         <div className={styles.card}>
           <div className={styles.postNumberContainer}>

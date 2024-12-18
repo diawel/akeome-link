@@ -1,9 +1,7 @@
-import { notFound, redirect } from 'next/navigation'
+import { redirect } from 'next/navigation'
 import EditCardProvider from '../../../../layouts/EditCard/EditCardProvider'
-import { getCreatedCard } from '../../../../utils/strapi/card'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '../../../api/auth/[...nextauth]/authOptions'
-import { mediaRecordsToUrlSet } from '../../../../utils/strapi/strapiImage'
 import { Metadata } from 'next'
 
 export const metadata: Metadata = {
@@ -27,25 +25,7 @@ const Layout = async ({
       )}`
     )
   }
-
-  const existingCard = await getCreatedCard(params.id)
-  if (!existingCard || existingCard.data.attributes.publishedAt !== null) {
-    notFound()
-  }
-
-  return (
-    <EditCardProvider
-      defaultCard={{
-        view: existingCard.data.attributes.view,
-        userImages: mediaRecordsToUrlSet(
-          existingCard.data.attributes.userImages.data
-        ),
-      }}
-      existingId={params.id}
-    >
-      {children}
-    </EditCardProvider>
-  )
+  return <EditCardProvider existingId={params.id}>{children}</EditCardProvider>
 }
 
 export default Layout

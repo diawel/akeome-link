@@ -99,6 +99,14 @@ const navButtonBase = style({
 })
 
 export const navButton = styleVariants({
+  disabled: [
+    navButtonBase,
+    {
+      opacity: 0.5,
+      pointerEvents: 'none',
+      borderColor: 'transparent',
+    },
+  ],
   default: [
     navButtonBase,
     {
