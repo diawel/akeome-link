@@ -44,6 +44,7 @@ export const backgroundContainer = style({
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
+  pointerEvents: 'none',
 })
 
 export const solidBackground = style({
@@ -56,6 +57,7 @@ export const text = style({
   fontSize: 16,
   fontWeight: 700,
   textWrap: 'nowrap',
+  pointerEvents: 'none',
 })
 
 export const userImageContainer = style({
@@ -65,6 +67,7 @@ export const userImageContainer = style({
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
+  pointerEvents: 'none',
 })
 
 export const stickerContainer = style({
@@ -74,6 +77,7 @@ export const stickerContainer = style({
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
+  pointerEvents: 'none',
 })
 
 const layeredStickerContainerBase = style({
@@ -126,6 +130,12 @@ const interactionContainerBase = style({
 })
 
 export const interactionContainer = styleVariants({
+  disabled: [
+    interactionContainerBase,
+    {
+      pointerEvents: 'none',
+    },
+  ],
   default: [interactionContainerBase],
   focused: [
     interactionContainerBase,
@@ -139,10 +149,11 @@ const controlBase = style({
   border: 'none',
   backgroundColor: 'transparent',
   cursor: 'pointer',
+  display: 'none',
 
   selectors: {
-    [`.${interactionContainer.default} > &`]: {
-      display: 'none',
+    [`.${interactionContainer.focused} > &`]: {
+      display: 'block',
     },
   },
 })
