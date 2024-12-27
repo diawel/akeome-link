@@ -52,7 +52,7 @@ const Received = ({ initialReceivedCards }: ReceivedProps) => {
                         receivedCard.attributes.card.data.attributes.userImages
                           .data
                       )}
-                      maxFormat="small"
+                      maxFormat="thumbnail"
                       randomVariants="revealed"
                       randomSeed={receivedCard.attributes.randomSeed}
                     />
