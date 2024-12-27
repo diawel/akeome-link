@@ -30,7 +30,7 @@ export const getImageUrl = (
   urlSet: ImageUrlSet,
   maxFormat: ImageFormat = 'original'
 ) => {
-  const maxFormatOfImage = urlSet.formats?.large
+  const availableMaxFormat = urlSet.formats?.large
     ? 'large'
     : urlSet.formats?.medium
     ? 'medium'
@@ -40,7 +40,7 @@ export const getImageUrl = (
     ? 'thumbnail'
     : 'original'
   const format =
-    imageFormats.indexOf(maxFormatOfImage) < imageFormats.indexOf(maxFormat)
+    imageFormats.indexOf(availableMaxFormat) < imageFormats.indexOf(maxFormat)
       ? 'original'
       : maxFormat
   const url =
