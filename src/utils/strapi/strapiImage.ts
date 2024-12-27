@@ -26,7 +26,10 @@ const imageFormats = [
 
 export type ImageFormat = (typeof imageFormats)[number]
 
-export const getImageUrl = (urlSet: ImageUrlSet, maxFormat?: ImageFormat) => {
+export const getImageUrl = (
+  urlSet: ImageUrlSet,
+  maxFormat: ImageFormat = 'original'
+) => {
   const maxFormatOfImage = urlSet.formats?.large
     ? 'large'
     : urlSet.formats?.medium
@@ -36,14 +39,14 @@ export const getImageUrl = (urlSet: ImageUrlSet, maxFormat?: ImageFormat) => {
     : urlSet.formats?.thumbnail
     ? 'thumbnail'
     : 'original'
-  const formatIndex = Math.max(
-    imageFormats.indexOf(maxFormat ?? 'original'),
-    imageFormats.indexOf(maxFormatOfImage)
-  )
+  const format =
+    imageFormats.indexOf(maxFormatOfImage) < imageFormats.indexOf(maxFormat)
+      ? 'original'
+      : maxFormat
   const url =
-    imageFormats[formatIndex] === 'original'
+    format === 'original'
       ? urlSet.url
-      : urlSet.formats?.[imageFormats[formatIndex]]?.url ?? urlSet.url
+      : urlSet.formats?.[format]?.url ?? urlSet.url
   return url.startsWith('/')
     ? `${process.env.NEXT_PUBLIC_STRAPI_BACKEND_URL}${url}`
     : url
