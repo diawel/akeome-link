@@ -7,6 +7,7 @@ import ClientSessionProvider from './ClientSessionProvider'
 import StrapiAdapter from '../utils/db/StrapiAdapter'
 import AchievementPopup from '../layouts/AchievementPopup'
 import { GoogleAnalytics } from '@next/third-parties/google'
+import LoginDialogProvider from '../components/LoginButton/LoginDialogProvider'
 
 export const metadata: Metadata = {
   title: 'あけおめリンク',
@@ -38,8 +39,10 @@ const Layout = async ({
           <StickerProvider stickers={await getStickers()}>
             <div className={styles.display}>
               <div className={styles.inner}>
-                <div className={styles.content}>{children}</div>
-                <AchievementPopup />
+                <LoginDialogProvider>
+                  <div className={styles.content}>{children}</div>
+                  <AchievementPopup />
+                </LoginDialogProvider>
               </div>
             </div>
           </StickerProvider>

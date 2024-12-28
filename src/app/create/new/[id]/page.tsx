@@ -6,12 +6,9 @@ import { mediaRecordsToUrlSet } from '../../../../utils/strapi/strapiImage'
 
 const Page = async ({ params }: { params: { id: number } }) => {
   const session = await getServerSession(authOptions)
-  if (!session)
-    redirect(
-      `/api/auth/signin?callbackUrl=${encodeURIComponent(
-        `/create/new/${params.id}`
-      )}`
-    )
+  if (!session) {
+    redirect('/')
+  }
 
   const existingCard = await getCreatedCard(params.id)
   if (!existingCard) {

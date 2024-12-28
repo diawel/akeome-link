@@ -13,9 +13,7 @@ const List = async ({ tab }: ListProps) => {
   if (tab === 'created') {
     const cards = await getCreatedCards()
     if (!cards) {
-      redirect(
-        `/api/auth/signin?callbackUrl=${encodeURIComponent('/create/list')}`
-      )
+      redirect('/')
     }
     return (
       <>
@@ -27,9 +25,7 @@ const List = async ({ tab }: ListProps) => {
   if (tab === 'received') {
     const receivedCards = await getReceivedCards()
     if (!receivedCards) {
-      redirect(
-        `/api/auth/signin?callbackUrl=${encodeURIComponent('/receive/list')}`
-      )
+      redirect('/')
     }
     return (
       <>
