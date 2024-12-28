@@ -52,7 +52,7 @@ const Created = ({ initialCards }: CreatedProps) => {
                     userImages={mediaRecordsToUrlSet(
                       card.attributes.userImages.data
                     )}
-                    maxFormat="small"
+                    maxFormat="thumbnail"
                   />
                 </div>
                 {card.attributes.publishedAt === null ? (
