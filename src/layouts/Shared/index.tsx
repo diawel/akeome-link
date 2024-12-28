@@ -28,6 +28,7 @@ import matsu from './matsu.svg'
 import { color } from '../../utils/styleSchema'
 import cart from './cart.svg'
 import pin from './pin.svg'
+import LoginButton from '../../components/LoginButton'
 
 type SharedProps = {
   cardCreatorId: number
@@ -109,11 +110,7 @@ const Shared = ({
     }
   }
 
-  const reserve = async () => {
-    if (!strapiUserId) {
-      signIn()
-      return
-    }
+  const reserve = async (strapiUserId: number) => {
     if (strapiUserId === cardCreatorId) return
     if (isReserved) return
 
@@ -261,9 +258,12 @@ const Shared = ({
                       もらった年賀状一覧へ
                     </Link>
                   ) : (
-                    <Link className={styles.primaryButton} href="/create/new">
+                    <LoginButton
+                      className={styles.primaryButton}
+                      callbackUrl="/create/new"
+                    >
                       年賀状を作ってみる
-                    </Link>
+                    </LoginButton>
                   ))
                 ) : strapiUserId === cardCreatorId ? (
                   <Link className={styles.primaryButton} href="/create/list">
@@ -273,10 +273,17 @@ const Shared = ({
                   <Link className={styles.primaryButton} href="/create/new">
                     年賀状を作ってみる
                   </Link>
-                ) : (
-                  <button className={styles.primaryButton} onClick={reserve}>
+                ) : strapiUserId !== undefined ? (
+                  <button
+                    className={styles.primaryButton}
+                    onClick={() => reserve(strapiUserId)}
+                  >
                     受け取り予約する
                   </button>
+                ) : (
+                  <LoginButton className={styles.primaryButton}>
+                    受け取り予約する
+                  </LoginButton>
                 )}
                 {isDelivered && isReceived && (
                   <>
