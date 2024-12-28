@@ -14,7 +14,6 @@ import {
   ReceivedCardAttributes,
 } from '../../utils/strapi/receivedCard'
 import { getLocalReceivedCard, putLocalReceivedCard } from '../../utils/db'
-import { signIn } from 'next-auth/react'
 import { CardAttributes } from '../../utils/strapi/card'
 import Image from 'next/image'
 import emptyCard from './empty-card.svg'
