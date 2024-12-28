@@ -256,9 +256,13 @@ const Shared = ({
                     <Link className={styles.primaryButton} href="/create/list">
                       つくった年賀状一覧へ
                     </Link>
-                  ) : (
+                  ) : strapiUserId !== undefined ? (
                     <Link className={styles.primaryButton} href="/receive/list">
                       もらった年賀状一覧へ
+                    </Link>
+                  ) : (
+                    <Link className={styles.primaryButton} href="/create/new">
+                      年賀状を作ってみる
                     </Link>
                   ))
                 ) : strapiUserId === cardCreatorId ? (
