@@ -8,9 +8,14 @@ import { useLoginDialog } from './LoginDialogProvider'
 type LoginButtonProps = {
   className?: string
   children?: React.ReactNode
+  callbackUrl?: string
 }
 
-const LoginButton = ({ className, children }: LoginButtonProps) => {
+const LoginButton = ({
+  className,
+  children,
+  callbackUrl,
+}: LoginButtonProps) => {
   const userAgent = useSyncExternalStore(
     () => () => {},
     () => window.navigator.userAgent.toLowerCase().trim(),
@@ -72,7 +77,14 @@ const LoginButton = ({ className, children }: LoginButtonProps) => {
   }
 
   return (
-    <button className={className} onClick={() => signIn('google')}>
+    <button
+      className={className}
+      onClick={() =>
+        signIn('google', {
+          callbackUrl,
+        })
+      }
+    >
       {children}
     </button>
   )
