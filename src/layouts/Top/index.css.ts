@@ -12,9 +12,9 @@ export const container = style({
 })
 
 export const content = style({
-  paddingTop: '140px'
+  paddingTop: '140px',
 })
-  
+
 export const discription = style({
   paddingTop: '12px',
   paddingBottom: '192px',
@@ -25,18 +25,18 @@ export const discription = style({
 export const redText = style({
   color: color.red[5],
 })
-  
+
 export const image = style({
   marginBottom: '114px',
   maxWidth: '100%',
   height: 'auto',
 })
-  
+
 export const loginButton = style({
-	display: 'flex',
+  display: 'flex',
   justifyContent: 'center',
 })
-  
+
 export const buttonLayout = style({
   padding: '14px 24px',
   fontSize: '16px',
@@ -45,12 +45,13 @@ export const buttonLayout = style({
   border: 'none',
   borderRadius: '12px',
   cursor: 'pointer',
-	width: '280px',
-	height: '50px'
+  width: '280px',
+  height: '50px',
+  textDecoration: 'none',
 })
 
 export const linkText = style({
-  paddingTop: '11px'
+  paddingTop: '11px',
 })
 
 export const privacy = style({
@@ -58,7 +59,7 @@ export const privacy = style({
   fontWeight: 'bold',
   color: color.red[5],
   textDecoration: 'none',
-  paddingRight: '12px'
+  paddingRight: '12px',
 })
 
 export const terms = style({

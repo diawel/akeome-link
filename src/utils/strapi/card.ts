@@ -48,7 +48,7 @@ export type DraftCardAttributes = {
 export const getCreatedCard = async (id: number) => {
   const session = await getServerSession(authOptions)
   if (!session) {
-    return undefined
+    throw new Error('Unauthorized')
   }
 
   try {

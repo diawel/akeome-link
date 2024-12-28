@@ -5,10 +5,9 @@ import { addCard } from '../../../utils/strapi/card'
 
 const Page = async () => {
   const session = await getServerSession(authOptions)
-  if (!session)
-    redirect(
-      `/api/auth/signin?callbackUrl=${encodeURIComponent('/create/new')}`
-    )
+  if (!session) {
+    redirect('/')
+  }
 
   const newCard = await addCard({
     isDraft: true,
