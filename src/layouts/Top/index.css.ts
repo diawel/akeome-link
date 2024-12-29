@@ -2,69 +2,92 @@ import { style } from '@vanilla-extract/css'
 import { color } from '../../utils/styleSchema'
 
 export const container = style({
-  display: 'flex',
-  flexDirection: 'column',
-  justifyContent: 'center',
-  alignItems: 'center',
   height: '100%',
   backgroundColor: 'white',
-  textAlign: 'center',
+  overflowX: 'hidden',
 })
 
 export const content = style({
-  paddingTop: '140px',
+  position: 'relative',
+  overflowX: 'hidden',
 })
 
-export const discription = style({
-  paddingTop: '12px',
-  paddingBottom: '192px',
-  fontSize: '20px',
-  fontWeight: 'bold',
+export const logoImage = style({
+  display: 'flex',
+  justifyContent: 'center',
+  padding: '46px 0px 46px 0px',
 })
 
-export const redText = style({
-  color: color.red[5],
+export const mainDiscription = style({
+  borderRadius: '14px',
+  position: 'relative',
+  zIndex: 1,
 })
 
-export const image = style({
-  marginBottom: '114px',
-  maxWidth: '100%',
+export const redContainer = style({
+  borderRadius: 14,
+  backgroundColor: color.red[5],
+  margin: '0px 32px',
+  position: 'relative',
+  zIndex: 1,
+})
+
+export const smartPhoneImage = style({
+  width: '100%',
   height: 'auto',
+  objectFit: 'contain',
+  display: 'block',
+  margin: '0 auto',
+  position: 'absolute',
+  top: -50,
+  left: 0,
+  right: 0,
+  zIndex: 2,
+  transform: 'rotate(1deg)',
+})
+
+export const discriptionText = style({
+  paddingTop: 430,
+  paddingLeft: 27,
+  fontSize: 24,
+  fontWeight: 'bold',
+  color: 'white',
+  lineHeight: '200%',
+
+  '@media': {
+    'screen and (max-width: 380px)': {
+      paddingLeft: 24,
+      paddingTop: 390,
+    },
+  },
+})
+
+export const registerButton = style({
+  display: 'flex',
+  justifyContent: 'center',
+  paddingTop: 32,
 })
 
 export const loginButton = style({
   display: 'flex',
   justifyContent: 'center',
+  paddingTop: 13,
+  paddingBottom: 49,
 })
-
 export const buttonLayout = style({
-  padding: '14px 24px',
-  fontSize: '16px',
-  backgroundColor: color.red[5],
-  color: 'white',
+  padding: '12px 24px',
+  fontSize: 16,
+  fontWeight: 'bold',
+  backgroundColor: 'white',
+  color: color.red[5],
   border: 'none',
-  borderRadius: '12px',
+  borderRadius: 12,
   cursor: 'pointer',
-  width: '280px',
-  height: '50px',
-  textDecoration: 'none',
-})
-
-export const linkText = style({
-  paddingTop: '11px',
-})
-
-export const privacy = style({
-  fontSize: '12px',
-  fontWeight: 'bold',
-  color: color.red[5],
-  textDecoration: 'none',
-  paddingRight: '12px',
-})
-
-export const terms = style({
-  fontSize: '12px',
-  fontWeight: 'bold',
-  color: color.red[5],
-  textDecoration: 'none',
+  width: 'calc(100% - 50px)',
+  maxWidth: 277,
+  height: 46,
+  margin: '0 auto',
+  whiteSpace: 'nowrap',
+  overflow: 'hidden',
+  textOverflow: 'ellipsis',
 })
