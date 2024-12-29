@@ -80,6 +80,10 @@ const inputBase = style({
   ':disabled': {
     opacity: 0.5,
   },
+
+  '::placeholder': {
+    color: color.gray[40],
+  },
 })
 
 export const input = styleVariants({
