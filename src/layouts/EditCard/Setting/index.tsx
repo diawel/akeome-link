@@ -2,7 +2,7 @@
 
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
-import { useEffect, useState, useSyncExternalStore } from 'react'
+import { useEffect, useRef, useState, useSyncExternalStore } from 'react'
 import { extractPersonName } from '../../../utils/goolab'
 import * as styles from './index.css'
 import Meta from './Meta'
@@ -95,6 +95,8 @@ const Setting = () => {
     )
   }
 
+  const titleInputRef = useRef<HTMLInputElement>(null)
+
   return (
     <div className={styles.screen}>
       <Meta
@@ -117,6 +119,7 @@ const Setting = () => {
                 </div>
               </div>
               <input
+                ref={titleInputRef}
                 className={
                   styles.input[
                     title === undefined || title ? 'default' : 'error'
@@ -126,6 +129,11 @@ const Setting = () => {
                 onChange={(event) => setTitle(event.target.value)}
                 disabled={title === undefined}
                 placeholder="SNS用"
+                onClick={() => {
+                  if (title === '無題') {
+                    titleInputRef.current?.select()
+                  }
+                }}
               />
               <div className={styles.inputNotice}>
                 <FaLock size={14} />
