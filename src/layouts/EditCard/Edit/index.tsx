@@ -413,6 +413,10 @@ const Edit = ({ isAnyFocused, setIsAnyFocused, setIsLoading }: EditProps) => {
               className={styles.textEditButton}
               onClick={() => {
                 setIsTextEditing(false)
+                if (focusedContent.text === '') {
+                  setCardLayout(cardLayout.slice(0, -1))
+                  setIsAnyFocused(false)
+                }
               }}
             >
               完了
