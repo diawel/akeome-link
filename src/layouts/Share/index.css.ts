@@ -130,7 +130,6 @@ export const buttonContainer = style({
   alignItems: 'center',
   paddingTop: '32px',
   marginBottom: '52px',
-  cursor: 'pointer',
 })
 
 export const buttonContent = style({
@@ -141,14 +140,11 @@ export const buttonContent = style({
   width: '127px',
   height: '42px',
   borderRadius: '12px',
+  textDecoration: 'none',
 })
 
 export const buttonText = style({
   fontSize: '16px',
   color: 'white',
   fontWeight: 'bold',
-})
-
-export const cardLink = style({
-  textDecoration: 'none',
 })

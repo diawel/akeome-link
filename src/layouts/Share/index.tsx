@@ -172,13 +172,11 @@ const Share = ({ cardRecord }: ShareProps) => {
               画像保存
             </button>
           </div>
-          <Link href="/create/list" className={styles.cardLink}>
-            <div className={styles.buttonContainer}>
-              <div className={styles.buttonContent}>
-                <div className={styles.buttonText}>一覧に戻る</div>
-              </div>
-            </div>
-          </Link>
+          <div className={styles.buttonContainer}>
+            <Link href="/create/list" className={styles.buttonContent}>
+              <div className={styles.buttonText}>一覧に戻る</div>
+            </Link>
+          </div>
         </div>
       </div>
       <Renderer
