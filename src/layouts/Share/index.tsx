@@ -92,6 +92,7 @@ const Share = ({ cardRecord }: ShareProps) => {
                 value={shareUrl}
                 readOnly
                 className={styles.linkInput}
+                onFocus={(event) => event.target.select()}
               />
               <button className={styles.copyButton} onClick={handleCopy}>
                 <Image

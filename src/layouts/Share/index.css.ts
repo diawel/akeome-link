@@ -90,7 +90,6 @@ export const linkInput = style({
   textOverflow: 'ellipsis',
   fontWeight: 'bold',
   cursor: 'default',
-  width: '320px',
 })
 
 export const shareButton = style({
