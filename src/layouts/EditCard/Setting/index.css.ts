@@ -86,11 +86,25 @@ export const input = styleVariants({
   ],
 })
 
-export const toggleContainer = style({
+const toggleContainerBase = style({
   display: 'flex',
   gap: 16,
-  justifyContent: 'space-between',
   flexWrap: 'wrap',
+})
+
+export const toggleContainer = styleVariants({
+  default: [
+    toggleContainerBase,
+    {
+      justifyContent: 'center',
+    },
+  ],
+  expressAvailable: [
+    toggleContainerBase,
+    {
+      justifyContent: 'space-between',
+    },
+  ],
 })
 
 export const toggleGroup = style({
