@@ -137,7 +137,7 @@ export const navButtonIcon = style({
   fontSize: 24,
 })
 
-export const textEditWindow = style({
+const textEditWindowBase = style({
   position: 'absolute',
   top: 0,
   left: 0,
@@ -150,6 +150,17 @@ export const textEditWindow = style({
   gap: 16,
   padding: 16,
   backgroundColor: `rgb(255 255 255 / 0.9)`,
+})
+
+export const textEditWindow = styleVariants({
+  active: [textEditWindowBase],
+  hidden: [
+    textEditWindowBase,
+    {
+      opacity: 0,
+      pointerEvents: 'none',
+    },
+  ],
 })
 
 export const textEditButtonContainer = style({

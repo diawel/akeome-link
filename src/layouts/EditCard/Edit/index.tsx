@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useState } from 'react'
+import { Fragment, useEffect, useRef, useState } from 'react'
 import { UserImages } from '../../../components/Card'
 import * as styles from './index.css'
 import { useStickers } from '../../../app/StickerProvider'
@@ -86,6 +86,8 @@ const Edit = ({ isAnyFocused, setIsAnyFocused, setIsLoading }: EditProps) => {
       })
     event.target.value = ''
   }
+
+  const textEditTextareaRef = useRef<HTMLTextAreaElement | null>(null)
 
   if (!cardLayout || !cardBackground || !userImages) {
     return (
@@ -265,6 +267,13 @@ const Edit = ({ isAnyFocused, setIsAnyFocused, setIsLoading }: EditProps) => {
                 onClick={() => {
                   if (focusedContent?.type !== 'text') return
                   setIsTextEditing(true)
+                  textEditTextareaRef.current?.focus()
+                  textEditTextareaRef.current?.setSelectionRange(
+                    focusedContent.text === 'テキストを入力'
+                      ? 0
+                      : focusedContent.text.length,
+                    focusedContent.text.length
+                  )
                 }}
               >
                 <FaPen size={20} />
@@ -406,43 +415,52 @@ const Edit = ({ isAnyFocused, setIsAnyFocused, setIsLoading }: EditProps) => {
           テキスト
         </button>
       </div>
-      {isTextEditing && focusedContent?.type === 'text' && (
-        <div className={styles.textEditWindow}>
-          <div className={styles.textEditButtonContainer}>
-            <button
-              className={styles.textEditButton}
-              onClick={() => {
-                setIsTextEditing(false)
-                if (focusedContent.text === '') {
-                  setCardLayout(cardLayout.slice(0, -1))
-                  setIsAnyFocused(false)
-                }
-              }}
-            >
-              完了
-            </button>
-          </div>
-          <div className={styles.textEditTextareaWrapper}>
-            {focusedContent.text}
-            {'\u200b'}
-            <textarea
-              className={styles.textEditTextarea}
-              value={focusedContent.text}
-              onChange={(event) => {
-                setCardLayout(
-                  cardLayout.slice(0, -1).concat({
-                    ...cardLayout[cardLayout.length - 1],
-                    content: {
-                      ...focusedContent,
-                      text: event.target.value,
-                    },
-                  })
-                )
-              }}
-            />
-          </div>
+      <div
+        className={
+          styles.textEditWindow[
+            isTextEditing && focusedContent?.type === 'text'
+              ? 'active'
+              : 'hidden'
+          ]
+        }
+      >
+        <div className={styles.textEditButtonContainer}>
+          <button
+            className={styles.textEditButton}
+            onClick={() => {
+              if (focusedContent?.type !== 'text') return
+              setIsTextEditing(false)
+              if (focusedContent.text === '') {
+                setCardLayout(cardLayout.slice(0, -1))
+                setIsAnyFocused(false)
+              }
+            }}
+          >
+            完了
+          </button>
         </div>
-      )}
+        <div className={styles.textEditTextareaWrapper}>
+          {focusedContent?.type === 'text' ? focusedContent.text : ''}
+          {'\u200b'}
+          <textarea
+            ref={textEditTextareaRef}
+            className={styles.textEditTextarea}
+            value={focusedContent?.type === 'text' ? focusedContent.text : ''}
+            onChange={(event) => {
+              if (focusedContent?.type !== 'text') return
+              setCardLayout(
+                cardLayout.slice(0, -1).concat({
+                  ...cardLayout[cardLayout.length - 1],
+                  content: {
+                    ...focusedContent,
+                    text: event.target.value,
+                  },
+                })
+              )
+            }}
+          />
+        </div>
+      </div>
       {error !== null && (
         <div className={styles.errorContainer}>
           <FaTriangleExclamation size={20} />
