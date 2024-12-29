@@ -114,6 +114,7 @@ export const shareButton = style({
 
 export const icon = style({
   height: 20,
+  width: 'auto',
 })
 
 export const iconButtonContainer = style({
