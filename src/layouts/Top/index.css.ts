@@ -166,8 +166,8 @@ export const descriptionImage3 = style({
 
 export const overlayText3 = style({
   position: 'absolute',
-  top: '46px',
-  right: 0,
+  top: 46,
+  right: '-6%',
   width: 240,
   fontSize: 24,
   fontWeight: 'bold',
@@ -180,15 +180,64 @@ export const text2025 = style({
   color: '#E0CBA2',
   lineHeight: '144%',
   textAlign: 'right',
+  paddingBottom: 161,
 })
 
 export const backgroundImage = style({
   position: 'absolute',
-  paddingTop: 70,
-  top: '66%',
-  left: 0,
+  top: 1770,
   width: '100%',
-  objectFit: 'cover',
   zIndex: 0,
   transform: 'rotate(−30deg)',
 })
+
+export const orangeLogoContainer = style({
+  textAlign: 'right',
+  paddingRight: 18,
+})
+
+export const orangeLogoImage = style({
+  zIndex: 2,
+})
+
+export const akeomeLinkText = style({
+  fontSize: 24,
+  fontWeight: 'bold',
+  width: 218,
+  borderBottom: '3px solid #E0CBA2',
+  marginLeft: 51,
+})
+
+export const textSpace = style({
+  marginTop: 12,
+})
+
+export const startButtonContainer = style({
+  paddingTop: 48,
+  textAlign: 'center',
+})
+
+export const startButtonLayout = style({
+  padding: '12px 24px',
+  fontSize: 16,
+  fontWeight: 'bold',
+  backgroundColor: color.red[5],
+  color: 'white',
+  border: 'none',
+  borderRadius: 12,
+  cursor: 'pointer',
+  width: 'calc(100% - 50px)',
+  maxWidth: 277,
+  height: 46,
+  margin: '0 auto',
+  whiteSpace: 'nowrap',
+  overflow: 'hidden',
+  textOverflow: 'ellipsis',
+})
+
+export const postImageContainer = style({
+  paddingTop: 48,
+  textAlign: 'center',
+})
+
+export const postImage = style({})

@@ -6,6 +6,8 @@ import descriptionImage1 from './image-1.png'
 import descriptionImage2 from './image-2.png'
 import descriptionImage3 from './image-3.png'
 import backgroundImage from './backgroundImage.svg'
+import orangeLogo from './orange-logo.svg'
+import postImage from './post-image.svg'
 import LoginButton from '../../components/LoginButton'
 
 const Top = () => {
@@ -91,6 +93,32 @@ const Top = () => {
             </div>
           </div>
           <div className={styles.text2025}>2025</div>
+          <div className={styles.orangeLogoContainer}>
+            <Image
+              className={styles.orangeLogoImage}
+              src={orangeLogo}
+              alt="orangeLogoImage"
+              priority
+            />
+          </div>
+          <div className={styles.akeomeLinkText}>
+            <div>あけおめリンクで</div>
+            <div className={styles.textSpace}></div>
+            <div>年賀状をはじめよう</div>
+          </div>
+          <div className={styles.startButtonContainer}>
+            <LoginButton className={styles.startButtonLayout}>
+              Googleアカウントで開始する
+            </LoginButton>
+          </div>
+          <div className={styles.postImageContainer}>
+            <Image
+              className={styles.postImage}
+              src={postImage}
+              alt="postImage"
+              priority
+            />
+          </div>
         </div>
         <Image
           className={styles.backgroundImage}
