@@ -27,7 +27,7 @@ export const controlGrid = style({
   paddingBlock: 8,
 })
 
-export const controlButton = style({
+const controlButtonBase = style({
   height: '100%',
   display: 'flex',
   justifyContent: 'center',
@@ -42,6 +42,17 @@ export const controlButton = style({
   borderRadius: 6,
   cursor: 'pointer',
   position: 'relative',
+})
+
+export const controlButton = styleVariants({
+  default: [controlButtonBase],
+  disabled: [
+    controlButtonBase,
+    {
+      opacity: 0.5,
+      pointerEvents: 'none',
+    },
+  ],
 })
 
 export const controlInput = style({

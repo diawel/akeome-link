@@ -107,7 +107,7 @@ const Edit = ({ isAnyFocused, setIsAnyFocused, setIsLoading }: EditProps) => {
         {activeTab == 'background' ? (
           <div className={styles.control}>
             <div className={styles.controlGrid}>
-              <label className={styles.controlButton}>
+              <label className={styles.controlButton.default}>
                 <FaImage size={20} />
                 写真を選択
                 <input
@@ -136,7 +136,7 @@ const Edit = ({ isAnyFocused, setIsAnyFocused, setIsLoading }: EditProps) => {
                   }}
                 />
               </label>
-              <label className={styles.controlButton}>
+              <label className={styles.controlButton.default}>
                 <FaPalette size={20} />
                 カラー
                 <input
@@ -162,7 +162,7 @@ const Edit = ({ isAnyFocused, setIsAnyFocused, setIsLoading }: EditProps) => {
         ) : activeTab == 'userImage' ? (
           <div className={styles.control}>
             <div className={styles.controlGrid}>
-              <label className={styles.controlButton}>
+              <label className={styles.controlButton.default}>
                 <FaPlus size={20} />
                 追加
                 <input
@@ -236,7 +236,7 @@ const Edit = ({ isAnyFocused, setIsAnyFocused, setIsLoading }: EditProps) => {
           <div className={styles.control}>
             <div className={styles.controlGrid}>
               <button
-                className={styles.controlButton}
+                className={styles.controlButton.default}
                 onClick={() => {
                   setCardLayout([
                     ...cardLayout,
@@ -256,75 +256,100 @@ const Edit = ({ isAnyFocused, setIsAnyFocused, setIsLoading }: EditProps) => {
                 <FaPlus size={20} />
                 追加
               </button>
-              {focusedContent?.type === 'text' && (
-                <>
-                  <button
-                    className={styles.controlButton}
-                    onClick={() => {
-                      setIsTextEditing(true)
-                    }}
-                  >
-                    <FaPen size={20} />
-                    編集
-                  </button>
-                  <label className={styles.controlButton}>
-                    <FaPalette size={20} />
-                    カラー
-                    <input
-                      className={styles.controlInput}
-                      type="color"
-                      value={focusedContent.color}
-                      onChange={(event) => {
-                        setCardLayout(
-                          cardLayout.slice(0, -1).concat({
-                            ...cardLayout[cardLayout.length - 1],
-                            content: {
-                              ...focusedContent,
-                              color: event.target.value,
-                            },
-                          })
-                        )
-                      }}
-                    />
-                  </label>
-                  <button
-                    className={styles.controlButton}
-                    onClick={() => {
-                      setCardLayout(
-                        cardLayout.slice(0, -1).concat({
-                          ...cardLayout[cardLayout.length - 1],
-                          content: {
-                            ...focusedContent,
-                            align:
-                              focusedContent.align == 'left'
-                                ? 'center'
-                                : focusedContent.align == 'center'
-                                ? 'right'
-                                : 'left',
-                          },
-                        })
-                      )
-                    }}
-                  >
-                    {focusedContent.align == 'left' ? (
-                      <>
-                        <FaAlignLeft size={20} />
-                        左揃え
-                      </>
-                    ) : focusedContent.align == 'center' ? (
-                      <>
-                        <FaAlignCenter size={20} />
-                        中央揃え
-                      </>
-                    ) : (
-                      <>
-                        <FaAlignRight size={20} />
-                        右揃え
-                      </>
-                    )}
-                  </button>
-                </>
-              )}
+              <button
+                className={
+                  styles.controlButton[
+                    focusedContent?.type === 'text' ? 'default' : 'disabled'
+                  ]
+                }
+                onClick={() => {
+                  if (focusedContent?.type !== 'text') return
+                  setIsTextEditing(true)
+                }}
+              >
+                <FaPen size={20} />
+                編集
+              </button>
+              <label
+                className={
+                  styles.controlButton[
+                    focusedContent?.type === 'text' ? 'default' : 'disabled'
+                  ]
+                }
+              >
+                <FaPalette size={20} />
+                カラー
+                <input
+                  className={styles.controlInput}
+                  type="color"
+                  value={
+                    focusedContent?.type === 'text'
+                      ? focusedContent.color
+                      : '#000'
+                  }
+                  onChange={(event) => {
+                    if (focusedContent?.type !== 'text') return
+                    setCardLayout(
+                      cardLayout.slice(0, -1).concat({
+                        ...cardLayout[cardLayout.length - 1],
+                        content: {
+                          ...focusedContent,
+                          color: event.target.value,
+                        },
+                      })
+                    )
+                  }}
+                />
+              </label>
+              <button
+                className={
+                  styles.controlButton[
+                    focusedContent?.type === 'text' ? 'default' : 'disabled'
+                  ]
+                }
+                onClick={() => {
+                  if (focusedContent?.type !== 'text') return
+                  setCardLayout(
+                    cardLayout.slice(0, -1).concat({
+                      ...cardLayout[cardLayout.length - 1],
+                      content: {
+                        ...focusedContent,
+                        align:
+                          focusedContent.align == 'left'
+                            ? 'center'
+                            : focusedContent.align == 'center'
+                            ? 'right'
+                            : 'left',
+                      },
+                    })
+                  )
+                }}
+              >
+                {focusedContent?.type === 'text' ? (
+                  focusedContent.align == 'left' ? (
+                    <>
+                      <FaAlignLeft size={20} />
+                      左揃え
+                    </>
+                  ) : focusedContent.align == 'center' ? (
+                    <>
+                      <FaAlignCenter size={20} />
+                      中央揃え
+                    </>
+                  ) : (
+                    <>
+                      <FaAlignRight size={20} />
+                      右揃え
+                    </>
+                  )
+                ) : (
+                  <>
+                    <FaAlignCenter size={20} />
+                    中央揃え
+                  </>
+                )}
+              </button>
+              {focusedContent?.type === 'text' && <></>}
             </div>
           </div>
         )}
