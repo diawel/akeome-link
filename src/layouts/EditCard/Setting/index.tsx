@@ -11,7 +11,7 @@ import postNumber from './post-number.svg'
 import Image from 'next/image'
 import expressLabel from './express-label.svg'
 import post from './post.svg'
-import { FaEye, FaEyeSlash } from 'react-icons/fa6'
+import { FaEarthAmericas, FaLock } from 'react-icons/fa6'
 
 const creatorNameLocalStorageKey = 'creatorName'
 
@@ -128,7 +128,7 @@ const Setting = () => {
                 placeholder="SNS用"
               />
               <div className={styles.inputNotice}>
-                <FaEyeSlash size={16} />
+                <FaLock size={14} />
                 自分にのみ表示されます
               </div>
             </div>
@@ -154,7 +154,7 @@ const Setting = () => {
                 disabled={creatorName === undefined}
               />
               <div className={styles.inputNotice}>
-                <FaEye size={16} />
+                <FaEarthAmericas size={14} />
                 相手に公開されます
               </div>
             </div>
