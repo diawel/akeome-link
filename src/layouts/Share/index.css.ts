@@ -113,7 +113,6 @@ export const shareButton = style({
 })
 
 export const icon = style({
-  width: 20,
   height: 20,
 })
 
