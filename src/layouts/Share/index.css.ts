@@ -106,9 +106,15 @@ export const shareButton = style({
   flexDirection: 'column',
   fontSize: 12,
   fontWeight: 'bold',
-  gap: 4,
+  gap: 6,
   color: color.gray[5],
   textDecoration: 'none',
+  lineHeight: 1,
+})
+
+export const icon = style({
+  width: 20,
+  height: 20,
 })
 
 export const iconButtonContainer = style({

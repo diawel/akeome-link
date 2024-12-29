@@ -17,7 +17,7 @@ import { StrapiRecord } from '../../utils/strapi'
 import Renderer from '../../components/Card/Renderer'
 import { useEffect, useState, useSyncExternalStore } from 'react'
 import { CardAttributes, DraftCardAttributes } from '../../utils/strapi/card'
-import { FaDownload, FaQrcode } from 'react-icons/fa6'
+import { FaArrowUpFromBracket, FaDownload, FaQrcode } from 'react-icons/fa6'
 
 type ShareProps = {
   cardRecord: StrapiRecord<CardAttributes | DraftCardAttributes>
@@ -53,6 +53,12 @@ const Share = ({ cardRecord }: ShareProps) => {
       ).href
     },
     () => ''
+  )
+
+  const isWebShareSupported = useSyncExternalStore(
+    () => () => {},
+    () => typeof navigator.share === 'function',
+    () => true
   )
 
   return (
@@ -111,17 +117,32 @@ const Share = ({ cardRecord }: ShareProps) => {
               )}`}
               target="_blank"
             >
-              <Image src={xIcon} alt="xIcon" loading="eager" />
+              <Image
+                src={xIcon}
+                alt="xIcon"
+                loading="eager"
+                className={styles.icon}
+              />
+              ポスト
             </Link>
-            <Link
+            <button
               className={styles.shareButton}
-              href={`https://social-plugins.line.me/lineit/share?url=${encodeURIComponent(
-                shareUrl
-              )}&text=年賀状が届いています`}
-              target="_blank"
+              onClick={() => {
+                navigator
+                  .share({
+                    text: '年賀状が届いています',
+                    url: shareUrl,
+                  })
+                  .catch(() => {})
+              }}
+              style={{
+                pointerEvents: isWebShareSupported ? 'auto' : 'none',
+                opacity: isWebShareSupported ? 1 : 0.5,
+              }}
             >
-              <Image src={lineIcon} alt="lineIcon" loading="eager" />
-            </Link>
+              <FaArrowUpFromBracket size={20} />
+              共有
+            </button>
             <Link
               className={styles.shareButton}
               href={{
