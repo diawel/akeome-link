@@ -89,6 +89,16 @@ const Edit = ({ isAnyFocused, setIsAnyFocused, setIsLoading }: EditProps) => {
 
   const textEditTextareaRef = useRef<HTMLTextAreaElement | null>(null)
 
+  const completeTextEditing = () => {
+    if (focusedContent?.type !== 'text') return
+    if (cardLayout === null) return
+    setIsTextEditing(false)
+    if (focusedContent.text === '') {
+      setCardLayout(cardLayout.slice(0, -1))
+      setIsAnyFocused(false)
+    }
+  }
+
   if (!cardLayout || !cardBackground || !userImages) {
     return (
       <>
@@ -427,14 +437,7 @@ const Edit = ({ isAnyFocused, setIsAnyFocused, setIsLoading }: EditProps) => {
         <div className={styles.textEditButtonContainer}>
           <button
             className={styles.textEditButton}
-            onClick={() => {
-              if (focusedContent?.type !== 'text') return
-              setIsTextEditing(false)
-              if (focusedContent.text === '') {
-                setCardLayout(cardLayout.slice(0, -1))
-                setIsAnyFocused(false)
-              }
-            }}
+            onClick={completeTextEditing}
           >
             完了
           </button>
@@ -458,6 +461,7 @@ const Edit = ({ isAnyFocused, setIsAnyFocused, setIsLoading }: EditProps) => {
                 })
               )
             }}
+            onBlur={completeTextEditing}
           />
         </div>
       </div>
