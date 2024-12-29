@@ -43,6 +43,7 @@ export const display = style({
   height: '100%',
   boxSizing: 'content-box',
   marginTop: 38,
+  zIndex: 10,
 
   '@media': {
     'screen and (min-width: 480px)': {

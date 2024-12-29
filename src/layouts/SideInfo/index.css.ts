@@ -12,6 +12,47 @@ export const container = style({
   position: 'relative',
 })
 
+export const cloudImage1 = style({
+  position: 'fixed',
+  top: '4%',
+  left: 0,
+  width: 'auto',
+  height: '100%',
+  objectFit: 'cover',
+})
+
+export const flowerImage1 = style({
+  position: 'fixed',
+  bottom: 0,
+  right: 0,
+  width: 'auto',
+  objectFit: 'cover',
+})
+
+export const flowerImage2 = style({
+  position: 'fixed',
+  top: '65%',
+  left: 0,
+  width: 'auto',
+  objectFit: 'cover',
+})
+
+export const treeAndCloud = style({
+  position: 'fixed',
+  bottom: 0,
+  left: '44%',
+  width: 'auto',
+  objectFit: 'cover',
+})
+
+export const treeAndMt = style({
+  position: 'fixed',
+  top: 0,
+  left: '42%',
+  width: 'auto',
+  objectFit: 'cover',
+})
+
 export const content = style({
   paddingTop: 104,
 })
