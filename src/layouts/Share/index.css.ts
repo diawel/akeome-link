@@ -73,11 +73,11 @@ export const copyButton = style({
 export const copiedPopup = style({
   position: 'relative',
   paddingLeft: '235px',
-});
+})
 
 export const hidden = style({
   opacity: 0,
-});
+})
 
 export const linkInput = style({
   flex: 1,
@@ -93,45 +93,9 @@ export const linkInput = style({
   width: '320px',
 })
 
-export const xContainer = style({
-  width: '72px',
-  height: '56px',
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-  backgroundColor: 'white',
-  borderRadius: '8px',
-  cursor: 'pointer',
-  padding: '18px 26px'
-})
-
-export const lineContainer = style({
-  width: '72px',
-  height: '56px',
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-  backgroundColor: 'white',
-  borderRadius: '8px',
-  cursor: 'pointer',
-  padding: '13px 21px'
-})
-
-export const qrContainer = style({
-  width: '72px',
-  height: '56px',
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-  backgroundColor: 'white',
-  borderRadius: '8px',
-  cursor: 'pointer',
-  padding: '8px 24px 3px 23px'
-})
-
-export const downloadContainer = style({
-  width: '72px',
-  height: '56px',
+export const shareButton = style({
+  width: 72,
+  height: 56,
   backgroundColor: 'white',
   borderRadius: '8px',
   display: 'flex',
@@ -139,17 +103,12 @@ export const downloadContainer = style({
   alignItems: 'center',
   cursor: 'pointer',
   border: 'none',
-})
-
-export const downloadContent = style({
-  display: 'flex',
-  alignItems: 'center',
-})
-
-export const downloadText = style({
-  fontSize: '13px',
+  flexDirection: 'column',
+  fontSize: 12,
   fontWeight: 'bold',
-  paddingLeft: '4px',
+  gap: 4,
+  color: color.gray[5],
+  textDecoration: 'none',
 })
 
 export const iconButtonContainer = style({
@@ -157,10 +116,7 @@ export const iconButtonContainer = style({
   justifyContent: 'center',
   alignItems: 'center',
   paddingTop: '25px',
-})
-
-export const buttonRightSpace = style({
-  paddingRight: '13px',
+  gap: 13,
 })
 
 export const buttonContainer = style({

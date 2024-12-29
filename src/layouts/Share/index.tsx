@@ -17,6 +17,7 @@ import { StrapiRecord } from '../../utils/strapi'
 import Renderer from '../../components/Card/Renderer'
 import { useEffect, useState, useSyncExternalStore } from 'react'
 import { CardAttributes, DraftCardAttributes } from '../../utils/strapi/card'
+import { FaDownload, FaQrcode } from 'react-icons/fa6'
 
 type ShareProps = {
   cardRecord: StrapiRecord<CardAttributes | DraftCardAttributes>
@@ -101,42 +102,37 @@ const Share = ({ cardRecord }: ShareProps) => {
         </div>
         <div>
           <div className={styles.iconButtonContainer}>
-            <div className={styles.buttonRightSpace}>
-              <Link
-                className={styles.xContainer}
-                href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(
-                  ['年賀状が届いています', hashtag, shareUrl]
-                    .filter((line) => Boolean(line))
-                    .join('\n')
-                )}`}
-                target="_blank"
-              >
-                <Image src={xIcon} alt="xIcon" loading="eager" />
-              </Link>
-            </div>
-            <div className={styles.buttonRightSpace}>
-              <Link
-                className={styles.lineContainer}
-                href={`https://social-plugins.line.me/lineit/share?url=${encodeURIComponent(
-                  shareUrl
-                )}&text=年賀状が届いています`}
-                target="_blank"
-              >
-                <Image src={lineIcon} alt="lineIcon" loading="eager" />
-              </Link>
-            </div>
-            <div className={styles.buttonRightSpace}>
-              <Link
-                className={styles.qrContainer}
-                href={{
-                  pathname: `/share/${cardRecord.id}/qr`,
-                }}
-              >
-                <Image src={qrIcon} alt="lineIcon" loading="eager" />
-              </Link>
-            </div>
+            <Link
+              className={styles.shareButton}
+              href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(
+                ['年賀状が届いています', hashtag, shareUrl]
+                  .filter((line) => Boolean(line))
+                  .join('\n')
+              )}`}
+              target="_blank"
+            >
+              <Image src={xIcon} alt="xIcon" loading="eager" />
+            </Link>
+            <Link
+              className={styles.shareButton}
+              href={`https://social-plugins.line.me/lineit/share?url=${encodeURIComponent(
+                shareUrl
+              )}&text=年賀状が届いています`}
+              target="_blank"
+            >
+              <Image src={lineIcon} alt="lineIcon" loading="eager" />
+            </Link>
+            <Link
+              className={styles.shareButton}
+              href={{
+                pathname: `/share/${cardRecord.id}/qr`,
+              }}
+            >
+              <FaQrcode size={20} />
+              QR
+            </Link>
             <button
-              className={styles.downloadContainer}
+              className={styles.shareButton}
               onClick={() => {
                 if (!renderedImage) return
                 const url = URL.createObjectURL(renderedImage)
@@ -153,9 +149,8 @@ const Share = ({ cardRecord }: ShareProps) => {
                 opacity: renderedImage ? 1 : 0.5,
               }}
             >
-              <div className={styles.downloadContent}>
-                <Image src={downloadIcon} alt="downLoadIcon" loading="eager" />
-              </div>
+              <FaDownload size={20} />
+              画像保存
             </button>
           </div>
           <Link href="/create/list" className={styles.cardLink}>
