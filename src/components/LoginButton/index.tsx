@@ -30,6 +30,7 @@ const LoginButton = ({
     const isInstagram = userAgent.includes('instagram')
     const isLine = userAgent.includes('line/')
     const isYahoo = userAgent.includes('yjapp')
+    const isTwitter = userAgent.includes('twitter')
     const isWebview = userAgent.includes('webview') // e.g. Rakuten Link
     return isFacebook
       ? 'facebook'
@@ -39,6 +40,8 @@ const LoginButton = ({
       ? 'line'
       : isYahoo
       ? 'yahoo'
+      : isTwitter
+      ? 'twitter'
       : isWebview
       ? 'webview'
       : 'other'
