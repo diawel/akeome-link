@@ -15,7 +15,7 @@ import Link from 'next/link'
 import { mediaRecordsToUrlSet } from '../../utils/strapi/strapiImage'
 import { StrapiRecord } from '../../utils/strapi'
 import Renderer from '../../components/Card/Renderer'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useSyncExternalStore } from 'react'
 import { CardAttributes, DraftCardAttributes } from '../../utils/strapi/card'
 
 type ShareProps = {
@@ -24,7 +24,6 @@ type ShareProps = {
 
 const Share = ({ cardRecord }: ShareProps) => {
   const [renderedImage, setRenderedImage] = useState<Blob | null>(null)
-  const [shareUrl, setShareUrl] = useState('')
   const [copied, setCopied] = useState(false)
 
   const handleCopy = () => {
@@ -33,12 +32,28 @@ const Share = ({ cardRecord }: ShareProps) => {
     setTimeout(() => setCopied(false), 2000)
   }
 
-  useEffect(() => {
-    setShareUrl(
-      new URL(`/link/${cardRecord.attributes.shareId}`, window.location.href)
-        .href
-    )
-  }, [cardRecord.attributes.shareId])
+  const hashtag = useSyncExternalStore(
+    () => () => {},
+    () => {
+      const now = new Date()
+      return `#あけおめリンク${
+        now.getFullYear() + (now.getMonth() === 0 ? 0 : 1)
+      }`
+    },
+    () => ''
+  )
+
+  const shareUrl = useSyncExternalStore(
+    () => () => {},
+    () => {
+      return new URL(
+        `/link/${cardRecord.attributes.shareId}`,
+        window.location.href
+      ).href
+    },
+    () => ''
+  )
+
   return (
     <>
       <div>
@@ -90,8 +105,10 @@ const Share = ({ cardRecord }: ShareProps) => {
               <Link
                 className={styles.xContainer}
                 href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(
-                  `年賀状が届いています #JPHACKS2024\n`
-                )}&url=${encodeURIComponent(shareUrl)}`}
+                  ['年賀状が届いています', hashtag, shareUrl]
+                    .filter((line) => Boolean(line))
+                    .join('\n')
+                )}`}
                 target="_blank"
               >
                 <Image src={xIcon} alt="xIcon" loading="eager" />
