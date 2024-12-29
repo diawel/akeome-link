@@ -11,6 +11,7 @@ import postNumber from './post-number.svg'
 import Image from 'next/image'
 import expressLabel from './express-label.svg'
 import post from './post.svg'
+import { FaEye, FaEyeSlash } from 'react-icons/fa6'
 
 const creatorNameLocalStorageKey = 'creatorName'
 
@@ -105,43 +106,57 @@ const Setting = () => {
           <div className={styles.postNumberContainer}>
             <Image src={postNumber} alt="" />
           </div>
-          <div className={styles.inputContainer}>
-            <div className={styles.titleGroup}>
-              <div className={styles.title}>タイトル</div>
-              <div className={styles.error}>
-                {title === undefined || title
-                  ? ''
-                  : 'タイトルを入力してください'}
+          <div className={styles.inputGroup}>
+            <div className={styles.inputContainer}>
+              <div className={styles.titleGroup}>
+                <div className={styles.title}>タイトル</div>
+                <div className={styles.error}>
+                  {title === undefined || title
+                    ? ''
+                    : 'タイトルを入力してください'}
+                </div>
+              </div>
+              <input
+                className={
+                  styles.input[
+                    title === undefined || title ? 'default' : 'error'
+                  ]
+                }
+                value={title ?? ''}
+                onChange={(event) => setTitle(event.target.value)}
+                disabled={title === undefined}
+              />
+              <div className={styles.inputNotice}>
+                <FaEyeSlash size={16} />
+                自分にのみ表示されます
               </div>
             </div>
-            <input
-              className={
-                styles.input[title === undefined || title ? 'default' : 'error']
-              }
-              value={title ?? ''}
-              onChange={(event) => setTitle(event.target.value)}
-              disabled={title === undefined}
-            />
-          </div>
-          <div className={styles.inputContainer}>
-            <div className={styles.titleGroup}>
-              <div className={styles.title}>差出人</div>
-              <div className={styles.error}>
-                {creatorName === undefined || creatorName
-                  ? ''
-                  : '差出人を入力してください'}
+            <div className={styles.inputContainer}>
+              <div className={styles.titleGroup}>
+                <div className={styles.title}>差出人</div>
+                <div className={styles.error}>
+                  {creatorName === undefined || creatorName
+                    ? ''
+                    : '差出人を入力してください'}
+                </div>
+              </div>
+              <input
+                className={
+                  styles.input[
+                    creatorName === undefined || creatorName
+                      ? 'default'
+                      : 'error'
+                  ]
+                }
+                value={creatorName ?? ''}
+                onChange={(event) => setCreatorName(event.target.value)}
+                disabled={creatorName === undefined}
+              />
+              <div className={styles.inputNotice}>
+                <FaEye size={16} />
+                相手に公開されます
               </div>
             </div>
-            <input
-              className={
-                styles.input[
-                  creatorName === undefined || creatorName ? 'default' : 'error'
-                ]
-              }
-              value={creatorName ?? ''}
-              onChange={(event) => setCreatorName(event.target.value)}
-              disabled={creatorName === undefined}
-            />
           </div>
           <div
             className={
