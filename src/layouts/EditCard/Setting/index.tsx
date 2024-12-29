@@ -125,6 +125,7 @@ const Setting = () => {
                 value={title ?? ''}
                 onChange={(event) => setTitle(event.target.value)}
                 disabled={title === undefined}
+                placeholder="SNS用"
               />
               <div className={styles.inputNotice}>
                 <FaEyeSlash size={16} />
