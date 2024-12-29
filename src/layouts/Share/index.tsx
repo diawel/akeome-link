@@ -65,7 +65,7 @@ const Share = ({ cardRecord }: ShareProps) => {
           <Image
             className={styles.post}
             src={postImage}
-            alt="postImage"
+            alt=""
             loading="eager"
           />
           <div className={styles.card}>

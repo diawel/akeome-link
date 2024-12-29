@@ -12,7 +12,7 @@ export const post = style({
   height: 'auto',
   objectFit: 'cover',
   display: 'block',
-  marginTop: '-30px',
+  marginTop: '-60px',
 })
 
 export const card = style({
