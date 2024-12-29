@@ -2,7 +2,7 @@
 
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useSyncExternalStore } from 'react'
 import { extractPersonName } from '../../../utils/goolab'
 import * as styles from './index.css'
 import Meta from './Meta'
@@ -62,7 +62,22 @@ const Setting = () => {
 
   const now = new Date()
   const deliveredAt = calcDeliveredAt(now)
-  const isExpressAvailable = now.getMonth() === 0
+  const deliveredAtString = useSyncExternalStore(
+    () => () => {},
+    () =>
+      `${deliveredAt.getFullYear()}年${
+        deliveredAt.getMonth() + 1
+      }月${deliveredAt.getDate()}日 ${deliveredAt.getHours()}:${deliveredAt
+        .getMinutes()
+        .toString()
+        .padStart(2, '0')}`,
+    () => ''
+  )
+  const isExpressAvailable = useSyncExternalStore(
+    () => () => {},
+    () => now.getMonth() === 0,
+    () => undefined
+  )
 
   const save = () => {
     if (!title) return
@@ -153,15 +168,7 @@ const Setting = () => {
             <div className={styles.deliveredAtGroup}>
               <div className={styles.subTitle}>配達予定日</div>
               <div className={styles.deliveredAt}>
-                {isExpress ? (
-                  'いますぐ'
-                ) : (
-                  <>
-                    {deliveredAt.getFullYear()}年{deliveredAt.getMonth() + 1}月
-                    {deliveredAt.getDate()}日 {deliveredAt.getHours()}:
-                    {deliveredAt.getMinutes().toString().padStart(2, '0')}
-                  </>
-                )}
+                {isExpress ? 'いますぐ' : deliveredAtString}
               </div>
             </div>
           </div>
