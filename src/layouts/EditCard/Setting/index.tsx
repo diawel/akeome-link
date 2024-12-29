@@ -31,7 +31,7 @@ const Setting = () => {
   const [creatorName, setCreatorName] = useState<string | undefined>(undefined)
   const [title, setTitle] = useState<string | undefined>(undefined)
   const [isLoading, setIsLoading] = useState(false)
-  const [deliveredAt, setDeliveredAt] = useState<Date>(calcDeliveredAt())
+  const [isExpress, setIsExpress] = useState(false)
 
   useEffect(() => {
     if (!session) return
@@ -60,6 +60,10 @@ const Setting = () => {
 
   const router = useRouter()
 
+  const now = new Date()
+  const deliveredAt = calcDeliveredAt()
+  const isExpressAvailable = now.getMonth() === 0
+
   const save = () => {
     if (!title) return
     if (!creatorName) return
@@ -67,10 +71,12 @@ const Setting = () => {
 
     setIsLoading(true)
     localStorage.setItem(creatorNameLocalStorageKey, creatorName)
-    saveCard(title, creatorName, deliveredAt).then((response) => {
-      if (!response) return
-      router.replace(`/share/${response.data.id}`)
-    })
+    saveCard(title, creatorName, isExpress ? now : deliveredAt).then(
+      (response) => {
+        if (!response) return
+        router.replace(`/share/${response.data.id}`)
+      }
+    )
   }
 
   return (
@@ -122,32 +128,32 @@ const Setting = () => {
               disabled={creatorName === undefined}
             />
           </div>
-          <div className={styles.toggleContainer}>
-            <div className={styles.toggleGroup}>
-              <div className={styles.title}>速達</div>
-              <label
-                className={
-                  styles.toggle[deliveredAt <= new Date() ? 'on' : 'off']
-                }
-              >
-                <input
-                  className={styles.checkbox}
-                  type="checkbox"
-                  checked={deliveredAt <= new Date()}
-                  onChange={(event) => {
-                    if (event.target.checked) {
-                      setDeliveredAt(new Date())
-                    } else {
-                      setDeliveredAt(calcDeliveredAt())
-                    }
-                  }}
-                />
-              </label>
-            </div>
+          <div
+            className={
+              styles.toggleContainer[
+                isExpressAvailable ? 'expressAvailable' : 'default'
+              ]
+            }
+          >
+            {isExpressAvailable && (
+              <div className={styles.toggleGroup}>
+                <div className={styles.title}>速達</div>
+                <label className={styles.toggle[isExpress ? 'on' : 'off']}>
+                  <input
+                    className={styles.checkbox}
+                    type="checkbox"
+                    checked={isExpress}
+                    onChange={(event) => {
+                      setIsExpress(event.target.checked)
+                    }}
+                  />
+                </label>
+              </div>
+            )}
             <div className={styles.deliveredAtGroup}>
               <div className={styles.subTitle}>配達予定日</div>
               <div className={styles.deliveredAt}>
-                {deliveredAt <= new Date() ? (
+                {isExpress ? (
                   'いますぐ'
                 ) : (
                   <>
@@ -159,7 +165,7 @@ const Setting = () => {
               </div>
             </div>
           </div>
-          {deliveredAt <= new Date() && (
+          {isExpress && (
             <Image className={styles.expressLabel} src={expressLabel} alt="" />
           )}
         </div>
