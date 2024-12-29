@@ -2,6 +2,10 @@ import * as styles from './index.css'
 import Image from 'next/image'
 import akeomeLinkLogo from '../../assets/akeome-link-logo.svg'
 import smartPhoneImage from './smartphone-image.svg'
+import descriptionImage1 from './image-1.png'
+import descriptionImage2 from './image-2.png'
+import descriptionImage3 from './image-3.png'
+import backgroundImage from './backgroundImage.svg'
 import LoginButton from '../../components/LoginButton'
 
 const Top = () => {
@@ -16,7 +20,7 @@ const Top = () => {
             priority
           />
         </div>
-        <div className={styles.mainDiscription}>
+        <div className={styles.topContent}>
           <Image
             className={styles.smartPhoneImage}
             src={smartPhoneImage}
@@ -43,6 +47,57 @@ const Top = () => {
             </div>
           </div>
         </div>
+        <div className={styles.mainDescription}>
+          <div className={styles.text2024}>2024</div>
+          <div className={styles.imageContainer1}>
+            <Image
+              className={styles.descriptionImage1}
+              src={descriptionImage1}
+              alt="descriptionImage1"
+              priority
+            />
+            <div className={styles.overlayText1}>
+              あなただけの年賀状を
+              <br />
+              カンタン作成
+            </div>
+          </div>
+          <div className={styles.imageContainer2}>
+            <Image
+              className={styles.descriptionImage2}
+              src={descriptionImage2}
+              alt="descriptionImage2"
+              priority
+            />
+            <div className={styles.overlayText2}>
+              好きなSNSに
+              <br />
+              リンクを共有するだけで
+              <br />
+              準備完了
+            </div>
+          </div>
+          <div className={styles.imageContainer3}>
+            <Image
+              className={styles.descriptionImage3}
+              src={descriptionImage3}
+              alt="descriptionImage3"
+              priority
+            />
+            <div className={styles.overlayText3}>
+              年が明けたら
+              <br />
+              受け取りにいこう
+            </div>
+          </div>
+          <div className={styles.text2025}>2025</div>
+        </div>
+        <Image
+          className={styles.backgroundImage}
+          src={backgroundImage}
+          alt="backgroundImage"
+          priority
+        />
       </div>
     </div>
   )
