@@ -12,7 +12,7 @@ import Link from 'next/link'
 import { mediaRecordsToUrlSet } from '../../utils/strapi/strapiImage'
 import { StrapiRecord } from '../../utils/strapi'
 import Renderer from '../../components/Card/Renderer'
-import { useState, useSyncExternalStore } from 'react'
+import { useRef, useState, useSyncExternalStore } from 'react'
 import { CardAttributes, DraftCardAttributes } from '../../utils/strapi/card'
 import { FaArrowUpFromBracket, FaDownload, FaQrcode } from 'react-icons/fa6'
 
@@ -58,6 +58,8 @@ const Share = ({ cardRecord }: ShareProps) => {
     () => true
   )
 
+  const shareUrlInputRef = useRef<HTMLInputElement>(null)
+
   return (
     <>
       <div>
@@ -88,11 +90,12 @@ const Share = ({ cardRecord }: ShareProps) => {
             </div>
             <div className={styles.linkBoxContent}>
               <input
+                ref={shareUrlInputRef}
                 type="text"
                 value={shareUrl}
                 readOnly
                 className={styles.linkInput}
-                onFocus={(event) => event.target.select()}
+                onClick={() => shareUrlInputRef.current?.select()}
               />
               <button className={styles.copyButton} onClick={handleCopy}>
                 <Image
