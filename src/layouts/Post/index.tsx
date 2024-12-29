@@ -13,9 +13,7 @@ const Post = async ({ tab }: PostProps) => {
   if (tab === 'delivered') {
     const receivedCards = await getReservedCards({ filter: 'delivered' })
     if (!receivedCards) {
-      redirect(
-        `/api/auth/signin?callbackUrl=${encodeURIComponent('/post/delivered')}`
-      )
+      redirect('/')
     }
     return (
       <div className={styles.container}>
@@ -29,11 +27,7 @@ const Post = async ({ tab }: PostProps) => {
   if (tab === 'undelivered') {
     const receivedCards = await getReservedCards({ filter: 'undelivered' })
     if (!receivedCards) {
-      redirect(
-        `/api/auth/signin?callbackUrl=${encodeURIComponent(
-          '/post/undelivered'
-        )}`
-      )
+      redirect('/')
     }
     return (
       <div className={styles.container}>
