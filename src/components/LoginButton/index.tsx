@@ -29,6 +29,7 @@ const LoginButton = ({
       userAgent.includes('fbios') || userAgent.includes('fb_iab')
     const isInstagram = userAgent.includes('instagram')
     const isLine = userAgent.includes('line/')
+    const isYahoo = userAgent.includes('yjapp')
     const isWebview = userAgent.includes('webview') // e.g. Rakuten Link
     return isFacebook
       ? 'facebook'
@@ -36,6 +37,8 @@ const LoginButton = ({
       ? 'instagram'
       : isLine
       ? 'line'
+      : isYahoo
+      ? 'yahoo'
       : isWebview
       ? 'webview'
       : 'other'
