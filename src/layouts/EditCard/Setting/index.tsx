@@ -14,8 +14,7 @@ import post from './post.svg'
 
 const creatorNameLocalStorageKey = 'creatorName'
 
-const calcDeliveredAt = () => {
-  const date = new Date()
+const calcDeliveredAt = (date: Date) => {
   if (date.getMonth() === 0) {
     return new Date(date.getFullYear(), 0, date.getDate() + 1, 6)
   }
@@ -35,6 +34,7 @@ const Setting = () => {
 
   useEffect(() => {
     if (!session) return
+    if (creatorName !== undefined) return
     setCreatorName(
       localStorage.getItem(creatorNameLocalStorageKey) ??
         session?.user?.name ??
@@ -61,7 +61,7 @@ const Setting = () => {
   const router = useRouter()
 
   const now = new Date()
-  const deliveredAt = calcDeliveredAt()
+  const deliveredAt = calcDeliveredAt(now)
   const isExpressAvailable = now.getMonth() === 0
 
   const save = () => {
