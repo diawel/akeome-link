@@ -6,7 +6,6 @@ import descriptionImage1 from './image-1.png'
 import descriptionImage2 from './image-2.png'
 import descriptionImage3 from './image-3.png'
 import backgroundImage from './background-image.svg'
-import orangeLogo from './orange-logo.svg'
 import postImage from './post-image.svg'
 import LoginButton from '../../components/LoginButton'
 
