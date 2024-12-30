@@ -97,6 +97,7 @@ export const buttonLayout = style({
   cursor: 'pointer',
   width: '320px',
   height: '46px',
+  textDecoration: 'none',
 })
 
 export const bottomInfo = style({
