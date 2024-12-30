@@ -21,11 +21,7 @@ export const viewport: Viewport = {
   maximumScale: 1,
 }
 
-const Layout = async ({
-  children,
-}: Readonly<{
-  children: React.ReactNode
-}>) => {
+const Layout = async () => {
   return (
     <html lang="ja">
       <body className={styles.body}>
