@@ -554,7 +554,7 @@ const Card = ({
                     className={styles.control.remove}
                     onClick={(event) => {
                       event.stopPropagation()
-                      edit?.setLayout(layout.slice(0, index))
+                      edit?.setLayout(layout.slice(0, -1))
                       edit?.setIsAnyFocused(false)
 
                       const content = layout[index].content

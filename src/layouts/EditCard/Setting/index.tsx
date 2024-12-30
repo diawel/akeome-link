@@ -2,7 +2,7 @@
 
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState, useSyncExternalStore } from 'react'
 import { extractPersonName } from '../../../utils/goolab'
 import * as styles from './index.css'
 import Meta from './Meta'
@@ -11,11 +11,11 @@ import postNumber from './post-number.svg'
 import Image from 'next/image'
 import expressLabel from './express-label.svg'
 import post from './post.svg'
+import { FaEarthAmericas, FaLock } from 'react-icons/fa6'
 
 const creatorNameLocalStorageKey = 'creatorName'
 
-const calcDeliveredAt = () => {
-  const date = new Date()
+const calcDeliveredAt = (date: Date) => {
   if (date.getMonth() === 0) {
     return new Date(date.getFullYear(), 0, date.getDate() + 1, 6)
   }
@@ -35,6 +35,7 @@ const Setting = () => {
 
   useEffect(() => {
     if (!session) return
+    if (creatorName !== undefined) return
     setCreatorName(
       localStorage.getItem(creatorNameLocalStorageKey) ??
         session?.user?.name ??
@@ -61,8 +62,23 @@ const Setting = () => {
   const router = useRouter()
 
   const now = new Date()
-  const deliveredAt = calcDeliveredAt()
-  const isExpressAvailable = now.getMonth() === 0
+  const deliveredAt = calcDeliveredAt(now)
+  const deliveredAtString = useSyncExternalStore(
+    () => () => {},
+    () =>
+      `${deliveredAt.getFullYear()}年${
+        deliveredAt.getMonth() + 1
+      }月${deliveredAt.getDate()}日 ${deliveredAt.getHours()}:${deliveredAt
+        .getMinutes()
+        .toString()
+        .padStart(2, '0')}`,
+    () => ''
+  )
+  const isExpressAvailable = useSyncExternalStore(
+    () => () => {},
+    () => now.getMonth() === 0,
+    () => undefined
+  )
 
   const save = () => {
     if (!title) return
@@ -79,6 +95,8 @@ const Setting = () => {
     )
   }
 
+  const titleInputRef = useRef<HTMLInputElement>(null)
+
   return (
     <div className={styles.screen}>
       <Meta
@@ -90,43 +108,64 @@ const Setting = () => {
           <div className={styles.postNumberContainer}>
             <Image src={postNumber} alt="" />
           </div>
-          <div className={styles.inputContainer}>
-            <div className={styles.titleGroup}>
-              <div className={styles.title}>タイトル</div>
-              <div className={styles.error}>
-                {title === undefined || title
-                  ? ''
-                  : 'タイトルを入力してください'}
+          <div className={styles.inputGroup}>
+            <div className={styles.inputContainer}>
+              <div className={styles.titleGroup}>
+                <div className={styles.title}>タイトル</div>
+                <div className={styles.error}>
+                  {title === undefined || title
+                    ? ''
+                    : 'タイトルを入力してください'}
+                </div>
+              </div>
+              <input
+                ref={titleInputRef}
+                className={
+                  styles.input[
+                    title === undefined || title ? 'default' : 'error'
+                  ]
+                }
+                value={title ?? ''}
+                onChange={(event) => setTitle(event.target.value)}
+                disabled={title === undefined}
+                placeholder="SNS用"
+                onClick={() => {
+                  if (title === '無題') {
+                    titleInputRef.current?.select()
+                  }
+                }}
+              />
+              <div className={styles.inputNotice}>
+                <FaLock size={14} />
+                自分にのみ表示されます
               </div>
             </div>
-            <input
-              className={
-                styles.input[title === undefined || title ? 'default' : 'error']
-              }
-              value={title ?? ''}
-              onChange={(event) => setTitle(event.target.value)}
-              disabled={title === undefined}
-            />
-          </div>
-          <div className={styles.inputContainer}>
-            <div className={styles.titleGroup}>
-              <div className={styles.title}>差出人</div>
-              <div className={styles.error}>
-                {creatorName === undefined || creatorName
-                  ? ''
-                  : '差出人を入力してください'}
+            <div className={styles.inputContainer}>
+              <div className={styles.titleGroup}>
+                <div className={styles.title}>差出人</div>
+                <div className={styles.error}>
+                  {creatorName === undefined || creatorName
+                    ? ''
+                    : '差出人を入力してください'}
+                </div>
+              </div>
+              <input
+                className={
+                  styles.input[
+                    creatorName === undefined || creatorName
+                      ? 'default'
+                      : 'error'
+                  ]
+                }
+                value={creatorName ?? ''}
+                onChange={(event) => setCreatorName(event.target.value)}
+                disabled={creatorName === undefined}
+              />
+              <div className={styles.inputNotice}>
+                <FaEarthAmericas size={14} />
+                相手に公開されます
               </div>
             </div>
-            <input
-              className={
-                styles.input[
-                  creatorName === undefined || creatorName ? 'default' : 'error'
-                ]
-              }
-              value={creatorName ?? ''}
-              onChange={(event) => setCreatorName(event.target.value)}
-              disabled={creatorName === undefined}
-            />
           </div>
           <div
             className={
@@ -153,15 +192,7 @@ const Setting = () => {
             <div className={styles.deliveredAtGroup}>
               <div className={styles.subTitle}>配達予定日</div>
               <div className={styles.deliveredAt}>
-                {isExpress ? (
-                  'いますぐ'
-                ) : (
-                  <>
-                    {deliveredAt.getFullYear()}年{deliveredAt.getMonth() + 1}月
-                    {deliveredAt.getDate()}日 {deliveredAt.getHours()}:
-                    {deliveredAt.getMinutes().toString().padStart(2, '0')}
-                  </>
-                )}
+                {isExpress ? 'いますぐ' : deliveredAtString}
               </div>
             </div>
           </div>
