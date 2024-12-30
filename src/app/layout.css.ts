@@ -3,54 +3,46 @@ import * as disabledScrollStyle from '../components/DisableScroll/index.css'
 import { color } from '../../src/utils/styleSchema'
 
 export const body = style({
-  display: 'flex',
   height: '100dvh',
   width: '100%',
-  justifyContent: 'center',
-  alignItems: 'center',
-  backgroundColor: '#eeeeee',
   overflow: 'hidden',
-})
-
-export const container = style({
-  display: 'flex',
-  justifyContent: 'center',
-  height: '100%',
-  width: '100%',
 
   '@media': {
-    'screen and (min-width: 992px)': {
-      flexDirection: 'row',
+    'screen and (min-width: 480px)': {
+      width: '100%',
+      display: 'grid',
+      gridTemplateColumns: '1fr 480px 1fr',
+      backgroundColor: color.gray[100],
+      gridTemplateRows: '100%',
+    },
+    'screen and (min-width: 1024px)': {
+      gridTemplateColumns: '11fr 395px 2fr',
+      gridTemplateRows: '100%',
       backgroundColor: color.red[5],
+      backgroundBlendMode: 'overlay',
+      backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 250 250' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.5' numOctaves='1' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`,
     },
   },
 })
 
 export const sideInfo = style({
   display: 'none',
-  width: 738,
 
   '@media': {
-    'screen and (min-width: 992px)': {
+    'screen and (min-width: 480px)': {
       display: 'block',
     },
   },
 })
 
 export const display = style({
-  backgroundColor: '#ffffff',
   width: '100%',
   height: '100%',
-  boxSizing: 'content-box',
-  marginTop: 38,
-  zIndex: 10,
+  margin: 0,
 
   '@media': {
-    'screen and (min-width: 480px)': {
-      width: '395px',
-      padding: '48px 8px',
-      borderRadius: '36px',
-      maxHeight: '760px',
+    'screen and (min-width: 1024px)': {
+      paddingTop: 38,
     },
   },
 })
@@ -60,8 +52,10 @@ export const inner = style({
   height: '100%',
 
   '@media': {
-    'screen and (min-width: 480px)': {
-      border: '1px solid #eeeeee',
+    'screen and (min-width: 1024px)': {
+      borderRadius: '32px 32px 0 0',
+      overflow: 'hidden',
+      boxShadow: '0 0 32px rgba(0, 0, 0, 0.1)',
     },
   },
 })

@@ -38,19 +38,16 @@ const Layout = async ({
       <body className={styles.body}>
         <ClientSessionProvider>
           <StickerProvider stickers={await getStickers()}>
-            <div className={styles.container}>
-              <div className={styles.sideInfo}>
-                <SideInfo />
-              </div>
-              <div className={styles.display}>
-                <div className={styles.inner}>
-                  <LoginDialogProvider>
-                    <div className={styles.content}>{children}</div>
-                    <AchievementPopup />
-                  </LoginDialogProvider>
-                </div>
+            <div></div>
+            <div className={styles.display}>
+              <div className={styles.inner}>
+                <LoginDialogProvider>
+                  <div className={styles.content}>{children}</div>
+                  <AchievementPopup />
+                </LoginDialogProvider>
               </div>
             </div>
+            <div></div>
           </StickerProvider>
           <StrapiAdapter />
         </ClientSessionProvider>
