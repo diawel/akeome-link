@@ -1,15 +1,20 @@
 import { style } from '@vanilla-extract/css'
-import { color } from '../../utils/styleSchema'
+import { color } from '../../../utils/styleSchema'
 
 export const container = style({
-  display: 'flex',
-  flexDirection: 'column',
-  justifyContent: 'center',
-  alignItems: 'center',
-  height: '100%',
-  backgroundColor: color.red[5],
-  textAlign: 'center',
-  position: 'relative',
+  display: 'none',
+  '@media': {
+    'screen and (min-width: 1024px)': {
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'center',
+      alignItems: 'center',
+      height: '100%',
+      backgroundColor: color.red[5],
+      textAlign: 'center',
+      position: 'relative',
+    },
+  },
 })
 
 export const cloudImage1 = style({
@@ -53,8 +58,22 @@ export const treeAndMt = style({
   objectFit: 'cover',
 })
 
+export const column = style({
+  display: 'grid',
+  gridTemplateColumns: '1fr',
+  gridTemplateRows: '1fr auto',
+  position: 'relative',
+  height: '100%',
+  overflowY: 'auto',
+})
+
 export const content = style({
-  paddingTop: 104,
+  paddingTop: 24,
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'center',
+  alignItems: 'center',
+  height: '100%',
 })
 
 export const discription = style({
@@ -94,16 +113,12 @@ export const buttonLayout = style({
 })
 
 export const bottomInfo = style({
-  position: 'absolute',
-  bottom: 23,
-  left: '50%',
-  transform: 'translateX(-50%)',
+  padding: 24,
   textAlign: 'center',
 })
 
 export const privacy = style({
   fontSize: 12,
-  fontWeight: 'bold',
   color: 'white',
   textDecoration: 'none',
   paddingRight: 12,
@@ -111,7 +126,6 @@ export const privacy = style({
 
 export const terms = style({
   fontSize: 12,
-  fontWeight: 'bold',
   color: 'white',
   textDecoration: 'none',
 })
@@ -119,6 +133,5 @@ export const terms = style({
 export const copyRight = style({
   paddingTop: 4,
   fontSize: 12,
-  fontWeight: 'bold',
   color: 'white',
 })

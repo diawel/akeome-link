@@ -8,7 +8,7 @@ import StrapiAdapter from '../utils/db/StrapiAdapter'
 import AchievementPopup from '../layouts/AchievementPopup'
 import { GoogleAnalytics } from '@next/third-parties/google'
 import LoginDialogProvider from '../components/LoginButton/LoginDialogProvider'
-import SideInfo from '../layouts/SideInfo'
+import Left from '../layouts/pc/Left'
 
 export const metadata: Metadata = {
   title: 'あけおめリンク',
@@ -38,7 +38,9 @@ const Layout = async ({
       <body className={styles.body}>
         <ClientSessionProvider>
           <StickerProvider stickers={await getStickers()}>
-            <div></div>
+            <div>
+              <Left />
+            </div>
             <div className={styles.display}>
               <div className={styles.inner}>
                 <LoginDialogProvider>

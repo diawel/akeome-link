@@ -15,38 +15,45 @@ const SideInfo = () => {
   return (
     <div className={styles.container}>
       <div className={styles.cloudImage1}>
-        <Image src={cloudImage1} alt="Cloud Image" priority />
+        <Image src={cloudImage1} alt="" loading="eager" />
       </div>
       <div className={styles.flowerImage1}>
-        <Image src={flowerImage1} alt="Flower Image" priority />
+        <Image src={flowerImage1} alt="" loading="eager" />
       </div>
       <div className={styles.flowerImage2}>
-        <Image src={flowerImage2} alt="Flower Image" priority />
+        <Image src={flowerImage2} alt="" loading="eager" />
       </div>
       <div className={styles.treeAndCloud}>
-        <Image src={treeAndCloud} alt="Tree and Cloud Image" priority />
+        <Image src={treeAndCloud} alt="" loading="eager" />
       </div>
       <div className={styles.treeAndMt}>
-        <Image src={treeAndMt} alt="Tree and Mt Image" priority />
+        <Image src={treeAndMt} alt="" loading="eager" />
       </div>
-      <div className={styles.content}>
-        <div className={styles.discription}>
-          <div>
-            <span className={styles.largeText}>SNS</span>で
-            <span className={styles.largeText}>共有</span>する
-            <span className={styles.largeText}>年賀状</span>アプリ
+      <div className={styles.column}>
+        <div className={styles.content}>
+          <div className={styles.discription}>
+            <div>
+              <span className={styles.largeText}>SNS</span>で
+              <span className={styles.largeText}>共有</span>する
+              <span className={styles.largeText}>年賀状</span>アプリ
+            </div>
           </div>
-        </div>
-        <Image src={akeomeLinkLogo} width={429} alt="akeomeLinkLogo" priority />
-        <div className={styles.registerButton}>
-          <button className={styles.buttonLayout} onClick={() => signIn()}>
-            Googleアカウントで新規登録
-          </button>
-        </div>
-        <div className={styles.loginButton}>
-          <button className={styles.buttonLayout} onClick={() => signIn()}>
-            ログイン
-          </button>
+          <Image
+            src={akeomeLinkLogo}
+            width={429}
+            alt="あけおめリンク"
+            loading="eager"
+          />
+          <div className={styles.registerButton}>
+            <button className={styles.buttonLayout} onClick={() => signIn()}>
+              Googleアカウントで新規登録
+            </button>
+          </div>
+          <div className={styles.loginButton}>
+            <button className={styles.buttonLayout} onClick={() => signIn()}>
+              ログイン
+            </button>
+          </div>
         </div>
         <div className={styles.bottomInfo}>
           <Link className={styles.privacy} href="/privacy">
