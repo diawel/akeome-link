@@ -16,6 +16,7 @@ export const screen = style({
 
 export const container = style({
   width: '100%',
+  maxWidth: 480,
   backgroundColor: color.gray[90],
   borderRadius: 12,
   padding: 30,
