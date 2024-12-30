@@ -60,12 +60,18 @@ export const discriptionText = style({
   fontWeight: 'bold',
   color: 'white',
   lineHeight: '200%',
+  paddingBottom: 32,
 })
 
 export const registerButton = style({
   display: 'flex',
   justifyContent: 'center',
-  paddingTop: 32,
+
+  '@media': {
+    'screen and (min-width: 1024px)': {
+      display: 'none',
+    },
+  },
 })
 
 export const loginButton = style({
@@ -73,7 +79,14 @@ export const loginButton = style({
   justifyContent: 'center',
   paddingTop: 13,
   paddingBottom: 49,
+
+  '@media': {
+    'screen and (min-width: 1024px)': {
+      display: 'none',
+    },
+  },
 })
+
 export const buttonLayout = style({
   padding: '12px 24px',
   fontSize: 16,
