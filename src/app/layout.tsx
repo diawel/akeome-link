@@ -8,6 +8,10 @@ import StrapiAdapter from '../utils/db/StrapiAdapter'
 import AchievementPopup from '../layouts/AchievementPopup'
 import { GoogleAnalytics } from '@next/third-parties/google'
 import LoginDialogProvider from '../components/LoginButton/LoginDialogProvider'
+import Left from '../layouts/pc/Left'
+import { authOptions } from './api/auth/[...nextauth]/authOptions'
+import { getServerSession } from 'next-auth'
+import Right from '../layouts/pc/Right'
 
 export const metadata: Metadata = {
   title: 'あけおめリンク',
@@ -32,17 +36,26 @@ const Layout = async ({
 }: Readonly<{
   children: React.ReactNode
 }>) => {
+  const session = await getServerSession(authOptions)
   return (
     <html lang="ja">
       <body className={styles.body}>
         <ClientSessionProvider>
           <StickerProvider stickers={await getStickers()}>
-            <div className={styles.display}>
-              <div className={styles.inner}>
-                <LoginDialogProvider>
-                  <div className={styles.content}>{children}</div>
-                  <AchievementPopup />
-                </LoginDialogProvider>
+            <div className={styles.container}>
+              <div>
+                <Left isSignedIn={Boolean(session)} />
+              </div>
+              <div className={styles.display}>
+                <div className={styles.inner}>
+                  <LoginDialogProvider>
+                    <div className={styles.content}>{children}</div>
+                    <AchievementPopup />
+                  </LoginDialogProvider>
+                </div>
+              </div>
+              <div>
+                <Right />
               </div>
             </div>
           </StickerProvider>
