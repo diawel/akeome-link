@@ -3,7 +3,7 @@ import { color } from '../../utils/styleSchema'
 
 export const container = style({
   height: '100%',
-  backgroundColor: 'white',
+  backgroundColor: color.gray[90],
   overflowX: 'hidden',
 })
 
@@ -113,7 +113,7 @@ export const mainDescription = style({
 export const text2024 = style({
   fontSize: 96,
   fontWeight: 'bold',
-  color: '#DCDCDC',
+  color: '#E0CBA2',
   paddingTop: 85,
   lineHeight: '144%',
 })
@@ -121,69 +121,70 @@ export const text2024 = style({
 export const imageContainer1 = style({
   position: 'relative',
   display: 'flex',
+  marginInline: 32,
 })
 
 export const descriptionImage1 = style({
   display: 'block',
   width: 237,
   height: 354,
-  marginLeft: 32,
+  paddingTop: 36,
+})
+
+export const overlayText = style({
+  boxDecorationBreak: 'clone',
+  backgroundColor: color.gray[100],
+  padding: 4,
+  fontSize: 24,
+  fontWeight: 'bold',
+  color: color.gray[5],
 })
 
 export const overlayText1 = style({
   position: 'absolute',
-  right: '5%',
-  width: 240,
-  fontSize: 24,
-  fontWeight: 'bold',
-  color: 'black',
+  top: 0,
+  right: 0,
 })
 
 export const imageContainer2 = style({
   position: 'relative',
   display: 'flex',
   flexDirection: 'row-reverse',
-  paddingTop: 36,
+  paddingTop: 16,
+  marginInline: 32,
+  marginTop: 36,
 })
 
 export const descriptionImage2 = style({
   display: 'block',
   width: 237,
   height: 354,
-  marginRight: 32,
 })
 
 export const overlayText2 = style({
   position: 'absolute',
-  top: 24,
-  left: '5%',
-  width: 270,
-  fontSize: 24,
-  fontWeight: 'bold',
-  color: 'black',
+  top: 0,
+  left: 0,
 })
 
 export const imageContainer3 = style({
   position: 'relative',
   display: 'flex',
   paddingTop: 36,
+  marginInline: 32,
+  marginTop: 72,
 })
 
 export const descriptionImage3 = style({
   display: 'block',
   width: 237,
   height: 354,
-  marginLeft: 32,
 })
 
 export const overlayText3 = style({
   position: 'absolute',
-  top: 46,
-  right: '-6%',
-  width: 240,
-  fontSize: 24,
-  fontWeight: 'bold',
-  color: 'black',
+  top: 0,
+  right: 0,
 })
 
 export const text2025 = style({

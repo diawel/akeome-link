@@ -58,9 +58,11 @@ const Top = () => {
               alt="年画像を作っている画面のスクリーンショット"
             />
             <div className={styles.overlayText1}>
-              あなただけの年賀状を
-              <br />
-              カンタン作成
+              <span className={styles.overlayText}>
+                あなただけの年賀状を
+                <br />
+                カンタン作成
+              </span>
             </div>
           </div>
           <div className={styles.imageContainer2}>
@@ -70,11 +72,13 @@ const Top = () => {
               alt="年賀状の完成画面のスクリーンショット"
             />
             <div className={styles.overlayText2}>
-              好きなSNSに
-              <br />
-              リンクを共有するだけで
-              <br />
-              準備完了
+              <span className={styles.overlayText}>
+                好きなSNSに
+                <br />
+                リンクを共有するだけで
+                <br />
+                準備完了
+              </span>
             </div>
           </div>
           <div className={styles.imageContainer3}>
@@ -84,19 +88,14 @@ const Top = () => {
               alt="年賀状の受け取り画面のスクリーンショット"
             />
             <div className={styles.overlayText3}>
-              年が明けたら
-              <br />
-              受け取りにいこう
+              <span className={styles.overlayText}>
+                年が明けたら
+                <br />
+                受け取りにいこう
+              </span>
             </div>
           </div>
           <div className={styles.text2025}>2025</div>
-          <div className={styles.orangeLogoContainer}>
-            <Image
-              className={styles.orangeLogoImage}
-              src={orangeLogo}
-              alt="orangeLogoImage"
-            />
-          </div>
           <div className={styles.akeomeLinkText}>
             <div>あけおめリンクで</div>
             <div className={styles.textSpace}></div>
