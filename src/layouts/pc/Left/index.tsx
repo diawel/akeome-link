@@ -2,13 +2,13 @@
 
 import * as styles from './index.css'
 import Image from 'next/image'
-import { signIn } from 'next-auth/react'
 import Link from 'next/link'
 import akeomeLinkLogo from './akeome-link-logo-white.svg'
 import cloudImage from './cloud.svg'
 import flowerImage from '../flower.svg'
 import treeAndCloud from './treeAndCloud.svg'
 import treeAndMt from './treeAndMt.svg'
+import LoginButton from '../../../components/LoginButton'
 
 type LeftProps = {
   isSignedIn: boolean
@@ -47,20 +47,14 @@ const Left = ({ isSignedIn }: LeftProps) => {
           {!isSignedIn && (
             <>
               <div className={styles.registerButton}>
-                <button
-                  className={styles.buttonLayout}
-                  onClick={() => signIn()}
-                >
+                <LoginButton className={styles.buttonLayout}>
                   Googleアカウントで新規登録
-                </button>
+                </LoginButton>
               </div>
               <div className={styles.loginButton}>
-                <button
-                  className={styles.buttonLayout}
-                  onClick={() => signIn()}
-                >
+                <LoginButton className={styles.buttonLayout}>
                   ログイン
-                </button>
+                </LoginButton>
               </div>
             </>
           )}
