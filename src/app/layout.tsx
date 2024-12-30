@@ -1,13 +1,7 @@
 import type { Metadata, Viewport } from 'next'
 import './globals.css'
 import * as styles from './layout.css'
-import StickerProvider from './StickerProvider'
-import { getStickers } from '../utils/strapi/sticker'
-import ClientSessionProvider from './ClientSessionProvider'
-import StrapiAdapter from '../utils/db/StrapiAdapter'
-import AchievementPopup from '../layouts/AchievementPopup'
 import { GoogleAnalytics } from '@next/third-parties/google'
-import LoginDialogProvider from '../components/LoginButton/LoginDialogProvider'
 
 export const metadata: Metadata = {
   title: 'あけおめリンク',
