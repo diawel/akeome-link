@@ -1,7 +1,7 @@
 import * as styles from './index.css'
 import Image from 'next/image'
 import akeomeLinkLogo from '../../assets/akeome-link-logo.svg'
-import smartPhoneImage from './smartphone-image.svg'
+import smartPhoneImage from './smartphone-image.png'
 import descriptionImage1 from './image-1.png'
 import descriptionImage2 from './image-2.png'
 import descriptionImage3 from './image-3.png'
@@ -14,11 +14,11 @@ const Top = () => {
   return (
     <div className={styles.container}>
       <div className={styles.content}>
-        <div className={styles.logoImage}>
+        <div className={styles.logoContainer}>
           <Image
             src={akeomeLinkLogo}
-            width={255}
-            alt="akeomeLinkLogo"
+            className={styles.logoImage}
+            alt="あけおめリンク"
             priority
           />
         </div>
@@ -56,7 +56,6 @@ const Top = () => {
               className={styles.descriptionImage1}
               src={descriptionImage1}
               alt="descriptionImage1"
-              priority
             />
             <div className={styles.overlayText1}>
               あなただけの年賀状を
@@ -69,7 +68,6 @@ const Top = () => {
               className={styles.descriptionImage2}
               src={descriptionImage2}
               alt="descriptionImage2"
-              priority
             />
             <div className={styles.overlayText2}>
               好きなSNSに
@@ -84,7 +82,6 @@ const Top = () => {
               className={styles.descriptionImage3}
               src={descriptionImage3}
               alt="descriptionImage3"
-              priority
             />
             <div className={styles.overlayText3}>
               年が明けたら
@@ -98,7 +95,6 @@ const Top = () => {
               className={styles.orangeLogoImage}
               src={orangeLogo}
               alt="orangeLogoImage"
-              priority
             />
           </div>
           <div className={styles.akeomeLinkText}>
@@ -116,7 +112,6 @@ const Top = () => {
               className={styles.postImage}
               src={postImage}
               alt="postImage"
-              priority
             />
           </div>
         </div>
@@ -124,7 +119,6 @@ const Top = () => {
           className={styles.backgroundImage}
           src={backgroundImage}
           alt="backgroundImage"
-          priority
         />
       </div>
     </div>

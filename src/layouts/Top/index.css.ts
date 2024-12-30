@@ -13,10 +13,16 @@ export const content = style({
   zIndex: 1,
 })
 
-export const logoImage = style({
+export const logoContainer = style({
   display: 'flex',
   justifyContent: 'center',
   padding: '46px 0px 46px 0px',
+})
+
+export const logoImage = style({
+  width: 255,
+  maxWidth: '100%',
+  height: 'auto',
 })
 
 export const topContent = style({
