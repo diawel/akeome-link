@@ -9,6 +9,8 @@ import AchievementPopup from '../layouts/AchievementPopup'
 import { GoogleAnalytics } from '@next/third-parties/google'
 import LoginDialogProvider from '../components/LoginButton/LoginDialogProvider'
 import Left from '../layouts/pc/Left'
+import { authOptions } from './api/auth/[...nextauth]/authOptions'
+import { getServerSession } from 'next-auth'
 
 export const metadata: Metadata = {
   title: 'あけおめリンク',
@@ -33,13 +35,14 @@ const Layout = async ({
 }: Readonly<{
   children: React.ReactNode
 }>) => {
+  const session = await getServerSession(authOptions)
   return (
     <html lang="ja">
       <body className={styles.body}>
         <ClientSessionProvider>
           <StickerProvider stickers={await getStickers()}>
             <div>
-              <Left />
+              <Left isSignedIn={Boolean(session)} />
             </div>
             <div className={styles.display}>
               <div className={styles.inner}>

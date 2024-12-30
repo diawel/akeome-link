@@ -10,7 +10,11 @@ import flowerImage from '../flower.svg'
 import treeAndCloud from './treeAndCloud.svg'
 import treeAndMt from './treeAndMt.svg'
 
-const SideInfo = () => {
+type LeftProps = {
+  isSignedIn: boolean
+}
+
+const Left = ({ isSignedIn }: LeftProps) => {
   return (
     <div className={styles.container}>
       <div className={styles.cloudImage}>
@@ -40,16 +44,26 @@ const SideInfo = () => {
             alt="あけおめリンク"
             loading="eager"
           />
-          <div className={styles.registerButton}>
-            <button className={styles.buttonLayout} onClick={() => signIn()}>
-              Googleアカウントで新規登録
-            </button>
-          </div>
-          <div className={styles.loginButton}>
-            <button className={styles.buttonLayout} onClick={() => signIn()}>
-              ログイン
-            </button>
-          </div>
+          {!isSignedIn && (
+            <>
+              <div className={styles.registerButton}>
+                <button
+                  className={styles.buttonLayout}
+                  onClick={() => signIn()}
+                >
+                  Googleアカウントで新規登録
+                </button>
+              </div>
+              <div className={styles.loginButton}>
+                <button
+                  className={styles.buttonLayout}
+                  onClick={() => signIn()}
+                >
+                  ログイン
+                </button>
+              </div>
+            </>
+          )}
         </div>
         <div className={styles.bottomInfo}>
           <Link className={styles.privacy} href="/privacy">
@@ -67,4 +81,4 @@ const SideInfo = () => {
   )
 }
 
-export default SideInfo
+export default Left
