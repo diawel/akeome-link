@@ -55,7 +55,7 @@ const Top = () => {
             <Image
               className={styles.descriptionImage1}
               src={descriptionImage1}
-              alt="descriptionImage1"
+              alt="年画像を作っている画面のスクリーンショット"
             />
             <div className={styles.overlayText1}>
               あなただけの年賀状を
@@ -67,7 +67,7 @@ const Top = () => {
             <Image
               className={styles.descriptionImage2}
               src={descriptionImage2}
-              alt="descriptionImage2"
+              alt="年賀状の完成画面のスクリーンショット"
             />
             <div className={styles.overlayText2}>
               好きなSNSに
@@ -81,7 +81,7 @@ const Top = () => {
             <Image
               className={styles.descriptionImage3}
               src={descriptionImage3}
-              alt="descriptionImage3"
+              alt="年賀状の受け取り画面のスクリーンショット"
             />
             <div className={styles.overlayText3}>
               年が明けたら
