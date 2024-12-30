@@ -25,34 +25,34 @@ const LoginButton = ({
   const isInApp = (() => {
     if (!userAgent) return
 
-    const match = userAgent.match(/[^()\[\]\s]+|\([^()]*\)|\[[^\[\]]*\]/g)
-    const items = match
-      ? match.flatMap((item) =>
-          item.startsWith('(') || item.startsWith('[')
-            ? item.slice(1, -1).split(/;\s+/)
-            : item.split(' ')
+    const matches = userAgent.match(/[^()\[\]\s]+|\([^()]*\)|\[[^\[\]]*\]/g)
+    const tokens = matches
+      ? matches.flatMap((match) =>
+          match.startsWith('(') || match.startsWith('[')
+            ? match.slice(1, -1).split(/;\s+/)
+            : match.split(' ')
         )
       : []
 
-    if (items.some((item) => item.startsWith('sleipnir/'))) {
+    if (tokens.some((token) => token.startsWith('sleipnir/'))) {
       // SleipnirはinAppでない
       return false
     }
 
-    if (items.includes('wv')) {
+    if (tokens.includes('wv')) {
       // Sleipnir以外のwvはinApp
       return true
     }
     // Androidはここまでで判定可能
 
     if (
-      items.some(
-        (item) =>
-          item.startsWith('fban/') ||
-          item.startsWith('fb_iab/') ||
-          item.startsWith('line/') ||
-          item === 'instagram' ||
-          item === 'twitter'
+      tokens.some(
+        (token) =>
+          token.startsWith('fban/') ||
+          token.startsWith('fb_iab/') ||
+          token.startsWith('line/') ||
+          token === 'instagram' ||
+          token === 'twitter'
       )
     ) {
       // 含まれていたらinApp
@@ -60,8 +60,8 @@ const LoginButton = ({
     }
 
     if (
-      !items.some(
-        (item) => item.startsWith('safari/') || item.startsWith('firefox/')
+      !tokens.some(
+        (token) => token.startsWith('safari/') || token.startsWith('firefox/')
       )
     ) {
       // 含まれていなければinApp
