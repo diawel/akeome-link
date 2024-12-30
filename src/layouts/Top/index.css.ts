@@ -5,6 +5,7 @@ export const container = style({
   height: '100%',
   backgroundColor: color.gray[90],
   overflowX: 'hidden',
+  position: 'relative',
 })
 
 export const content = style({
@@ -127,13 +128,13 @@ export const patternContainer = style({
 export const pattern1 = style({
   position: 'absolute',
   top: -120,
-  right: -20,
+  right: -48,
 })
 
 export const pattern2 = style({
   position: 'absolute',
   top: -200,
-  left: -20,
+  left: -40,
 })
 
 export const imageContainer1 = style({
@@ -215,11 +216,13 @@ export const text2025 = style({
   lineHeight: '144%',
   textAlign: 'right',
   paddingBottom: 161,
+  zIndex: 1,
+  position: 'relative',
 })
 
 export const backgroundImage = style({
   position: 'absolute',
-  top: 1770,
+  top: -100,
   width: '100%',
   zIndex: 0,
   transform: 'rotate(−30deg)',

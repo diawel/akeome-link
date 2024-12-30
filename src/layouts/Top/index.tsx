@@ -88,6 +88,13 @@ const Top = () => {
           <div className={styles.patternContainer}>
             <Image src={pattern2} alt="" className={styles.pattern2} />
           </div>
+          <div className={styles.patternContainer}>
+            <Image
+              className={styles.backgroundImage}
+              src={backgroundImage}
+              alt=""
+            />
+          </div>
           <div className={styles.imageContainer3}>
             <Image
               className={styles.descriptionImage3}
@@ -117,11 +124,6 @@ const Top = () => {
             <Image className={styles.postImage} src={postImage} alt="" />
           </div>
         </div>
-        <Image
-          className={styles.backgroundImage}
-          src={backgroundImage}
-          alt=""
-        />
       </div>
     </div>
   )
