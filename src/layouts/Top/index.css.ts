@@ -104,6 +104,8 @@ export const buttonLayout = style({
   whiteSpace: 'nowrap',
   overflow: 'hidden',
   textOverflow: 'ellipsis',
+  textAlign: 'center',
+  textDecoration: 'none',
 })
 
 export const mainDescription = style({

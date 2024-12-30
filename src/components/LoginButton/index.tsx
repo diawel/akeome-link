@@ -22,29 +22,53 @@ const LoginButton = ({
     () => undefined
   )
 
-  const browser = (() => {
+  const isInApp = (() => {
     if (!userAgent) return
 
-    const isFacebook =
-      userAgent.includes('fbios') || userAgent.includes('fb_iab')
-    const isInstagram = userAgent.includes('instagram')
-    const isLine = userAgent.includes('line/')
-    const isYahoo = userAgent.includes('yjapp')
-    const isTwitter = userAgent.includes('twitter')
-    const isWebview = userAgent.includes('webview') // e.g. Rakuten Link
-    return isFacebook
-      ? 'facebook'
-      : isInstagram
-      ? 'instagram'
-      : isLine
-      ? 'line'
-      : isYahoo
-      ? 'yahoo'
-      : isTwitter
-      ? 'twitter'
-      : isWebview
-      ? 'webview'
-      : 'other'
+    const matches = userAgent.match(/[^()\[\]\s]+|\([^()]*\)|\[[^\[\]]*\]/g)
+    const tokens = matches
+      ? matches.flatMap((match) =>
+          match.startsWith('(') || match.startsWith('[')
+            ? match.slice(1, -1).split(/;\s+/)
+            : match.split(' ')
+        )
+      : []
+
+    if (tokens.some((token) => token.startsWith('sleipnir/'))) {
+      // SleipnirはinAppでない
+      return false
+    }
+
+    if (tokens.includes('wv')) {
+      // Sleipnir以外のwvはinApp
+      return true
+    }
+    // Androidはここまでで判定可能
+
+    if (
+      tokens.some(
+        (token) =>
+          token.startsWith('fban/') ||
+          token.startsWith('fb_iab/') ||
+          token.startsWith('line/') ||
+          token === 'instagram' ||
+          token === 'twitter'
+      )
+    ) {
+      // 含まれていたらinApp
+      return true
+    }
+
+    if (
+      !tokens.some(
+        (token) => token.startsWith('safari/') || token.startsWith('firefox/')
+      )
+    ) {
+      // 含まれていなければinApp
+      return true
+    }
+
+    return false
   })()
 
   const os = (() => {
@@ -62,7 +86,7 @@ const LoginButton = ({
 
   const [isFirstClick, setIsFirstClick] = useState(true)
 
-  if (browser && browser !== 'other') {
+  if (isInApp) {
     return (
       <Link
         href={`intent://${String(window.location).replace(
