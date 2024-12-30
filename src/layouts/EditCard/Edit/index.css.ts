@@ -107,7 +107,6 @@ const navButtonBase = style({
   borderTop: `2px solid`,
   fontWeight: 'bold',
   cursor: 'pointer',
-  color: color.gray[5],
 })
 
 export const navButton = styleVariants({
@@ -117,18 +116,21 @@ export const navButton = styleVariants({
       opacity: 0.5,
       pointerEvents: 'none',
       borderColor: 'transparent',
+      color: color.gray[5],
     },
   ],
   default: [
     navButtonBase,
     {
       borderColor: 'transparent',
+      color: color.gray[5],
     },
   ],
   active: [
     navButtonBase,
     {
       borderColor: color.red[5],
+      color: color.red[5],
     },
   ],
 })
