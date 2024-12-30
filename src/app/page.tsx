@@ -9,11 +9,7 @@ const Login = async () => {
     redirect('/create/list')
   }
 
-  return (
-    <>
-      <Top />
-    </>
-  )
+  return <Top />
 }
 
 export default Login
