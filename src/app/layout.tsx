@@ -42,9 +42,7 @@ const Layout = async ({
       <body className={styles.body}>
         <ClientSessionProvider>
           <StickerProvider stickers={await getStickers()}>
-            <div>
-              <Left isSignedIn={Boolean(session)} />
-            </div>
+            <Left isSignedIn={Boolean(session)} />
             <div className={styles.display}>
               <div className={styles.inner}>
                 <LoginDialogProvider>
