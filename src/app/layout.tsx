@@ -35,19 +35,7 @@ const Layout = async ({
   return (
     <html lang="ja">
       <body className={styles.body}>
-        <ClientSessionProvider>
-          <StickerProvider stickers={await getStickers()}>
-            <div className={styles.display}>
-              <div className={styles.inner}>
-                <LoginDialogProvider>
-                  <div className={styles.content}>{children}</div>
-                  <AchievementPopup />
-                </LoginDialogProvider>
-              </div>
-            </div>
-          </StickerProvider>
-          <StrapiAdapter />
-        </ClientSessionProvider>
+        <div>メンテナンス中です</div>
       </body>
       <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID ?? ''} />
     </html>
