@@ -22,29 +22,21 @@ const LoginButton = ({
     () => undefined
   )
 
-  const browser = (() => {
+  const isWebview = (() => {
     if (!userAgent) return
 
-    const isFacebook =
-      userAgent.includes('fbios') || userAgent.includes('fb_iab')
-    const isInstagram = userAgent.includes('instagram')
-    const isLine = userAgent.includes('line/')
-    const isYahoo = userAgent.includes('yjapp')
-    const isTwitter = userAgent.includes('twitter')
-    const isWebview = userAgent.includes('webview') // e.g. Rakuten Link
-    return isFacebook
-      ? 'facebook'
-      : isInstagram
-      ? 'instagram'
-      : isLine
-      ? 'line'
-      : isYahoo
-      ? 'yahoo'
-      : isTwitter
-      ? 'twitter'
-      : isWebview
-      ? 'webview'
-      : 'other'
+    const items = userAgent.split(' ')
+    const lastItem = items[items.length - 1]
+    const browser = lastItem.split('/')[0]
+    return (
+      browser !== 'safari' &&
+      browser !== 'chrome' &&
+      browser !== 'firefox' &&
+      browser !== 'opr' &&
+      browser !== 'edge' &&
+      browser !== 'edg' &&
+      browser !== 'edga'
+    )
   })()
 
   const os = (() => {
@@ -62,7 +54,7 @@ const LoginButton = ({
 
   const [isFirstClick, setIsFirstClick] = useState(true)
 
-  if (browser && browser !== 'other') {
+  if (isWebview) {
     return (
       <Link
         href={`intent://${String(window.location).replace(
