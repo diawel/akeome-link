@@ -27,7 +27,7 @@ export const controlGrid = style({
   paddingBlock: 8,
 })
 
-export const controlButton = style({
+const controlButtonBase = style({
   height: '100%',
   display: 'flex',
   justifyContent: 'center',
@@ -42,6 +42,17 @@ export const controlButton = style({
   borderRadius: 6,
   cursor: 'pointer',
   position: 'relative',
+})
+
+export const controlButton = styleVariants({
+  default: [controlButtonBase],
+  disabled: [
+    controlButtonBase,
+    {
+      opacity: 0.5,
+      pointerEvents: 'none',
+    },
+  ],
 })
 
 export const controlInput = style({
@@ -105,20 +116,21 @@ export const navButton = styleVariants({
       opacity: 0.5,
       pointerEvents: 'none',
       borderColor: 'transparent',
+      color: color.gray[5],
     },
   ],
   default: [
     navButtonBase,
     {
-      color: color.gray[5],
       borderColor: 'transparent',
+      color: color.gray[5],
     },
   ],
   active: [
     navButtonBase,
     {
-      color: color.red[5],
       borderColor: color.red[5],
+      color: color.red[5],
     },
   ],
 })
@@ -127,7 +139,7 @@ export const navButtonIcon = style({
   fontSize: 24,
 })
 
-export const textEditWindow = style({
+const textEditWindowBase = style({
   position: 'absolute',
   top: 0,
   left: 0,
@@ -140,6 +152,17 @@ export const textEditWindow = style({
   gap: 16,
   padding: 16,
   backgroundColor: `rgb(255 255 255 / 0.9)`,
+})
+
+export const textEditWindow = styleVariants({
+  active: [textEditWindowBase],
+  hidden: [
+    textEditWindowBase,
+    {
+      opacity: 0,
+      pointerEvents: 'none',
+    },
+  ],
 })
 
 export const textEditButtonContainer = style({

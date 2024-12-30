@@ -29,16 +29,31 @@ export const postNumberContainer = style({
   marginBottom: -8,
 })
 
+export const inputGroup = style({
+  display: 'flex',
+  gap: 16,
+  flexDirection: 'column',
+})
+
 export const inputContainer = style({
   display: 'flex',
   width: '100%',
   flexDirection: 'column',
-  gap: 8,
+  gap: 6,
+})
+
+export const inputNotice = style({
+  fontSize: 12,
+  color: color.gray[40],
+  display: 'flex',
+  alignItems: 'center',
+  gap: 6,
+  fontWeight: 'bold',
 })
 
 export const titleGroup = style({
   display: 'flex',
-  gap: 8,
+  gap: 6,
   alignItems: 'flex-end',
   justifyContent: 'space-between',
 })
@@ -64,6 +79,10 @@ const inputBase = style({
 
   ':disabled': {
     opacity: 0.5,
+  },
+
+  '::placeholder': {
+    color: color.gray[40],
   },
 })
 
