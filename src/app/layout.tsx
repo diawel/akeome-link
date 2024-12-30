@@ -1,7 +1,13 @@
 import type { Metadata, Viewport } from 'next'
 import './globals.css'
 import * as styles from './layout.css'
+import StickerProvider from './StickerProvider'
+import { getStickers } from '../utils/strapi/sticker'
+import ClientSessionProvider from './ClientSessionProvider'
+import StrapiAdapter from '../utils/db/StrapiAdapter'
+import AchievementPopup from '../layouts/AchievementPopup'
 import { GoogleAnalytics } from '@next/third-parties/google'
+import LoginDialogProvider from '../components/LoginButton/LoginDialogProvider'
 
 export const metadata: Metadata = {
   title: 'あけおめリンク',
@@ -21,11 +27,27 @@ export const viewport: Viewport = {
   maximumScale: 1,
 }
 
-const Layout = async () => {
+const Layout = async ({
+  children,
+}: Readonly<{
+  children: React.ReactNode
+}>) => {
   return (
     <html lang="ja">
       <body className={styles.body}>
-        <div>メンテナンス中です</div>
+        <ClientSessionProvider>
+          <StickerProvider stickers={await getStickers()}>
+            <div className={styles.display}>
+              <div className={styles.inner}>
+                <LoginDialogProvider>
+                  <div className={styles.content}>{children}</div>
+                  <AchievementPopup />
+                </LoginDialogProvider>
+              </div>
+            </div>
+          </StickerProvider>
+          <StrapiAdapter />
+        </ClientSessionProvider>
       </body>
       <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_ID ?? ''} />
     </html>
