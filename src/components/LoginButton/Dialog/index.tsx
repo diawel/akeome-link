@@ -11,7 +11,7 @@ const Dialog = ({ onClose }: DialogProps) => {
     <div className={styles.screen}>
       <div className={styles.container}>
         <span>
-          アプリ内ブラウザではご利用いただけません。
+          この環境ではご利用いただけません。
           <br />
           SafariやChromeなどの外部ブラウザをご利用ください。
         </span>
