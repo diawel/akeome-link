@@ -249,6 +249,7 @@ export const title = style({
     },
     [`${container.loading} &`]: {
       opacity: 0,
+      transition: 'none',
     },
   },
 })
@@ -274,6 +275,7 @@ export const cardStageContaienr = style({
     },
     [`${container.loading} &`]: {
       opacity: 0,
+      transition: 'none',
     },
   },
 })
@@ -524,6 +526,7 @@ export const controlContainer = style({
   selectors: {
     [`${container.loading} &`]: {
       opacity: 0,
+      transition: 'none',
     },
   },
 })
