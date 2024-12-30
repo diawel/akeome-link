@@ -8,6 +8,8 @@ import descriptionImage3 from './image-3.png'
 import backgroundImage from './background-image.svg'
 import postImage from './post-image.svg'
 import LoginButton from '../../components/LoginButton'
+import pattern1 from './pattern-1.svg'
+import pattern2 from './pattern-2.svg'
 
 const Top = () => {
   return (
@@ -64,6 +66,9 @@ const Top = () => {
               </span>
             </div>
           </div>
+          <div className={styles.patternContainer}>
+            <Image src={pattern1} alt="" className={styles.pattern1} />
+          </div>
           <div className={styles.imageContainer2}>
             <Image
               className={styles.descriptionImage2}
@@ -79,6 +84,9 @@ const Top = () => {
                 準備完了
               </span>
             </div>
+          </div>
+          <div className={styles.patternContainer}>
+            <Image src={pattern2} alt="" className={styles.pattern2} />
           </div>
           <div className={styles.imageContainer3}>
             <Image
@@ -106,17 +114,13 @@ const Top = () => {
             </LoginButton>
           </div>
           <div className={styles.postImageContainer}>
-            <Image
-              className={styles.postImage}
-              src={postImage}
-              alt="postImage"
-            />
+            <Image className={styles.postImage} src={postImage} alt="" />
           </div>
         </div>
         <Image
           className={styles.backgroundImage}
           src={backgroundImage}
-          alt="backgroundImage"
+          alt=""
         />
       </div>
     </div>

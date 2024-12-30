@@ -118,10 +118,29 @@ export const text2024 = style({
   lineHeight: '144%',
 })
 
+export const patternContainer = style({
+  position: 'relative',
+  width: '100%',
+  height: 0,
+})
+
+export const pattern1 = style({
+  position: 'absolute',
+  top: -120,
+  right: -20,
+})
+
+export const pattern2 = style({
+  position: 'absolute',
+  top: -200,
+  left: -20,
+})
+
 export const imageContainer1 = style({
   position: 'relative',
   display: 'flex',
   marginInline: 32,
+  zIndex: 1,
 })
 
 export const descriptionImage1 = style({
@@ -153,6 +172,7 @@ export const imageContainer2 = style({
   paddingTop: 16,
   marginInline: 32,
   marginTop: 36,
+  zIndex: 1,
 })
 
 export const descriptionImage2 = style({
@@ -173,6 +193,7 @@ export const imageContainer3 = style({
   paddingTop: 36,
   marginInline: 32,
   marginTop: 72,
+  zIndex: 1,
 })
 
 export const descriptionImage3 = style({
