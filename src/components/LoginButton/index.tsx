@@ -22,21 +22,53 @@ const LoginButton = ({
     () => undefined
   )
 
-  const isWebview = (() => {
+  const isInApp = (() => {
     if (!userAgent) return
 
-    const items = userAgent.split(' ')
-    const lastItem = items[items.length - 1]
-    const browser = lastItem.split('/')[0]
-    return (
-      browser !== 'safari' &&
-      browser !== 'chrome' &&
-      browser !== 'firefox' &&
-      browser !== 'opr' &&
-      browser !== 'edge' &&
-      browser !== 'edg' &&
-      browser !== 'edga'
-    )
+    const match = userAgent.match(/[^()\[\]\s]+|\([^()]*\)|\[[^\[\]]*\]/g)
+    const items = match
+      ? match.flatMap((item) =>
+          item.startsWith('(') || item.startsWith('[')
+            ? item.slice(1, -1).split(/;\s+/)
+            : item.split(' ')
+        )
+      : []
+
+    if (items.some((item) => item.startsWith('sleipnir/'))) {
+      // SleipnirはinAppでない
+      return false
+    }
+
+    if (items.includes('wv')) {
+      // Sleipnir以外のwvはinApp
+      return true
+    }
+    // Androidはここまでで判定可能
+
+    if (
+      items.some(
+        (item) =>
+          item.startsWith('fban/') ||
+          item.startsWith('fb_iab/') ||
+          item.startsWith('line/') ||
+          item === 'instagram' ||
+          item === 'twitter'
+      )
+    ) {
+      // 含まれていたらinApp
+      return true
+    }
+
+    if (
+      !items.some(
+        (item) => item.startsWith('safari/') || item.startsWith('firefox/')
+      )
+    ) {
+      // 含まれていなければinApp
+      return true
+    }
+
+    return false
   })()
 
   const os = (() => {
@@ -54,7 +86,7 @@ const LoginButton = ({
 
   const [isFirstClick, setIsFirstClick] = useState(true)
 
-  if (isWebview) {
+  if (isInApp) {
     return (
       <Link
         href={`intent://${String(window.location).replace(
