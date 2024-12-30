@@ -10,7 +10,6 @@ export const container = style({
       justifyContent: 'center',
       alignItems: 'center',
       height: '100%',
-      backgroundColor: color.red[5],
       textAlign: 'center',
       position: 'relative',
     },
@@ -21,9 +20,6 @@ export const cloudImage = style({
   position: 'absolute',
   top: '4%',
   left: 0,
-  width: 'auto',
-  height: '100%',
-  objectFit: 'cover',
   transform: 'translateX(-40%)',
 })
 
@@ -31,8 +27,6 @@ export const flowerImage = style({
   position: 'absolute',
   top: '65%',
   left: 0,
-  width: 'auto',
-  objectFit: 'cover',
   transform: 'translateX(-20%)',
 })
 
@@ -40,8 +34,6 @@ export const treeAndCloud = style({
   position: 'absolute',
   bottom: 0,
   right: 0,
-  width: 'auto',
-  objectFit: 'cover',
   transform: 'translate(60%, 30%)',
 })
 
@@ -49,8 +41,6 @@ export const treeAndMt = style({
   position: 'absolute',
   top: 0,
   right: 0,
-  width: 'auto',
-  objectFit: 'cover',
   transform: 'translate(10%, -20%)',
 })
 

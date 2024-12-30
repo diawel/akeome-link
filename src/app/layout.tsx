@@ -11,6 +11,7 @@ import LoginDialogProvider from '../components/LoginButton/LoginDialogProvider'
 import Left from '../layouts/pc/Left'
 import { authOptions } from './api/auth/[...nextauth]/authOptions'
 import { getServerSession } from 'next-auth'
+import Right from '../layouts/pc/Right'
 
 export const metadata: Metadata = {
   title: 'あけおめリンク',
@@ -52,7 +53,7 @@ const Layout = async ({
                 </LoginDialogProvider>
               </div>
             </div>
-            <div></div>
+            <Right />
           </StickerProvider>
           <StrapiAdapter />
         </ClientSessionProvider>
