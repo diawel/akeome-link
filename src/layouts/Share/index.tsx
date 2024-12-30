@@ -3,9 +3,6 @@
 import Card from '../../components/Card'
 import postImage from './post.svg'
 import xIcon from './icon-x.svg'
-import lineIcon from './icon-line.svg'
-import qrIcon from './icon-qr.svg'
-import downloadIcon from './icon-download.svg'
 import Image from 'next/image'
 import * as styles from './index.css'
 import copyIcon from './icon-copy.svg'
@@ -15,8 +12,9 @@ import Link from 'next/link'
 import { mediaRecordsToUrlSet } from '../../utils/strapi/strapiImage'
 import { StrapiRecord } from '../../utils/strapi'
 import Renderer from '../../components/Card/Renderer'
-import { useEffect, useState } from 'react'
+import { useRef, useState, useSyncExternalStore } from 'react'
 import { CardAttributes, DraftCardAttributes } from '../../utils/strapi/card'
+import { FaArrowUpFromBracket, FaDownload, FaQrcode } from 'react-icons/fa6'
 
 type ShareProps = {
   cardRecord: StrapiRecord<CardAttributes | DraftCardAttributes>
@@ -24,7 +22,6 @@ type ShareProps = {
 
 const Share = ({ cardRecord }: ShareProps) => {
   const [renderedImage, setRenderedImage] = useState<Blob | null>(null)
-  const [shareUrl, setShareUrl] = useState('')
   const [copied, setCopied] = useState(false)
 
   const handleCopy = () => {
@@ -33,12 +30,36 @@ const Share = ({ cardRecord }: ShareProps) => {
     setTimeout(() => setCopied(false), 2000)
   }
 
-  useEffect(() => {
-    setShareUrl(
-      new URL(`/link/${cardRecord.attributes.shareId}`, window.location.href)
-        .href
-    )
-  }, [cardRecord.attributes.shareId])
+  const hashtag = useSyncExternalStore(
+    () => () => {},
+    () => {
+      const now = new Date()
+      return `#あけおめリンク${
+        now.getFullYear() + (now.getMonth() === 0 ? 0 : 1)
+      }`
+    },
+    () => ''
+  )
+
+  const shareUrl = useSyncExternalStore(
+    () => () => {},
+    () => {
+      return new URL(
+        `/link/${cardRecord.attributes.shareId}`,
+        window.location.href
+      ).href
+    },
+    () => ''
+  )
+
+  const isWebShareSupported = useSyncExternalStore(
+    () => () => {},
+    () => typeof navigator.share === 'function',
+    () => true
+  )
+
+  const shareUrlInputRef = useRef<HTMLInputElement>(null)
+
   return (
     <>
       <div>
@@ -46,7 +67,7 @@ const Share = ({ cardRecord }: ShareProps) => {
           <Image
             className={styles.post}
             src={postImage}
-            alt="postImage"
+            alt=""
             loading="eager"
           />
           <div className={styles.card}>
@@ -69,10 +90,12 @@ const Share = ({ cardRecord }: ShareProps) => {
             </div>
             <div className={styles.linkBoxContent}>
               <input
+                ref={shareUrlInputRef}
                 type="text"
                 value={shareUrl}
                 readOnly
                 className={styles.linkInput}
+                onClick={() => shareUrlInputRef.current?.select()}
               />
               <button className={styles.copyButton} onClick={handleCopy}>
                 <Image
@@ -86,40 +109,52 @@ const Share = ({ cardRecord }: ShareProps) => {
         </div>
         <div>
           <div className={styles.iconButtonContainer}>
-            <div className={styles.buttonRightSpace}>
-              <Link
-                className={styles.xContainer}
-                href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(
-                  `年賀状が届いています #JPHACKS2024\n`
-                )}&url=${encodeURIComponent(shareUrl)}`}
-                target="_blank"
-              >
-                <Image src={xIcon} alt="xIcon" loading="eager" />
-              </Link>
-            </div>
-            <div className={styles.buttonRightSpace}>
-              <Link
-                className={styles.lineContainer}
-                href={`https://social-plugins.line.me/lineit/share?url=${encodeURIComponent(
-                  shareUrl
-                )}&text=年賀状が届いています`}
-                target="_blank"
-              >
-                <Image src={lineIcon} alt="lineIcon" loading="eager" />
-              </Link>
-            </div>
-            <div className={styles.buttonRightSpace}>
-              <Link
-                className={styles.qrContainer}
-                href={{
-                  pathname: `/share/${cardRecord.id}/qr`,
-                }}
-              >
-                <Image src={qrIcon} alt="lineIcon" loading="eager" />
-              </Link>
-            </div>
+            <Link
+              className={styles.shareButton}
+              href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(
+                ['年賀状が届いています', hashtag, shareUrl]
+                  .filter((line) => Boolean(line))
+                  .join('\n')
+              )}`}
+              target="_blank"
+            >
+              <Image
+                src={xIcon}
+                alt="xIcon"
+                loading="eager"
+                className={styles.icon}
+              />
+              ポスト
+            </Link>
             <button
-              className={styles.downloadContainer}
+              className={styles.shareButton}
+              onClick={() => {
+                navigator
+                  .share({
+                    text: '年賀状が届いています',
+                    url: shareUrl,
+                  })
+                  .catch(() => {})
+              }}
+              style={{
+                pointerEvents: isWebShareSupported ? 'auto' : 'none',
+                opacity: isWebShareSupported ? 1 : 0.5,
+              }}
+            >
+              <FaArrowUpFromBracket size={20} />
+              共有
+            </button>
+            <Link
+              className={styles.shareButton}
+              href={{
+                pathname: `/share/${cardRecord.id}/qr`,
+              }}
+            >
+              <FaQrcode size={20} />
+              QR
+            </Link>
+            <button
+              className={styles.shareButton}
               onClick={() => {
                 if (!renderedImage) return
                 const url = URL.createObjectURL(renderedImage)
@@ -136,18 +171,15 @@ const Share = ({ cardRecord }: ShareProps) => {
                 opacity: renderedImage ? 1 : 0.5,
               }}
             >
-              <div className={styles.downloadContent}>
-                <Image src={downloadIcon} alt="downLoadIcon" loading="eager" />
-              </div>
+              <FaDownload size={20} />
+              画像保存
             </button>
           </div>
-          <Link href="/create/list" className={styles.cardLink}>
-            <div className={styles.buttonContainer}>
-              <div className={styles.buttonContent}>
-                <div className={styles.buttonText}>一覧に戻る</div>
-              </div>
-            </div>
-          </Link>
+          <div className={styles.buttonContainer}>
+            <Link href="/create/list" className={styles.buttonContent}>
+              <div className={styles.buttonText}>一覧に戻る</div>
+            </Link>
+          </div>
         </div>
       </div>
       <Renderer
