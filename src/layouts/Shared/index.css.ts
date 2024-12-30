@@ -12,6 +12,7 @@ export const container = styleVariants({
   default: [containerBase],
   newArrival: [containerBase],
   loading: [containerBase],
+  revealing: [containerBase],
 })
 
 export const backgroundContainer = style({
@@ -25,12 +26,14 @@ export const backgroundContainer = style({
   gridTemplateRows: '8fr 1fr',
   overflow: 'hidden',
   opacity: 0,
-  transition: 'opacity 0.3s 1s',
 
   selectors: {
     [`${container.newArrival} &`]: {
       opacity: 1,
       transition: 'opacity 0.3s',
+    },
+    [`${container.revealing} &`]: {
+      transition: 'opacity 0.3s 1s',
     },
   },
 })
@@ -249,6 +252,7 @@ export const title = style({
     },
     [`${container.loading} &`]: {
       opacity: 0,
+      transition: 'none',
     },
   },
 })
@@ -274,6 +278,7 @@ export const cardStageContaienr = style({
     },
     [`${container.loading} &`]: {
       opacity: 0,
+      transition: 'none',
     },
   },
 })
@@ -524,6 +529,7 @@ export const controlContainer = style({
   selectors: {
     [`${container.loading} &`]: {
       opacity: 0,
+      transition: 'none',
     },
   },
 })

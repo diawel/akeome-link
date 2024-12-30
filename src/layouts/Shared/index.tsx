@@ -68,22 +68,31 @@ const Shared = ({
     existingReceivedCard !== undefined &&
       existingReceivedCard.attributes.publishedAt === null
   )
+  const [isAlreadyReceived, setIsAlreadyReceived] = useState<
+    boolean | undefined
+  >(isDelivered ? undefined : false)
 
   useEffect(() => {
     if (isReceived === undefined) {
       if (strapiUserId === cardCreatorId) {
         setSeed(10000000 + Math.floor(Math.random() * 90000000))
         setIsReceived(false)
+        setIsAlreadyReceived(false)
       } else if (existingReceivedCard) {
         setSeed(existingReceivedCard.attributes.randomSeed)
         setIsReceived(existingReceivedCard.attributes.publishedAt !== null)
+        setIsAlreadyReceived(
+          existingReceivedCard.attributes.publishedAt !== null
+        )
       } else {
         getLocalReceivedCard(shareId).then((localReceivedCard) => {
           if (localReceivedCard) {
             setSeed(localReceivedCard.randomSeed)
             setIsReceived(true)
+            setIsAlreadyReceived(true)
           } else {
             setIsReceived(false)
+            setIsAlreadyReceived(false)
           }
         })
       }
@@ -135,6 +144,8 @@ const Shared = ({
               ? 'loading'
               : isDelivered && !isReceived
               ? 'newArrival'
+              : isReceived && !isAlreadyReceived
+              ? 'revealing'
               : 'default'
           ]
         }

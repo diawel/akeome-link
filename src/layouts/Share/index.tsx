@@ -30,17 +30,6 @@ const Share = ({ cardRecord }: ShareProps) => {
     setTimeout(() => setCopied(false), 2000)
   }
 
-  const hashtag = useSyncExternalStore(
-    () => () => {},
-    () => {
-      const now = new Date()
-      return `#あけおめリンク${
-        now.getFullYear() + (now.getMonth() === 0 ? 0 : 1)
-      }`
-    },
-    () => ''
-  )
-
   const shareUrl = useSyncExternalStore(
     () => () => {},
     () => {
@@ -112,7 +101,7 @@ const Share = ({ cardRecord }: ShareProps) => {
             <Link
               className={styles.shareButton}
               href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(
-                ['年賀状が届いています', hashtag, shareUrl]
+                ['年賀状が届いています', '#あけおめリンク', shareUrl]
                   .filter((line) => Boolean(line))
                   .join('\n')
               )}`}
