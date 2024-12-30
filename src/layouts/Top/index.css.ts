@@ -54,19 +54,12 @@ export const smartPhoneImage = style({
 })
 
 export const discriptionText = style({
-  paddingTop: 430,
-  paddingLeft: 27,
+  paddingTop: '130%',
+  paddingLeft: 24,
   fontSize: 24,
   fontWeight: 'bold',
   color: 'white',
   lineHeight: '200%',
-
-  '@media': {
-    'screen and (max-width: 380px)': {
-      paddingLeft: 24,
-      paddingTop: 390,
-    },
-  },
 })
 
 export const registerButton = style({
