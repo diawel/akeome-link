@@ -5,23 +5,19 @@ import Image from 'next/image'
 import { signIn } from 'next-auth/react'
 import Link from 'next/link'
 import akeomeLinkLogo from './akeome-link-logo-white.svg'
-import cloudImage1 from './cloud-1.png'
-import flowerImage1 from './flower-1.png'
-import flowerImage2 from './flower-2.png'
-import treeAndCloud from './treeAndCloud.png'
-import treeAndMt from './treeAndMt.png'
+import cloudImage from './cloud.svg'
+import flowerImage from '../flower.svg'
+import treeAndCloud from './treeAndCloud.svg'
+import treeAndMt from './treeAndMt.svg'
 
 const SideInfo = () => {
   return (
     <div className={styles.container}>
-      <div className={styles.cloudImage1}>
-        <Image src={cloudImage1} alt="" loading="eager" />
+      <div className={styles.cloudImage}>
+        <Image src={cloudImage} alt="" loading="eager" />
       </div>
-      <div className={styles.flowerImage1}>
-        <Image src={flowerImage1} alt="" loading="eager" />
-      </div>
-      <div className={styles.flowerImage2}>
-        <Image src={flowerImage2} alt="" loading="eager" />
+      <div className={styles.flowerImage}>
+        <Image src={flowerImage} alt="" loading="eager" />
       </div>
       <div className={styles.treeAndCloud}>
         <Image src={treeAndCloud} alt="" loading="eager" />
