@@ -46,6 +46,7 @@ export const treeAndMt = style({
 
 export const column = style({
   display: 'grid',
+  paddingTop: 40,
   gridTemplateColumns: '1fr',
   gridTemplateRows: '1fr auto',
   position: 'relative',
@@ -66,7 +67,7 @@ export const discription = style({
   paddingBottom: 16,
   fontSize: 20,
   fontWeight: 'bold',
-  color: 'white',
+  color: color.gray[100],
 })
 
 export const largeText = style({
@@ -89,7 +90,7 @@ export const buttonLayout = style({
   padding: '12px 24px',
   fontSize: 16,
   fontWeight: 'bold',
-  backgroundColor: 'white',
+  backgroundColor: color.gray[100],
   color: color.red[5],
   border: 'none',
   borderRadius: 12,
@@ -105,19 +106,22 @@ export const bottomInfo = style({
 
 export const privacy = style({
   fontSize: 12,
-  color: 'white',
+  color: color.gray[100],
   textDecoration: 'none',
   paddingRight: 12,
 })
 
 export const terms = style({
   fontSize: 12,
-  color: 'white',
+  color: color.gray[100],
   textDecoration: 'none',
 })
 
 export const copyRight = style({
   paddingTop: 4,
   fontSize: 12,
-  color: 'white',
+  color: color.gray[100],
+  display: 'flex',
+  gap: '0.5em',
+  justifyContent: 'center',
 })

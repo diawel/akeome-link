@@ -72,9 +72,10 @@ const Left = ({ isSignedIn }: LeftProps) => {
           <Link className={styles.terms} href="/terms">
             利用規約
           </Link>
-          <div className={styles.copyRight}>
-            開発・運営・デザイン えびしゅり
-          </div>
+          <dl className={styles.copyRight}>
+            <dt>開発・運営・デザイン</dt>
+            <dd>えびとシュリンプ</dd>
+          </dl>
         </div>
       </div>
     </div>
