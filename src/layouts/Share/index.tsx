@@ -146,6 +146,11 @@ const Share = ({ cardRecord }: ShareProps) => {
               className={styles.shareButton}
               href={renderedImage ? URL.createObjectURL(renderedImage) : ''}
               target="_blank"
+              onClick={(e) => {
+                if (!renderedImage) {
+                  e.preventDefault()
+                }
+              }}
               style={{
                 pointerEvents: renderedImage ? 'auto' : 'none',
                 opacity: renderedImage ? 1 : 0.5,
