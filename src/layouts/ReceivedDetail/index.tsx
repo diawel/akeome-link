@@ -59,7 +59,7 @@ const ReceivedDetail = ({ cardRecord, randomSeed }: ReceivedDetailProps) => {
                   }
                   const url = URL.createObjectURL(renderedImage)
                   const link = e.target
-                  if ('href' in link && link instanceof HTMLAnchorElement) {
+                  if (link instanceof HTMLAnchorElement) {
                     link.href = url
                     const newWindow = window.open(url, '_blank')
                     if (newWindow) {
