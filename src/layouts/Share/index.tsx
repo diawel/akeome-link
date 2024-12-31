@@ -142,23 +142,15 @@ const Share = ({ cardRecord }: ShareProps) => {
               <FaQrcode size={20} />
               QR
             </Link>
-            <Link
+            <button
               className={styles.shareButton}
-              href="" // 初期状態では空
-              onClick={(e) => {
-                if (!renderedImage) {
-                  e.preventDefault()
-                  return
-                }
+              onClick={() => {
+                if (!renderedImage) return
                 const url = URL.createObjectURL(renderedImage)
-                const link = e.target
-                if (link instanceof HTMLAnchorElement) {
-                  link.href = url
-                  const newWindow = window.open(url, '_blank')
-                  if (newWindow) {
-                    newWindow.onload = () => {
-                      URL.revokeObjectURL(url)
-                    }
+                const newWindow = window.open(url, '_blank')
+                if (newWindow) {
+                  newWindow.onload = () => {
+                    URL.revokeObjectURL(url)
                   }
                 }
               }}
@@ -169,7 +161,7 @@ const Share = ({ cardRecord }: ShareProps) => {
             >
               <FaDownload size={20} />
               画像保存
-            </Link>
+            </button>
           </div>
           <div className={styles.buttonContainer}>
             <Link href="/create/list" className={styles.buttonContent}>
