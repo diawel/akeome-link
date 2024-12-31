@@ -11,7 +11,6 @@ import Print from '../../components/Print'
 import { CardAttributes } from '../../utils/strapi/card'
 import ReturnButton from '../../components/ReturnButton'
 import { color } from '../../utils/styleSchema'
-import Link from 'next/link'
 
 type ReceivedDetailProps = {
   cardRecord: StrapiRecord<
