@@ -11,6 +11,7 @@ import Print from '../../components/Print'
 import { CardAttributes } from '../../utils/strapi/card'
 import ReturnButton from '../../components/ReturnButton'
 import { color } from '../../utils/styleSchema'
+import Link from 'next/link'
 
 type ReceivedDetailProps = {
   cardRecord: StrapiRecord<
@@ -46,29 +47,22 @@ const ReceivedDetail = ({ cardRecord, randomSeed }: ReceivedDetailProps) => {
               />
             </div>
             <div className={styles.control}>
-              <button
+              <Link
                 className={
                   styles.primaryButton[renderedImage ? 'default' : 'disabled']
                 }
-                onClick={() => {
-                  if (!renderedImage) return
-                  const url = URL.createObjectURL(renderedImage)
-                  const newWindow = window.open(url, '_blank')
-                  if (newWindow) {
-                    newWindow.onload = () => URL.revokeObjectURL(url)
+                href={renderedImage ? URL.createObjectURL(renderedImage) : ''}
+                target="_blank"
+                onClick={(e) => {
+                  if (!renderedImage) {
+                    e.preventDefault()
                   }
-                  const a = document.createElement('a')
-                  a.href = url
-                  a.setAttribute('download', `new_year_card_${Date.now()}`)
-                  document.body.appendChild(a)
-                  a.click()
-                  URL.revokeObjectURL(url)
-                  a.remove()
                 }}
               >
                 <FaDownload />
                 保存
-              </button>
+              </Link>
+
               <button
                 className={
                   styles.primaryButton[renderedImage ? 'default' : 'disabled']

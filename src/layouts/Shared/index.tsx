@@ -297,30 +297,25 @@ const Shared = ({
                 )}
                 {isDelivered && isReceived && (
                   <>
-                    <button
+                    <Link
                       className={
                         styles.seconradyButton[
                           renderedImage ? 'default' : 'disabled'
                         ]
                       }
-                      onClick={() => {
-                        if (!renderedImage) return
-                        const url = URL.createObjectURL(renderedImage)
-                        const a = document.createElement('a')
-                        a.href = url
-                        a.setAttribute(
-                          'download',
-                          `new_year_card_${Date.now()}`
-                        )
-                        document.body.appendChild(a)
-                        a.click()
-                        URL.revokeObjectURL(url)
-                        a.remove()
+                      href={
+                        renderedImage ? URL.createObjectURL(renderedImage) : ''
+                      }
+                      target="_blank"
+                      onClick={(e) => {
+                        if (!renderedImage) {
+                          e.preventDefault()
+                        }
                       }}
                     >
                       <FaDownload />
                       保存
-                    </button>
+                    </Link>
                     <button
                       className={
                         styles.seconradyButton[

@@ -142,23 +142,10 @@ const Share = ({ cardRecord }: ShareProps) => {
               <FaQrcode size={20} />
               QR
             </Link>
-            <button
+            <Link
               className={styles.shareButton}
-              onClick={() => {
-                if (!renderedImage) return
-                const url = URL.createObjectURL(renderedImage)
-                const newWindow = window.open(url, '_blank')
-                if (newWindow) {
-                  newWindow.onload = () => URL.revokeObjectURL(url)
-                }
-                const a = document.createElement('a')
-                a.href = url
-                a.setAttribute('download', `new_year_card_${Date.now()}`)
-                document.body.appendChild(a)
-                a.click()
-                URL.revokeObjectURL(url)
-                a.remove()
-              }}
+              href={renderedImage ? URL.createObjectURL(renderedImage) : ''}
+              target="_blank"
               style={{
                 pointerEvents: renderedImage ? 'auto' : 'none',
                 opacity: renderedImage ? 1 : 0.5,
@@ -166,7 +153,7 @@ const Share = ({ cardRecord }: ShareProps) => {
             >
               <FaDownload size={20} />
               画像保存
-            </button>
+            </Link>
           </div>
           <div className={styles.buttonContainer}>
             <Link href="/create/list" className={styles.buttonContent}>
