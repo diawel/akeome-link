@@ -554,6 +554,7 @@ const deliveryDateBase = style({
   textAlign: 'center',
   width: '100%',
   fontWeight: 'bold',
+  textDecoration: 'none',
 })
 
 export const deliveryDate = styleVariants({
