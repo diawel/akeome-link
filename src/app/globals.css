@@ -4,4 +4,5 @@
   margin: 0;
   font-family: system-ui;
   overscroll-behavior-y: none;
+  -webkit-touch-callout: none;
 }

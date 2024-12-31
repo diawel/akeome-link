@@ -572,12 +572,15 @@ const Card = ({
                       }) rotate(${-target.container.rotate}deg)`,
                     }}
                   >
-                    <Image src={removeIcon} alt="消す" loading="eager" />
+                    <Image
+                      src={removeIcon}
+                      alt="消す"
+                      loading="eager"
+                      className={styles.controlIcon}
+                    />
                   </div>
-                  <Image
+                  <div
                     className={styles.control.rotate}
-                    src={rotateIcon}
-                    alt="回す"
                     onMouseDown={(event) => {
                       event.stopPropagation()
                       event.preventDefault()
@@ -597,12 +600,16 @@ const Card = ({
                         1 / target.container.scale / cardScale
                       }) rotate(${-target.container.rotate}deg)`,
                     }}
-                    loading="eager"
-                  />
-                  <Image
+                  >
+                    <Image
+                      src={rotateIcon}
+                      alt="回す"
+                      loading="eager"
+                      className={styles.controlIcon}
+                    />
+                  </div>
+                  <div
                     className={styles.control.zoom}
-                    src={zoomIcon}
-                    alt="拡大"
                     onMouseDown={(event) => {
                       event.stopPropagation()
                       event.preventDefault()
@@ -622,8 +629,14 @@ const Card = ({
                         1 / target.container.scale / cardScale
                       }) rotate(${-target.container.rotate}deg)`,
                     }}
-                    loading="eager"
-                  />
+                  >
+                    <Image
+                      src={zoomIcon}
+                      alt="拡大"
+                      loading="eager"
+                      className={styles.controlIcon}
+                    />
+                  </div>
                 </div>
               )
             })}
