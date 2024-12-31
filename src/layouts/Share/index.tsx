@@ -144,11 +144,22 @@ const Share = ({ cardRecord }: ShareProps) => {
             </Link>
             <Link
               className={styles.shareButton}
-              href={renderedImage ? URL.createObjectURL(renderedImage) : ''}
-              target="_blank"
+              href="" // 初期状態では空
               onClick={(e) => {
                 if (!renderedImage) {
                   e.preventDefault()
+                  return
+                }
+
+                const url = URL.createObjectURL(renderedImage)
+                const link = e.target as HTMLAnchorElement
+                link.href = url
+
+                const newWindow = window.open(url, '_blank')
+                if (newWindow) {
+                  newWindow.onload = () => {
+                    URL.revokeObjectURL(url)
+                  }
                 }
               }}
               style={{

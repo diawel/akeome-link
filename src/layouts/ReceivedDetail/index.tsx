@@ -51,18 +51,28 @@ const ReceivedDetail = ({ cardRecord, randomSeed }: ReceivedDetailProps) => {
                 className={
                   styles.primaryButton[renderedImage ? 'default' : 'disabled']
                 }
-                href={renderedImage ? URL.createObjectURL(renderedImage) : ''}
-                target="_blank"
+                href="" // 初期状態では空
                 onClick={(e) => {
                   if (!renderedImage) {
                     e.preventDefault()
+                    return
+                  }
+
+                  const url = URL.createObjectURL(renderedImage)
+                  const link = e.target as HTMLAnchorElement
+                  link.href = url
+
+                  const newWindow = window.open(url, '_blank')
+                  if (newWindow) {
+                    newWindow.onload = () => {
+                      URL.revokeObjectURL(url)
+                    }
                   }
                 }}
               >
                 <FaDownload />
                 保存
               </Link>
-
               <button
                 className={
                   styles.primaryButton[renderedImage ? 'default' : 'disabled']
