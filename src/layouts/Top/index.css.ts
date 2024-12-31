@@ -272,6 +272,8 @@ export const startButtonLayout = style({
   whiteSpace: 'nowrap',
   overflow: 'hidden',
   textOverflow: 'ellipsis',
+  textDecoration: 'none',
+  textAlign: 'center',
 })
 
 export const postImageContainer = style({
