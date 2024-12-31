@@ -187,3 +187,7 @@ export const control = styleVariants({
     },
   ],
 })
+
+export const controlIcon = style({
+  pointerEvents: 'none',
+})
