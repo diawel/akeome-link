@@ -159,9 +159,7 @@ export const getCreatedCards = async ({ page }: { page?: number } = {}) => {
             },
           },
         },
-        sort: {
-          0: 'updatedAt:desc',
-        },
+        sort: 'updatedAt:desc',
         pagination: {
           page: page ?? 1,
         },
