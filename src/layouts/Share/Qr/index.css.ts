@@ -40,7 +40,7 @@ export const qrCodeContainer = style({
 
 export const qrCode = style({
   width: '100% !important',
-  height: '100% !important',
+  height: 'auto !important',
 })
 
 export const creatorNameContainer = style({
