@@ -114,9 +114,7 @@ export const getReceivedCards = async ({ page }: { page?: number } = {}) => {
             },
           },
         },
-        sort: {
-          0: 'updatedAt:desc',
-        },
+        sort: 'updatedAt:desc',
         pagination: {
           page: page ?? 1,
         },
@@ -323,9 +321,7 @@ export const getReservedCards = async ({
                 },
               }),
         },
-        sort: {
-          0: 'updatedAt:desc',
-        },
+        sort: 'updatedAt:desc',
         pagination: {
           page: page ?? 1,
         },
