@@ -14,36 +14,40 @@ export const container = style({
   flexDirection: 'column',
   alignItems: 'center',
   paddingBlock: 72,
+  paddingInline: 48,
   minHeight: '100%',
   justifyContent: 'center',
+  gap: 48,
 })
 
-export const image = style({
-  objectFit: 'cover',
+export const logo = style({
+  height: 'auto',
   width: '100%',
-  height: '100%',
+  maxWidth: 280,
 })
 
-export const qrCode = style({
+export const qrCodeContainer = style({
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
-  backgroundColor: 'white',
+  backgroundColor: color.gray[100],
   padding: '22px',
   width: '100%',
-  height: '100%',
+  aspectRatio: '1',
   borderRadius: '12px',
+  maxWidth: 280,
 })
 
-export const qrCodeSpace = style({
-  padding: '56px 0px 52px 0px',
+export const qrCode = style({
+  width: '100% !important',
+  height: '100% !important',
 })
 
 export const creatorName = style({
   fontSize: '20px',
-  width: '260px',
+  width: '100%',
   color: 'black',
-  backgroundColor: 'white',
+  backgroundColor: color.gray[100],
   padding: '25px 80px',
   borderRadius: '12px',
   whiteSpace: 'nowrap',
@@ -52,11 +56,11 @@ export const creatorName = style({
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
+  maxWidth: 280,
 })
 
 export const discriptionText = style({
-  fontSize: '20px',
-  paddingTop: '35px',
+  fontSize: 20,
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',

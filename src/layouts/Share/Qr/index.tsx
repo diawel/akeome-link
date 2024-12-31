@@ -32,18 +32,19 @@ const Qr = ({ cardRecord }: QrProps) => {
           color={color.gray[100]}
         />
       </div>
-      <div>
-        <Image src={akeomeLinkLogo} alt="akeomeLinkLogo" priority />
-        <div className={styles.qrCodeSpace}>
-          <div className={styles.qrCode}>
-            <QRCodeCanvas value={shareUrl} size={215} />
-          </div>
-        </div>
-        <div className={styles.creatorName}>
-          <div>{cardRecord.attributes.creatorName}</div>
-        </div>
-        <div className={styles.discriptionText}>から年賀状を受け取ろう！</div>
+      <Image
+        src={akeomeLinkLogo}
+        alt="akeomeLinkLogo"
+        priority
+        className={styles.logo}
+      />
+      <div className={styles.qrCodeContainer}>
+        <QRCodeCanvas value={shareUrl} size={215} className={styles.qrCode} />
       </div>
+      <div className={styles.creatorName}>
+        <div>{cardRecord.attributes.creatorName}</div>
+      </div>
+      <div className={styles.discriptionText}>から年賀状を受け取ろう！</div>
     </div>
   )
 }
