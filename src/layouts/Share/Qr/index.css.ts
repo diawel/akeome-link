@@ -43,20 +43,25 @@ export const qrCode = style({
   height: '100% !important',
 })
 
+export const creatorNameContainer = style({
+  display: 'flex',
+  flexDirection: 'column',
+  gap: 32,
+  width: '100%',
+  maxWidth: 280,
+})
+
 export const creatorName = style({
   fontSize: '20px',
   width: '100%',
   color: 'black',
   backgroundColor: color.gray[100],
-  padding: '25px 80px',
+  padding: 24,
   borderRadius: '12px',
   whiteSpace: 'nowrap',
   overflow: 'hidden',
   textOverflow: 'ellipsis',
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-  maxWidth: 280,
+  textAlign: 'center',
 })
 
 export const discriptionText = style({
