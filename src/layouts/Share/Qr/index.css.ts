@@ -1,27 +1,28 @@
 import { style } from '@vanilla-extract/css'
+import qrBackgroundImage from './qr-background.svg'
+import { color } from '../../../utils/styleSchema'
 
-export const backgroundImage = style({
+export const container = style({
   position: 'relative',
   width: '100%',
-  height: '100%',
-  overflow: 'hidden',
-});
+  backgroundImage: `url(${qrBackgroundImage.src})`,
+  backgroundSize: 'cover',
+  color: color.gray[100],
+  fontSize: '2rem',
+  fontWeight: 'bold',
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  paddingBlock: 72,
+  minHeight: '100%',
+  justifyContent: 'center',
+})
 
 export const image = style({
   objectFit: 'cover',
   width: '100%',
   height: '100%',
-});
-
-export const textOverlay = style({
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  color: 'white',
-  fontSize: '2rem',
-  fontWeight: 'bold',
-  });
+})
 
 export const qrCode = style({
   display: 'flex',
@@ -30,13 +31,13 @@ export const qrCode = style({
   backgroundColor: 'white',
   padding: '22px',
   width: '100%',
-  height: '100%',  
-  borderRadius: '12px'
+  height: '100%',
+  borderRadius: '12px',
 })
 
 export const qrCodeSpace = style({
-  padding: '56px 0px 52px 0px'
-}) 
+  padding: '56px 0px 52px 0px',
+})
 
 export const creatorName = style({
   fontSize: '20px',
@@ -51,7 +52,7 @@ export const creatorName = style({
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
-});
+})
 
 export const discriptionText = style({
   fontSize: '20px',
@@ -66,4 +67,6 @@ export const returnButton = style({
   display: 'flex',
   justifyContent: 'space-between',
   padding: '24px 16px',
+  top: 0,
+  left: 0,
 })
