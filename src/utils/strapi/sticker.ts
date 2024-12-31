@@ -29,6 +29,7 @@ export const getStickers = async () => {
               page,
               pageSize: 100,
             },
+            sort: 'id',
           }
         )}`,
         {
