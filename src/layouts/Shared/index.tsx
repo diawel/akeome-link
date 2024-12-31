@@ -349,7 +349,11 @@ const Shared = ({
                 )}
               </div>
               {!isDelivered &&
-                (deliveryDate ? (
+                (isReserved ? (
+                  <Link href="/" className={styles.deliveryDate.default}>
+                    トップへ戻る
+                  </Link>
+                ) : deliveryDate ? (
                   <div className={styles.deliveryDate.default}>
                     {deliveryDate.getMonth() + 1}月{deliveryDate.getDate()}日
                     {deliveryDate.getHours()}:
