@@ -57,15 +57,15 @@ const ReceivedDetail = ({ cardRecord, randomSeed }: ReceivedDetailProps) => {
                     e.preventDefault()
                     return
                   }
-
                   const url = URL.createObjectURL(renderedImage)
-                  const link = e.target as HTMLAnchorElement
-                  link.href = url
-
-                  const newWindow = window.open(url, '_blank')
-                  if (newWindow) {
-                    newWindow.onload = () => {
-                      URL.revokeObjectURL(url)
+                  const link = e.target
+                  if ('href' in link && link instanceof HTMLAnchorElement) {
+                    link.href = url
+                    const newWindow = window.open(url, '_blank')
+                    if (newWindow) {
+                      newWindow.onload = () => {
+                        URL.revokeObjectURL(url)
+                      }
                     }
                   }
                 }}
