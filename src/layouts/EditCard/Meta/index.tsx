@@ -10,7 +10,7 @@ const Meta = () => {
     <div className={styles.control}>
       <ReturnButton href="/create/list" color={color.gray[5]} />
       <Link className={styles.primaryButton} href={`${pathname}/setting`}>
-        次へ
+        完成
       </Link>
     </div>
   )
