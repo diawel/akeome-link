@@ -19,7 +19,7 @@ const Meta = ({ onComplete, disabled }: MetaProps) => {
         }
         onClick={onComplete}
       >
-        完成
+        公開
       </button>
     </div>
   )
