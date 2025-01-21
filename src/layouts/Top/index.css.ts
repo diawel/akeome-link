@@ -149,7 +149,7 @@ export const imageContainer1 = style({
 export const descriptionImage1 = style({
   display: 'block',
   width: 237,
-  height: 354,
+  height: 'auto',
   paddingTop: 36,
 })
 
@@ -181,7 +181,7 @@ export const imageContainer2 = style({
 export const descriptionImage2 = style({
   display: 'block',
   width: 237,
-  height: 354,
+  height: 'auto',
 })
 
 export const overlayText2 = style({
@@ -202,7 +202,7 @@ export const imageContainer3 = style({
 export const descriptionImage3 = style({
   display: 'block',
   width: 237,
-  height: 354,
+  height: 'auto',
 })
 
 export const overlayText3 = style({
