@@ -63,7 +63,7 @@ export const content = style({
   height: '100%',
 })
 
-export const discription = style({
+export const description = style({
   paddingBottom: 16,
   fontSize: 20,
   fontWeight: 'bold',

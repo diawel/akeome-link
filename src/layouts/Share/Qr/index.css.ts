@@ -64,7 +64,7 @@ export const creatorName = style({
   textAlign: 'center',
 })
 
-export const discriptionText = style({
+export const descriptionText = style({
   fontSize: 20,
   display: 'flex',
   justifyContent: 'center',

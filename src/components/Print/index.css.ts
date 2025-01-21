@@ -72,7 +72,7 @@ export const buttonsContainer = style({
   gap: 16,
 })
 
-export const seconradyButton = style({
+export const secondaryButton = style({
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',

@@ -1,7 +1,7 @@
 import { countReceivedRecords } from '../../utils/strapi/receivedCard'
 import {
   addAchievement,
-  getUserAchievmetns,
+  getUserAchievements,
 } from '../../utils/strapi/achievement'
 import Popup from './Popup'
 
@@ -30,7 +30,7 @@ const receivedRecordAchievements = [
 
 const AchievementPopup = async () => {
   const receivedRecordCount = await countReceivedRecords()
-  const achievements = await getUserAchievmetns()
+  const achievements = await getUserAchievements()
   if (!receivedRecordCount || !achievements) return null
 
   const newAchievements = receivedRecordAchievements.filter(

@@ -149,7 +149,7 @@ const Card = ({
   useEffect(() => {
     if (!edit) return
     if (!dragState) return
-    const hundleMove = (x: number, y: number) => {
+    const handleMove = (x: number, y: number) => {
       if (!cardRef.current) return
       const {
         startPosition,
@@ -227,12 +227,12 @@ const Card = ({
     const handleMouseMove = (event: MouseEvent) => {
       event.stopPropagation()
       event.preventDefault()
-      hundleMove(event.clientX, event.clientY)
+      handleMove(event.clientX, event.clientY)
     }
     const handleTouchMove = (event: TouchEvent) => {
       event.stopPropagation()
       event.preventDefault()
-      hundleMove(event.touches[0].clientX, event.touches[0].clientY)
+      handleMove(event.touches[0].clientX, event.touches[0].clientY)
     }
 
     const handleLeave = () => {
