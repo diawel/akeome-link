@@ -54,7 +54,7 @@ export const smartPhoneImage = style({
   transform: 'rotate(1deg)',
 })
 
-export const discriptionText = style({
+export const descriptionText = style({
   paddingTop: '130%',
   paddingLeft: 24,
   fontSize: 24,
