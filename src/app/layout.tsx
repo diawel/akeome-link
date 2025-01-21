@@ -36,6 +36,16 @@ const Layout = async ({
 }: Readonly<{
   children: React.ReactNode
 }>) => {
+  if (process.env.MAINTENANCE_MODE === '1') {
+    return (
+      <html lang="ja">
+        <body>
+          <div>メンテナンス中</div>
+        </body>
+      </html>
+    )
+  }
+
   const session = await getServerSession(authOptions)
   return (
     <html lang="ja">
