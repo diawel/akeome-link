@@ -31,7 +31,7 @@ const Left = ({ isSignedIn }: LeftProps) => {
       </div>
       <div className={styles.column}>
         <div className={styles.content}>
-          <div className={styles.discription}>
+          <div className={styles.description}>
             <div>
               <span className={styles.largeText}>SNS</span>で
               <span className={styles.largeText}>共有</span>する

@@ -193,7 +193,7 @@ const Shared = ({
               )}
             </div>
             {isDelivered ? (
-              <div className={styles.cardStageContaienr}>
+              <div className={styles.cardStageContainer}>
                 <button className={styles.cardStage} onClick={receive}>
                   <div
                     className={
@@ -226,7 +226,7 @@ const Shared = ({
             ) : (
               <div
                 className={
-                  styles.daliveryAnimationContainer[
+                  styles.deliveryAnimationContainer[
                     isReserved ? 'reserved' : 'default'
                   ]
                 }
@@ -299,7 +299,7 @@ const Shared = ({
                   <>
                     <button
                       className={
-                        styles.seconradyButton[
+                        styles.secondaryButton[
                           renderedImage ? 'default' : 'disabled'
                         ]
                       }
@@ -319,7 +319,7 @@ const Shared = ({
                     </button>
                     <button
                       className={
-                        styles.seconradyButton[
+                        styles.secondaryButton[
                           renderedImage ? 'default' : 'disabled'
                         ]
                       }

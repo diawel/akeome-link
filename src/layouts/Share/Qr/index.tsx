@@ -45,7 +45,7 @@ const Qr = ({ cardRecord }: QrProps) => {
         <div className={styles.creatorName}>
           {cardRecord.attributes.creatorName}
         </div>
-        <div className={styles.discriptionText}>から年賀状を受け取ろう！</div>
+        <div className={styles.descriptionText}>から年賀状を受け取ろう！</div>
       </div>
     </div>
   )
