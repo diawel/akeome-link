@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from 'react'
 import Card, { CardBackground, CardLayout } from '..'
 import { ImageUrlSet } from '../../../utils/strapi/strapiImage'
 import * as styles from './index.css'
-import * as catdStyles from '../index.css'
+import * as cardStyles from '../index.css'
 import html2canvas from 'html2canvas'
 
 type RendererProps = {
@@ -33,7 +33,7 @@ const Renderer = ({
     const checkLoadingProgress = () => {
       if (rendererRef.current) {
         const images = rendererRef.current?.querySelectorAll(
-          `.${catdStyles.card} .${catdStyles.backgroundContainer} > img, .${catdStyles.card} .${catdStyles.userImageContainer} > img, .${catdStyles.card} .${catdStyles.stickerContainer} > img`
+          `.${cardStyles.card} .${cardStyles.backgroundContainer} > img, .${cardStyles.card} .${cardStyles.userImageContainer} > img, .${cardStyles.card} .${cardStyles.stickerContainer} > img`
         )
         const allCompleted = Array.from(images).every((image) => {
           if (!(image instanceof HTMLImageElement)) return true
@@ -41,7 +41,7 @@ const Renderer = ({
         })
         if (allCompleted) {
           const card = rendererRef.current?.querySelector<HTMLDivElement>(
-            `.${catdStyles.card}`
+            `.${cardStyles.card}`
           )
           if (card?.getBoundingClientRect().width) {
             // 画面内のnext/imageは全てloading=eagerにしないとハングする

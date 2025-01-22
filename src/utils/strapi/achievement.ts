@@ -10,7 +10,7 @@ export type AchievementAttributes = {
   achievementKey: string
 }
 
-export const getUserAchievmetns = async () => {
+export const getUserAchievements = async () => {
   const session = await getServerSession(authOptions)
   if (!session) {
     return undefined

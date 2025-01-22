@@ -268,7 +268,7 @@ const slideIn = keyframes({
   },
 })
 
-export const cardStageContaienr = style({
+export const cardStageContainer = style({
   width: '100%',
   transition: 'opacity 0.3s',
 
@@ -387,7 +387,7 @@ export const emptyCardText = style({
   },
 })
 
-const daliveryAnimationContainerBase = style({
+const deliveryAnimationContainerBase = style({
   width: '100%',
   padding: 16,
   display: 'flex',
@@ -396,9 +396,9 @@ const daliveryAnimationContainerBase = style({
   flexDirection: 'column',
 })
 
-export const daliveryAnimationContainer = styleVariants({
-  default: [daliveryAnimationContainerBase],
-  reserved: [daliveryAnimationContainerBase],
+export const deliveryAnimationContainer = styleVariants({
+  default: [deliveryAnimationContainerBase],
+  reserved: [deliveryAnimationContainerBase],
 })
 
 export const bubbleContainer = style({
@@ -415,11 +415,11 @@ export const bubble = style({
   width: 'fit-content',
 
   selectors: {
-    [`${daliveryAnimationContainer.default} &`]: {
+    [`${deliveryAnimationContainer.default} &`]: {
       opacity: 0,
       transform: 'translateY(4px)',
     },
-    [`${daliveryAnimationContainer.reserved} &`]: {
+    [`${deliveryAnimationContainer.reserved} &`]: {
       opacity: 1,
       transform: 'translateY(0)',
       transition: 'opacity 0.3s 1.2s, transform 0.3s 1.2s',
@@ -468,10 +468,10 @@ export const cart = style({
   transition: 'left 1.2s 0.3s',
 
   selectors: {
-    [`${daliveryAnimationContainer.default} &`]: {
+    [`${deliveryAnimationContainer.default} &`]: {
       left: '0%',
     },
-    [`${daliveryAnimationContainer.reserved} &`]: {
+    [`${deliveryAnimationContainer.reserved} &`]: {
       left: '70%',
     },
   },
@@ -509,10 +509,10 @@ export const progressBar = style({
   transition: 'width 1.2s',
 
   selectors: {
-    [`${daliveryAnimationContainer.default} &`]: {
+    [`${deliveryAnimationContainer.default} &`]: {
       width: '25%',
     },
-    [`${daliveryAnimationContainer.reserved} &`]: {
+    [`${deliveryAnimationContainer.reserved} &`]: {
       width: '100%',
     },
   },
@@ -589,7 +589,7 @@ export const primaryButton = style({
   fontSize: 16,
 })
 
-const seconradyButtonBase = style({
+const secondaryButtonBase = style({
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
@@ -605,10 +605,10 @@ const seconradyButtonBase = style({
   cursor: 'pointer',
 })
 
-export const seconradyButton = styleVariants({
-  default: [seconradyButtonBase],
+export const secondaryButton = styleVariants({
+  default: [secondaryButtonBase],
   disabled: [
-    seconradyButtonBase,
+    secondaryButtonBase,
     {
       pointerEvents: 'none',
       opacity: 0.5,

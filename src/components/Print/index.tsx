@@ -33,7 +33,7 @@ const Print = ({ image, onClose }: PrintProps) => {
               <li>一度閉じると再表示できません</li>
             </ul>
           </div>
-          <button className={styles.seconradyButton} onClick={onClose}>
+          <button className={styles.secondaryButton} onClick={onClose}>
             閉じる
           </button>
         </>
@@ -111,7 +111,7 @@ const Print = ({ image, onClose }: PrintProps) => {
             >
               印刷予約をする
             </button>
-            <button className={styles.seconradyButton} onClick={onClose}>
+            <button className={styles.secondaryButton} onClick={onClose}>
               キャンセル
             </button>
           </div>

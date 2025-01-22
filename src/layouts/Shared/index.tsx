@@ -193,7 +193,7 @@ const Shared = ({
               )}
             </div>
             {isDelivered ? (
-              <div className={styles.cardStageContaienr}>
+              <div className={styles.cardStageContainer}>
                 <button className={styles.cardStage} onClick={receive}>
                   <div
                     className={
@@ -226,7 +226,7 @@ const Shared = ({
             ) : (
               <div
                 className={
-                  styles.daliveryAnimationContainer[
+                  styles.deliveryAnimationContainer[
                     isReserved ? 'reserved' : 'default'
                   ]
                 }
@@ -299,23 +299,19 @@ const Shared = ({
                   <>
                     <button
                       className={
-                        styles.seconradyButton[
+                        styles.secondaryButton[
                           renderedImage ? 'default' : 'disabled'
                         ]
                       }
                       onClick={() => {
                         if (!renderedImage) return
                         const url = URL.createObjectURL(renderedImage)
-                        const a = document.createElement('a')
-                        a.href = url
-                        a.setAttribute(
-                          'download',
-                          `new_year_card_${Date.now()}`
-                        )
-                        document.body.appendChild(a)
-                        a.click()
-                        URL.revokeObjectURL(url)
-                        a.remove()
+                        const newWindow = window.open(url, '_blank')
+                        if (newWindow) {
+                          newWindow.onload = () => {
+                            URL.revokeObjectURL(url)
+                          }
+                        }
                       }}
                     >
                       <FaDownload />
@@ -323,7 +319,7 @@ const Shared = ({
                     </button>
                     <button
                       className={
-                        styles.seconradyButton[
+                        styles.secondaryButton[
                           renderedImage ? 'default' : 'disabled'
                         ]
                       }

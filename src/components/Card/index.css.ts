@@ -91,7 +91,7 @@ const layeredStickerContainerBase = style({
   alignItems: 'center',
 })
 
-const reveale = keyframes({
+const reveal = keyframes({
   from: {
     opacity: 1,
     transform: 'scale(1)',
@@ -113,7 +113,7 @@ export const layeredStickerContainer = styleVariants({
   revealing: [
     layeredStickerContainerBase,
     {
-      animation: `0.5s ease-out ${reveale} forwards`,
+      animation: `0.5s ease-out ${reveal} forwards`,
     },
   ],
 })

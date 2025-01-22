@@ -35,7 +35,7 @@ const Page = async ({ params }: { params: { id: string } }) => {
     notFound()
   }
   const session = await getServerSession(authOptions)
-  const recievedCard = await getReceivedCardByCardId(card.data.id)
+  const receivedCard = await getReceivedCardByCardId(card.data.id)
   const isDelivered = new Date(card.data.attributes.deliveredAt) < new Date()
 
   return (
@@ -43,12 +43,12 @@ const Page = async ({ params }: { params: { id: string } }) => {
       cardCreatorId={card.data.attributes.creator.data.id}
       strapiUserId={session?.user.strapiUserId}
       existingReceivedCard={
-        recievedCard
+        receivedCard
           ? {
-              id: recievedCard.data.id,
+              id: receivedCard.data.id,
               attributes: {
-                randomSeed: recievedCard.data.attributes.randomSeed,
-                publishedAt: recievedCard.data.attributes.publishedAt,
+                randomSeed: receivedCard.data.attributes.randomSeed,
+                publishedAt: receivedCard.data.attributes.publishedAt,
               },
             }
           : undefined

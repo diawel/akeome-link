@@ -31,7 +31,7 @@ const Top = () => {
             priority
           />
           <div className={styles.redContainer}>
-            <div className={styles.discriptionText}>
+            <div className={styles.descriptionText}>
               大切な人とも、
               <br />
               疎遠な人とも、

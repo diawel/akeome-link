@@ -41,7 +41,7 @@ const Setting = () => {
         session?.user?.name ??
         ''
     )
-  }, [session])
+  }, [creatorName, session])
 
   useEffect(() => {
     if (title !== undefined) return

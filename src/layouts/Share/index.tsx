@@ -147,13 +147,12 @@ const Share = ({ cardRecord }: ShareProps) => {
               onClick={() => {
                 if (!renderedImage) return
                 const url = URL.createObjectURL(renderedImage)
-                const a = document.createElement('a')
-                a.href = url
-                a.setAttribute('download', `new_year_card_${Date.now()}`)
-                document.body.appendChild(a)
-                a.click()
-                URL.revokeObjectURL(url)
-                a.remove()
+                const newWindow = window.open(url, '_blank')
+                if (newWindow) {
+                  newWindow.onload = () => {
+                    URL.revokeObjectURL(url)
+                  }
+                }
               }}
               style={{
                 pointerEvents: renderedImage ? 'auto' : 'none',
