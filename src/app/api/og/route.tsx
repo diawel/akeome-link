@@ -20,7 +20,9 @@ export const GET = async (request: Request) => {
     return NextResponse.json({ error: 'Card not found' }, { status: 404 })
   }
 
-  const fontData = await fs.readFileSync(path.join(process.cwd(), 'public/fonts/03SmartFontUI.ttf'))
+  const fontData = fs.readFileSync(
+    path.join(process.cwd(), 'public/fonts/03SmartFontUI.ttf')
+  )
 
   return new ImageResponse(
     (
